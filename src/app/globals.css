@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
+/* ── Brand palette ─────────────────────────────────────────────
+   Nature's Mastermind · Biochar Distribution · Ark-La-Tex        */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --creme: #f5efe6;
+  --creme-dark: #ddd0bc;
+  --forest: #2d4a2d;
+  --brown: #3b2510;
+  --brown-light: #6b4c2a;
+  --gold: #c9912a;
+  --gold-muted: #d4a85a;
+  --black: #1a1a18;
+  --off-white: #faf8f4;
+
+  /* Deep background used by the hero, nav and contact sections */
+  --ink: #0f1410;
+  --ink-deep: #0c110d;
+
+  /* ── Component tokens ────────────────────────────────────────
+     Drive the shadcn/ui primitives (select menu, toast, focus
+     rings). Tuned to the dark forest surface so dropdowns and
+     toasts read as part of the site rather than default grey.   */
+  --background: var(--ink);
+  --foreground: var(--creme);
+  --popover: #161d17;
+  --popover-foreground: var(--creme);
+  --muted: rgba(255, 255, 255, 0.07);
+  --muted-foreground: rgba(245, 239, 230, 0.5);
+  --accent: rgba(255, 255, 255, 0.08);
+  --accent-foreground: var(--creme);
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: var(--gold);
+  --destructive: #c97c3a;
+  --destructive-foreground: var(--creme);
+  --radius: 0.5rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-gold: var(--gold);
+  --color-gold-muted: var(--gold-muted);
+  --color-creme: var(--creme);
+  --color-forest: var(--forest);
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+
+  /* next/font injects hashed family names, so the display face is
+     referenced through this variable rather than by literal name. */
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Every nav item on this one-page site is an in-page anchor, so smooth
+   scrolling is the intended behaviour. Next 16 no longer overrides this
+   during navigation unless <html data-scroll-behavior="smooth"> is set,
+   which the root layout does. */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--ink);
+  color: var(--creme);
+  -webkit-font-smoothing: antialiased;
 }
