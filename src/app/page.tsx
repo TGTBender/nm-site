@@ -311,11 +311,15 @@ export default function Home() {
           style={{
             position: "absolute",
             inset: 0,
-            // Layered backgrounds: if /delivery.png is missing the browser
-            // skips that layer and falls through to the gradient, so the
-            // hero still reads as intentional rather than as a broken image.
+            // WebP rather than PNG: identical art, 77 KB vs 738 KB on the
+            // largest above-the-fold element. Every browser Next 16 supports
+            // handles WebP, so a PNG fallback would never be served.
+            //
+            // Layered backgrounds: if the image is ever missing the browser
+            // skips that layer and falls through to the gradient, so the hero
+            // still reads as intentional rather than as a broken image.
             backgroundImage:
-              "url('/delivery.png'), radial-gradient(ellipse at 50% 30%, #35563a 0%, #1b2a1d 55%, #0f1410 100%)",
+              "url('/delivery.webp'), radial-gradient(ellipse at 50% 30%, #35563a 0%, #1b2a1d 55%, #0f1410 100%)",
             backgroundSize: "cover, cover",
             backgroundPosition: "center top, center",
             backgroundRepeat: "no-repeat, no-repeat",
