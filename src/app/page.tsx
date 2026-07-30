@@ -25,7 +25,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { SoilProfile } from "@/components/SoilProfile";
 import { contactSchema, type ContactInput } from "@/lib/contact-schema";
 import { checkZip, type ZipCheck } from "@/lib/delivery-area";
 
@@ -128,10 +127,21 @@ export default function Home() {
           transition: "background 0.3s, padding 0.3s",
           backgroundColor: isScrolled ? "rgba(15,20,16,0.92)" : "transparent",
           backdropFilter: isScrolled ? "blur(14px)" : "none",
+          WebkitBackdropFilter: isScrolled ? "blur(14px)" : "none",
           borderBottom: isScrolled
             ? "1px solid rgba(255,255,255,0.07)"
             : "1px solid transparent",
           padding: isScrolled ? "12px 0" : "22px 0",
+          // A fixed, backdrop-blurred bar sitting over a full-bleed image and
+          // framer-motion transforms will smear or leave ghost copies on some
+          // GPUs unless it owns its compositing layer. translateZ(0) forces
+          // that layer; isolate keeps the blur from sampling stacking context
+          // it shouldn't. Purely a paint fix — no visual change intended.
+          transform: "translateZ(0)",
+          WebkitTransform: "translateZ(0)",
+          backfaceVisibility: "hidden",
+          isolation: "isolate",
+          willChange: "background-color, backdrop-filter",
         }}
       >
         <div
@@ -264,6 +274,9 @@ export default function Home() {
               right: 0,
               backgroundColor: "rgba(15,20,16,0.97)",
               backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              transform: "translateZ(0)",
+              backfaceVisibility: "hidden",
               borderTop: "1px solid rgba(255,255,255,0.07)",
               padding: "1.25rem 2rem 1.75rem",
               display: "flex",
@@ -543,8 +556,6 @@ export default function Home() {
               We built Nature&apos;s Mastermind to close that gap — for good.
             </p>
           </motion.div>
-
-          <SoilProfile />
         </div>
       </section>
 
