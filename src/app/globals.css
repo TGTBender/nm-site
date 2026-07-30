@@ -35,6 +35,11 @@
   --destructive: #c97c3a;
   --destructive-foreground: var(--creme);
   --radius: 0.5rem;
+
+  /* Hairline rules. Default suits the dark surfaces; sections on the
+     off-white ground override --hairline with the ink variant. */
+  --hairline: rgba(255, 255, 255, 0.12);
+  --hairline-ink: rgba(59, 37, 16, 0.16);
 }
 
 @theme inline {
@@ -85,4 +90,101 @@ body {
   background-color: var(--ink);
   color: var(--creme);
   -webkit-font-smoothing: antialiased;
+}
+
+/* ── Motion ────────────────────────────────────────────────────
+   One easing curve, used everywhere. easeOutQuart moves fast then
+   settles slowly, which is what separates motion that feels
+   authored from motion that feels like a default. Every transition
+   below animates only opacity / transform / colour — never a layout
+   property — so none of them can trigger reflow.                 */
+:root {
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* ── Interaction primitives ────────────────────────────────────
+   These replace per-element JS mouseenter/mouseleave handlers.
+   CSS transitions are GPU-composited, carry the easing curve, and
+   survive keyboard focus and touch — none of which is true of
+   assigning .style.opacity from an event handler.                */
+
+.nm-link {
+  color: rgba(245, 239, 230, 0.55);
+  text-decoration: none;
+  transition: color 0.35s var(--ease-out-quart);
+}
+.nm-link:hover,
+.nm-link:focus-visible {
+  color: var(--creme);
+}
+
+/* Primary gold pill — hero, section and nav calls to action. */
+.nm-cta {
+  transition:
+    opacity 0.45s var(--ease-out-quart),
+    transform 0.45s var(--ease-out-quart);
+}
+.nm-cta:hover,
+.nm-cta:focus-visible {
+  opacity: 0.88;
+  transform: translateY(-2px);
+}
+.nm-cta:active {
+  transform: translateY(0);
+}
+.nm-cta:disabled,
+.nm-cta[aria-disabled="true"] {
+  transform: none;
+  opacity: 0.6;
+}
+
+/* Low-emphasis bordered control — the zip "Check" button. */
+.nm-quiet {
+  transition:
+    background-color 0.35s var(--ease-out-quart),
+    border-color 0.35s var(--ease-out-quart),
+    color 0.35s var(--ease-out-quart);
+}
+.nm-quiet:hover,
+.nm-quiet:focus-visible {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: var(--creme);
+}
+
+/* A visible focus ring everywhere, in brand gold rather than the
+   browser default, so keyboard users get the same considered
+   treatment as mouse users. */
+:where(a, button, input, textarea, [role="combobox"]):focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Signature motif ───────────────────────────────────────────
+   A single large quarter-circle sweep, repeated across the site.
+   border-radius rather than mask-image: identical result, no
+   vendor-prefix or fallback story, and it clips child images.    */
+.nm-arc-tl {
+  border-radius: 100% 0 0 0;
+}
+.nm-arc-tr {
+  border-radius: 0 100% 0 0;
+}
+.nm-arc-br {
+  border-radius: 0 0 100% 0;
+}
+.nm-arc-bl {
+  border-radius: 0 0 0 100%;
+}
+
+/* Hairline rule used by the spec grid. Collapses doubled borders
+   between adjacent cells without needing per-cell edge classes. */
+.nm-rule-grid {
+  border-top: 1px solid var(--hairline);
+  border-left: 1px solid var(--hairline);
+}
+.nm-rule-grid > * {
+  border-right: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
 }
