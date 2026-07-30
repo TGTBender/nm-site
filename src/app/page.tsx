@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { SoilProfile } from "@/components/SoilProfile";
 import { contactSchema, type ContactInput } from "@/lib/contact-schema";
 import { checkZip, type ZipCheck } from "@/lib/delivery-area";
 
@@ -542,6 +543,8 @@ export default function Home() {
               We built Nature&apos;s Mastermind to close that gap — for good.
             </p>
           </motion.div>
+
+          <SoilProfile />
         </div>
       </section>
 
