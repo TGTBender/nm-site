@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pyrolytic Residence — Generative Art Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Anthropic Brand Colors */
+        :root {
+            --anthropic-dark: #141413;
+            --anthropic-light: #faf9f5;
+            --anthropic-mid-gray: #b0aea5;
+            --anthropic-light-gray: #e8e6dc;
+            --anthropic-orange: #d97757;
+            --anthropic-blue: #6a9bcc;
+            --anthropic-green: #788c5d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--anthropic-light) 0%, #f5f3ee 100%);
+            min-height: 100vh;
+            color: var(--anthropic-dark);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(20, 20, 19, 0.1);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sidebar h1 {
+            font-family: 'Lora', serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--anthropic-dark);
+            margin-bottom: 8px;
+        }
+
+        .sidebar .subtitle {
+            color: var(--anthropic-mid-gray);
+            font-size: 14px;
+            margin-bottom: 32px;
+            line-height: 1.4;
+        }
+
+        /* Control Sections */
+        .control-section {
+            margin-bottom: 32px;
+        }
+
+        .control-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--anthropic-dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-section h3::before {
+            content: '•';
+            color: var(--anthropic-orange);
+            font-weight: bold;
+        }
+
+        /* Seed Controls */
+        .seed-input {
+            width: 100%;
+            background: var(--anthropic-light);
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-bottom: 12px;
+            border: 1px solid var(--anthropic-light-gray);
+            text-align: center;
+        }
+
+        .seed-input:focus {
+            outline: none;
+            border-color: var(--anthropic-orange);
+            box-shadow: 0 0 0 2px rgba(217, 119, 87, 0.1);
+            background: white;
+        }
+
+        .seed-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .regen-button {
+            margin-bottom: 0;
+        }
+
+        /* Parameter Controls */
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--anthropic-dark);
+            margin-bottom: 8px;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+            height: 4px;
+            background: var(--anthropic-light-gray);
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--anthropic-orange);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .slider-container input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            background: #c86641;
+        }
+
+        .slider-container input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--anthropic-orange);
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .value-display {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: var(--anthropic-mid-gray);
+            min-width: 60px;
+            text-align: right;
+        }
+
+        /* Color Pickers */
+        .color-group {
+            margin-bottom: 16px;
+        }
+
+        .color-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--anthropic-mid-gray);
+            margin-bottom: 4px;
+        }
+
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-picker-container input[type="color"] {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: none;
+            padding: 0;
+        }
+
+        .color-value {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: var(--anthropic-mid-gray);
+        }
+
+        /* Buttons */
+        .button {
+            background: var(--anthropic-orange);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .button:hover {
+            background: #c86641;
+            transform: translateY(-1px);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button.secondary {
+            background: var(--anthropic-blue);
+        }
+
+        .button.secondary:hover {
+            background: #5a8bb8;
+        }
+
+        .button.tertiary {
+            background: var(--anthropic-green);
+        }
+
+        .button.tertiary:hover {
+            background: #6b7b52;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .button-row .button {
+            flex: 1;
+        }
+
+        /* Canvas Area */
+        .canvas-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        #canvas-container {
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(20, 20, 19, 0.1);
+            background: white;
+        }
+
+        #canvas-container canvas {
+            display: block;
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--anthropic-mid-gray);
+        }
+
+        /* Type-safety guide overlay toggle */
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--anthropic-mid-gray);
+            margin-top: -8px;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive - Stack on mobile */
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .canvas-area {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Control Sidebar -->
+        <div class="sidebar">
+            <h1>Pyrolytic Residence</h1>
+            <div class="subtitle">
+                Vascular filaments cross a transformation front and settle as porous
+                lattice. Conversion, not decay.
+            </div>
+
+            <!-- Seed Section -->
+            <div class="control-section">
+                <h3>Seed</h3>
+                <input type="number" id="seed-input" class="seed-input" value="12345" onchange="updateSeed()">
+                <div class="seed-controls">
+                    <button class="button secondary" onclick="previousSeed()">← Prev</button>
+                    <button class="button secondary" onclick="nextSeed()">Next →</button>
+                </div>
+                <button class="button tertiary regen-button" onclick="randomSeedAndUpdate()">↻ Random</button>
+            </div>
+
+            <!-- Parameters Section -->
+            <div class="control-section">
+                <h3>Parameters</h3>
+
+                <div class="control-group">
+                    <label>Vessel Count</label>
+                    <div class="slider-container">
+                        <input type="range" id="vesselCount" min="60" max="420" step="10" value="230" oninput="updateParam('vesselCount', this.value)">
+                        <span class="value-display" id="vesselCount-value">230</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Branch Chance</label>
+                    <div class="slider-container">
+                        <input type="range" id="branchChance" min="0" max="0.05" step="0.002" value="0.018" oninput="updateParam('branchChance', this.value)">
+                        <span class="value-display" id="branchChance-value">0.018</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Front Depth</label>
+                    <div class="slider-container">
+                        <input type="range" id="frontDepth" min="0.2" max="0.8" step="0.01" value="0.46" oninput="updateParam('frontDepth', this.value)">
+                        <span class="value-display" id="frontDepth-value">0.46</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Front Softness</label>
+                    <div class="slider-container">
+                        <input type="range" id="frontSoftness" min="0.04" max="0.4" step="0.01" value="0.17" oninput="updateParam('frontSoftness', this.value)">
+                        <span class="value-display" id="frontSoftness-value">0.17</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Field Scale</label>
+                    <div class="slider-container">
+                        <input type="range" id="fieldScale" min="0.0004" max="0.004" step="0.0001" value="0.0016" oninput="updateParam('fieldScale', this.value)">
+                        <span class="value-display" id="fieldScale-value">0.0016</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Turbulence</label>
+                    <div class="slider-container">
+                        <input type="range" id="turbulence" min="0" max="1.4" step="0.05" value="0.55" oninput="updateParam('turbulence', this.value)">
+                        <span class="value-display" id="turbulence-value">0.55</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Ember Intensity</label>
+                    <div class="slider-container">
+                        <input type="range" id="ember" min="0" max="1.6" step="0.05" value="0.7" oninput="updateParam('ember', this.value)">
+                        <span class="value-display" id="ember-value">0.7</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Porosity</label>
+                    <div class="slider-container">
+                        <input type="range" id="porosity" min="0" max="1.2" step="0.05" value="0.55" oninput="updateParam('porosity', this.value)">
+                        <span class="value-display" id="porosity-value">0.55</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Strata</label>
+                    <div class="slider-container">
+                        <input type="range" id="strata" min="0" max="1" step="0.05" value="0.45" oninput="updateParam('strata', this.value)">
+                        <span class="value-display" id="strata-value">0.45</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Density Bias →</label>
+                    <div class="slider-container">
+                        <input type="range" id="rightBias" min="0" max="1" step="0.05" value="0.66" oninput="updateParam('rightBias', this.value)">
+                        <span class="value-display" id="rightBias-value">0.66</span>
+                    </div>
+                </div>
+
+                <div class="checkbox-row">
+                    <input type="checkbox" id="showGuide" onchange="toggleGuide(this.checked)">
+                    <label for="showGuide" style="margin:0;font-weight:400;">Show hero type safe-area</label>
+                </div>
+            </div>
+
+            <!-- Colors Section -->
+            <div class="control-section">
+                <h3>Colors</h3>
+
+                <div class="color-group">
+                    <label>Ground (deep ink)</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color0" value="#0f1410" onchange="updateColor(0, this.value)">
+                        <span class="color-value" id="color0-value">#0f1410</span>
+                    </div>
+                </div>
+
+                <div class="color-group">
+                    <label>Vascular (forest)</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color1" value="#2d4a2d" onchange="updateColor(1, this.value)">
+                        <span class="color-value" id="color1-value">#2d4a2d</span>
+                    </div>
+                </div>
+
+                <div class="color-group">
+                    <label>Ember (gold)</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color2" value="#c9912a" onchange="updateColor(2, this.value)">
+                        <span class="color-value" id="color2-value">#c9912a</span>
+                    </div>
+                </div>
+
+                <div class="color-group">
+                    <label>Char (brown)</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color3" value="#3b2510" onchange="updateColor(3, this.value)">
+                        <span class="color-value" id="color3-value">#3b2510</span>
+                    </div>
+                </div>
+
+                <div class="color-group">
+                    <label>Filament (creme)</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color4" value="#f5efe6" onchange="updateColor(4, this.value)">
+                        <span class="color-value" id="color4-value">#f5efe6</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions Section -->
+            <div class="control-section">
+                <h3>Actions</h3>
+                <div class="button-row">
+                    <button class="button" onclick="initializeSystem()">Regenerate</button>
+                    <button class="button" onclick="resetParameters()">Reset</button>
+                </div>
+                <button class="button tertiary" onclick="downloadPNG()">↓ Download PNG</button>
+            </div>
+        </div>
+
+        <!-- Main Canvas Area -->
+        <div class="canvas-area">
+            <div id="canvas-container">
+                <div class="loading">Initializing generative art...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════
+        // PYROLYTIC RESIDENCE — parameters
+        // Every value here is the survivor of many rejected alternatives.
+        // ═══════════════════════════════════════════════════════════════════════
+
+        let params = {
+            seed: 12345,
+            vesselCount: 230,      // filaments seeded at the surface
+            branchChance: 0.018,   // per-step probability of splitting
+            frontDepth: 0.46,      // where conversion happens (0–1 of height)
+            frontSoftness: 0.17,   // how gradual the crossing is
+            fieldScale: 0.0016,    // noise field scale
+            turbulence: 0.55,      // how far the field twists off vertical
+            ember: 0.7,            // incandescence at the front — narrow interval
+            porosity: 0.55,        // void deposition below the front
+            strata: 0.45,          // horizontal banding in the residence layer
+            rightBias: 0.66,       // composition weight; keeps left clear for type
+            colorPalette: ['#0f1410', '#2d4a2d', '#c9912a', '#3b2510', '#f5efe6']
+        };
+
+        let defaultParams = JSON.parse(JSON.stringify(params));
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // ALGORITHM
+        // ═══════════════════════════════════════════════════════════════════════
+
+        const W = 1920, H = 1080;
+        const MAX_FILAMENTS = 1500;
+        const STEPS_PER_FRAME = 9;
+
+        let buffer;               // accumulation surface
+        let filaments = [];
+        let finished = false;
+        let showGuide = false;
+        let C = {};               // parsed palette
+
+        function setup() {
+            const c = createCanvas(W, H);
+            c.parent('canvas-container');
+            pixelDensity(1);
+            const l = document.querySelector('.loading');
+            if (l) l.style.display = 'none';
+            initializeSystem();
+        }
+
+        function parsePalette() {
+            C.ground   = color(params.colorPalette[0]);
+            C.vascular = color(params.colorPalette[1]);
+            C.ember    = color(params.colorPalette[2]);
+            C.char     = color(params.colorPalette[3]);
+            C.filament = color(params.colorPalette[4]);
+        }
+
+        function initializeSystem() {
+            randomSeed(params.seed);
+            noiseSeed(params.seed);
+            parsePalette();
+
+            buffer = createGraphics(W, H);
+            buffer.pixelDensity(1);
+
+            paintGround();
+            seedFilaments();
+
+            finished = false;
+            loop();
+        }
+
+        /** The transformation front. Never straight — perturbed along its
+         *  length so no two horizontal positions cross at the same depth. */
+        function frontAt(x) {
+            const base = params.frontDepth * H;
+            const n1 = noise(x * 0.0011 + 40.5, 91.2) - 0.5;
+            const n2 = noise(x * 0.0037 + 12.1, 55.9) - 0.5;
+            return base + n1 * H * 0.13 + n2 * H * 0.04;
+        }
+
+        /** 0 above the front, 1 fully converted below it. */
+        function conversion(x, y) {
+            const f = frontAt(x);
+            const band = Math.max(1, params.frontSoftness * H);
+            return constrain((y - (f - band * 0.5)) / band, 0, 1);
+        }
+
+        /** Composition weighting. Density gathers right; the lower-left is
+         *  deliberately quiet so type has somewhere silent to sit. */
+        function quiet(x, y) {
+            const bx = x / W, by = y / H;
+            const lowLeft = (1 - bx) * by;                 // 0..1, peaks bottom-left
+            return constrain(1 - lowLeft * (0.55 + params.rightBias * 0.55), 0.12, 1);
+        }
+
+        function paintGround() {
+            buffer.push();
+            buffer.noStroke();
+
+            // Base ground, slightly lifted toward the top so the field has air.
+            for (let y = 0; y < H; y += 2) {
+                const t = y / H;
+                const c = lerpColor(
+                    lerpColor(C.ground, C.vascular, 0.16),
+                    C.ground,
+                    Math.pow(t, 0.75)
+                );
+                buffer.fill(c);
+                buffer.rect(0, y, W, 2);
+            }
+
+            // Strata: horizontal banding through the residence layer. Emergent
+            // in feel, cheap to lay in as a substrate for deposits to sit on.
+            if (params.strata > 0) {
+                for (let y = 0; y < H; y += 3) {
+                    const conv = conversion(W * 0.5, y);
+                    if (conv <= 0.02) continue;
+                    const band = noise(y * 0.014, 7.7) + noise(y * 0.052, 3.1) * 0.4;
+                    const a = (band - 0.62) * params.strata * 150 * conv;
+                    if (a <= 0) continue;
+                    buffer.fill(red(C.char), green(C.char), blue(C.char), a);
+                    buffer.rect(0, y, W, 3);
+                }
+            }
+            buffer.pop();
+        }
+
+        function seedFilaments() {
+            filaments = [];
+            for (let i = 0; i < params.vesselCount; i++) {
+                // Origins biased right via a shaped uniform — the exponent is
+                // where the composition is actually decided.
+                const u = random();
+                const shaped = Math.pow(u, 1 - params.rightBias * 0.72);
+                const x = shaped * W * 1.06 - W * 0.03;
+                const y = random(-H * 0.12, H * 0.10);
+                filaments.push(new Filament(x, y, random(TWO_PI), 0, random(340, 780)));
+            }
+        }
+
+        class Filament {
+            constructor(x, y, phase, depth, life) {
+                this.x = x;
+                this.y = y;
+                this.phase = phase;      // decorrelates each filament's field walk
+                this.depth = depth;      // branch generation
+                this.life = life;
+                this.age = 0;
+                this.w = random(1.7, 3.4) * Math.pow(0.72, depth);
+                this.dead = false;
+            }
+
+            step() {
+                if (this.dead) return;
+
+                const conv = conversion(this.x, this.y);
+
+                // Field angle. Above the front the walk reaches and seeks;
+                // below it flattens toward the horizontal and spreads.
+                const n = noise(
+                    this.x * params.fieldScale,
+                    this.y * params.fieldScale,
+                    this.phase * 0.21
+                );
+                const wander = (n - 0.5) * TWO_PI * params.turbulence;
+                const downward = HALF_PI;                       // +y
+                const flatten = conv * 1.02;                    // lateral in residence
+                const side = Math.sin(this.phase * 3.1 + this.depth) * flatten;
+                const ang = downward + wander * (1 - conv * 0.55) + side;
+
+                const speed = lerp(2.5, 1.25, conv);
+                const px = this.x, py = this.y;
+                this.x += Math.cos(ang) * speed;
+                this.y += Math.sin(ang) * speed;
+
+                this.paint(px, py, conv);
+
+                // Porosity: voids deposited only once converted, and only as a
+                // behaviour of the agent — never stamped on afterward.
+                if (conv > 0.55 && params.porosity > 0 && random() < 0.035 * params.porosity) {
+                    this.pore(conv);
+                }
+
+                // Branching. Vascular tissue branches; lattice does not.
+                if (
+                    filaments.length < MAX_FILAMENTS &&
+                    this.depth < 3 &&
+                    conv < 0.6 &&
+                    random() < params.branchChance * (1 - conv)
+                ) {
+                    filaments.push(new Filament(
+                        this.x, this.y,
+                        this.phase + random(-1.4, 1.4),
+                        this.depth + 1,
+                        this.life * random(0.45, 0.72)
+                    ));
+                }
+
+                this.age++;
+                if (this.age > this.life || this.y > H + 40 || this.x < -80 || this.x > W + 80) {
+                    this.dead = true;
+                }
+            }
+
+            /** Colour is derived from depth and never chosen. */
+            tint(conv) {
+                if (conv < 0.5) {
+                    // Vascular → ember approach
+                    const t = conv / 0.5;
+                    const base = lerpColor(C.filament, C.vascular, constrain(this.depth / 2.2, 0, 1));
+                    return lerpColor(base, C.ember, Math.pow(t, 1.7) * params.ember);
+                }
+                // Ember → char settle
+                const t = (conv - 0.5) / 0.5;
+                const hot = lerpColor(C.vascular, C.ember, constrain(params.ember, 0, 1));
+                return lerpColor(hot, C.char, Math.pow(t, 0.62));
+            }
+
+            paint(px, py, conv) {
+                const q = quiet(this.x, this.y);
+                const fade = 1 - this.age / this.life;
+                const c = this.tint(conv);
+
+                // Width grows across the front: fine tissue becomes coarse lattice.
+                const w = this.w * lerp(1, 3.1, Math.pow(conv, 1.3));
+                const a = lerp(58, 20, conv) * fade * q;
+
+                buffer.stroke(red(c), green(c), blue(c), a);
+                buffer.strokeWeight(w);
+                buffer.line(px, py, this.x, this.y);
+
+                // The ember is a narrow chromatic event — a tight highlight that
+                // exists only inside the band and nowhere else.
+                if (params.ember > 0 && conv > 0.32 && conv < 0.68) {
+                    const peak = 1 - Math.abs(conv - 0.5) / 0.18;
+                    buffer.stroke(
+                        red(C.ember), green(C.ember), blue(C.ember),
+                        peak * 44 * params.ember * fade * q
+                    );
+                    buffer.strokeWeight(w * 0.4);
+                    buffer.line(px, py, this.x, this.y);
+                }
+            }
+
+            pore(conv) {
+                const q = quiet(this.x, this.y);
+                const r = random(2.5, 9) * (0.6 + params.porosity);
+                buffer.noStroke();
+                // Void: darker than the ground it sits in.
+                buffer.fill(red(C.ground), green(C.ground), blue(C.ground), 96 * q);
+                buffer.ellipse(this.x, this.y, r, r * random(0.62, 1));
+                // A faint rim, the lip of the pore catching what light there is.
+                buffer.noFill();
+                buffer.stroke(red(C.char), green(C.char), blue(C.char), 52 * q);
+                buffer.strokeWeight(0.8);
+                buffer.ellipse(this.x, this.y, r * 1.35, r * 1.15);
+            }
+        }
+
+        function draw() {
+            if (!finished) {
+                for (let s = 0; s < STEPS_PER_FRAME; s++) {
+                    for (let i = filaments.length - 1; i >= 0; i--) {
+                        filaments[i].step();
+                    }
+                }
+                filaments = filaments.filter(f => !f.dead);
+                if (filaments.length === 0) {
+                    finalPass();
+                    finished = true;
+                    noLoop();
+                }
+            }
+
+            image(buffer, 0, 0);
+            if (showGuide) drawGuide();
+        }
+
+        /** Vignette and a top fade, so the fixed nav bar always has dark
+         *  behind it and the corners never compete with the type. */
+        function finalPass() {
+            buffer.push();
+            buffer.noStroke();
+            for (let i = 0; i < 130; i++) {
+                const a = Math.pow(i / 130, 2.1) * 62;
+                buffer.fill(red(C.ground), green(C.ground), blue(C.ground), a);
+                buffer.rect(0, i, W, 1);                    // top
+                buffer.rect(0, H - i - 1, W, 1);            // bottom
+            }
+            for (let i = 0; i < 190; i++) {
+                const a = Math.pow(i / 190, 2.3) * 48;
+                buffer.fill(red(C.ground), green(C.ground), blue(C.ground), a);
+                buffer.rect(i, 0, 1, H);                    // left — protects type
+            }
+            buffer.pop();
+        }
+
+        /** Where the hero copy actually sits, so density can be judged
+         *  against it rather than guessed at. */
+        function drawGuide() {
+            push();
+            noFill();
+            stroke(245, 239, 230, 90);
+            strokeWeight(2);
+            drawingContext.setLineDash([10, 10]);
+            rect(W * 0.04, H * 0.42, W * 0.52, H * 0.46);
+            drawingContext.setLineDash([]);
+            noStroke();
+            fill(245, 239, 230, 120);
+            textFont('Georgia');
+            textSize(22);
+            text('hero type safe-area', W * 0.04 + 16, H * 0.42 + 34);
+            pop();
+        }
+
+        function toggleGuide(v) {
+            showGuide = v;
+            redraw();
+        }
+
+        function downloadPNG() {
+            saveCanvas('pyrolytic-residence-' + params.seed, 'png');
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // UI CONTROL HANDLERS
+        // ═══════════════════════════════════════════════════════════════════════
+
+        function updateParam(name, value) {
+            const v = parseFloat(value);
+            params[name] = (name === 'vesselCount') ? Math.round(v) : v;
+            document.getElementById(name + '-value').textContent = params[name];
+            initializeSystem();
+        }
+
+        function updateColor(index, value) {
+            params.colorPalette[index] = value;
+            document.getElementById('color' + index + '-value').textContent = value;
+            initializeSystem();
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // SEED CONTROL FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════════
+
+        function updateSeedDisplay() {
+            document.getElementById('seed-input').value = params.seed;
+        }
+
+        function updateSeed() {
+            let input = document.getElementById('seed-input');
+            let newSeed = parseInt(input.value);
+            if (newSeed && newSeed > 0) {
+                params.seed = newSeed;
+                initializeSystem();
+            } else {
+                updateSeedDisplay();
+            }
+        }
+
+        function previousSeed() {
+            params.seed = Math.max(1, params.seed - 1);
+            updateSeedDisplay();
+            initializeSystem();
+        }
+
+        function nextSeed() {
+            params.seed = params.seed + 1;
+            updateSeedDisplay();
+            initializeSystem();
+        }
+
+        function randomSeedAndUpdate() {
+            params.seed = Math.floor(Math.random() * 999999) + 1;
+            updateSeedDisplay();
+            initializeSystem();
+        }
+
+        function resetParameters() {
+            params = JSON.parse(JSON.stringify(defaultParams));
+
+            const sliders = ['vesselCount','branchChance','frontDepth','frontSoftness',
+                             'fieldScale','turbulence','ember','porosity','strata','rightBias'];
+            sliders.forEach(id => {
+                document.getElementById(id).value = params[id];
+                document.getElementById(id + '-value').textContent = params[id];
+            });
+
+            for (let i = 0; i < params.colorPalette.length; i++) {
+                document.getElementById('color' + i).value = params.colorPalette[i];
+                document.getElementById('color' + i + '-value').textContent = params.colorPalette[i];
+            }
+
+            updateSeedDisplay();
+            initializeSystem();
+        }
+
+        window.addEventListener('load', function () {
+            updateSeedDisplay();
+        });
+    </script>
+</body>
+</html>
