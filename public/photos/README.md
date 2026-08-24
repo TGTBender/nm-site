@@ -37,6 +37,44 @@ equipment answers that in a way art direction cannot.
 - **Format**: JPEG or HEIC straight off the camera is fine.
 - **People**: get permission before using anyone's face, staff or customer.
 
+## Briefing a photographer
+
+Worth stating explicitly on the day — each of these is free at the shoot and
+costs a reshoot afterward.
+
+- **Shoot wider than the final crop.** The same frame gets used at 16:9 for
+  the hero and near-square in the arc panel. A tightly-framed shot cannot
+  serve both.
+- **Deliberate negative space.** Ask for a few frames composed with the
+  subject pushed right and the lower-left deliberately empty. That is where
+  the headline sits, and it is the hardest thing to fake later.
+- **Deliver full-resolution originals**, not web exports. RAW or maximum-
+  quality JPEG. Anything already resized or compressed for the web has thrown
+  away detail the build would otherwise use.
+- **Bracket the exposure** on the hero candidates. The scrim over the hero is
+  tuned to a specific tonal range; having a slightly darker and lighter
+  version of the same frame makes that adjustment trivial.
+- **Get verticals too** where it is cheap. Not needed now, but phone-shaped
+  crops are the first thing anyone asks for later.
+
+## Product photography
+
+A separate discipline from the on-site work above, and the site has no
+product section yet — so treat these as assets to hold until the layout
+exists for them.
+
+- **Consistent background across the whole set.** One surface, one light
+  setup. A grid of product shots taken in different conditions reads as a
+  jumble no CSS will rescue.
+- **Square or croppable to square.** Product grids are square far more often
+  than not; leave margin on all four sides.
+- **One angle repeated**, not a variety pack. Sameness across the set is what
+  makes a grid look designed.
+- **Shoot the scale.** A supersack alone is unreadable — a person or pallet
+  beside it communicates 1,000 lb instantly.
+- **Include the label** on at least one frame per format. It is documentation
+  as much as photography.
+
 ## Wiring a photo in
 
 Hero (`src/app/page.tsx`, the layered `backgroundImage`) — swap the URL:
