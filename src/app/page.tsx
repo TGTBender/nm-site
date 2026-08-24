@@ -364,17 +364,23 @@ export default function Home() {
             backgroundSize: "cover, cover",
             backgroundPosition: "center top, center",
             backgroundRepeat: "no-repeat, no-repeat",
-            opacity: 0.35,
+            // Was 0.35, which put the art ~6 luminance points above the bare
+            // section ink — effectively invisible. The art was authored dark
+            // to survive that; both were lifted together.
+            opacity: 0.88,
             zIndex: 0,
           }}
         />
-        {/* Scrim weighted to the lower edge, where the type now sits. */}
+        {/* Scrim weighted to the lower edge, where the type sits. The upper
+            band is left almost clear so the treeline and horizon glow are
+            actually visible; it ramps hard through the lower half to hold
+            contrast under the headline. */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(to bottom, rgba(15,20,16,0.42) 0%, rgba(15,20,16,0.30) 35%, rgba(15,20,16,0.88) 100%)",
+              "linear-gradient(to bottom, rgba(15,20,16,0.10) 0%, rgba(15,20,16,0.16) 30%, rgba(15,20,16,0.44) 56%, rgba(15,20,16,0.80) 79%, rgba(15,20,16,0.93) 100%)",
             zIndex: 1,
             pointerEvents: "none",
           }}

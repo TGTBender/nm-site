@@ -2,9 +2,14 @@
  * Generates the Nature's Mastermind hero backdrop: a layered piney-woods
  * horizon receding into atmospheric haze.
  *
- * The image renders at 0.35 opacity under a dark gradient scrim, so it is
- * built for *composition and tonality* rather than fine detail, and kept
- * calm across the upper band where the headline sits.
+ * The image renders at high opacity under a scrim weighted to the lower edge,
+ * where the headline sits. Built for composition and tonality rather than
+ * fine detail, and kept calm behind the type.
+ *
+ * Tonal note: an earlier revision was authored to survive 0.35 opacity under
+ * a heavy scrim, which left it near-black once composited. Sky, treeline and
+ * vignette were all lifted when the compositing was rebalanced — change one
+ * and the other needs revisiting.
  *
  * Usage: node make-hero.mjs <outPath>
  */
@@ -56,12 +61,12 @@ function pine(cx, baseY, h, w) {
  * perspective); near ranks go almost black so the treeline reads as mass.
  */
 const layers = [
-  { baseY: 0.60, h: [26, 46], w: [16, 26], step: 15, fill: "#4c6b52", op: 0.34 },
-  { baseY: 0.655, h: [40, 70], w: [22, 36], step: 20, fill: "#3d5a43", op: 0.48 },
-  { baseY: 0.72, h: [64, 112], w: [30, 52], step: 28, fill: "#2c4432", op: 0.66 },
-  { baseY: 0.80, h: [104, 178], w: [46, 80], step: 42, fill: "#1c2e21", op: 0.82 },
-  { baseY: 0.90, h: [170, 290], w: [72, 128], step: 66, fill: "#111c14", op: 0.94 },
-  { baseY: 1.02, h: [250, 430], w: [110, 190], step: 104, fill: "#0a1109", op: 1.0 },
+  { baseY: 0.60, h: [26, 46], w: [16, 26], step: 15, fill: "#7ba07e", op: 0.34 },
+  { baseY: 0.655, h: [40, 70], w: [22, 36], step: 20, fill: "#638a68", op: 0.48 },
+  { baseY: 0.72, h: [64, 112], w: [30, 52], step: 28, fill: "#476b51", op: 0.66 },
+  { baseY: 0.80, h: [104, 178], w: [46, 80], step: 42, fill: "#2f4a36", op: 0.82 },
+  { baseY: 0.90, h: [170, 290], w: [72, 128], step: 66, fill: "#1d3021", op: 0.94 },
+  { baseY: 1.02, h: [250, 430], w: [110, 190], step: 104, fill: "#121e14", op: 1.0 },
 ];
 
 let treeLayers = "";
@@ -90,19 +95,19 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
     <!-- Sky: deep ink overhead easing to a warm, hazy horizon. Kept calm up
          top because the h1 sits over that band. -->
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="#0c120e"/>
-      <stop offset="26%"  stop-color="#152119"/>
-      <stop offset="46%"  stop-color="#24382a"/>
-      <stop offset="57%"  stop-color="#3d5c42"/>
-      <stop offset="62%"  stop-color="#55764f"/>
-      <stop offset="66%"  stop-color="#3a5540"/>
-      <stop offset="100%" stop-color="${INK}"/>
+      <stop offset="0%"   stop-color="#1a2a1f"/>
+      <stop offset="26%"  stop-color="#263b2c"/>
+      <stop offset="46%"  stop-color="#3f6249"/>
+      <stop offset="57%"  stop-color="#628c68"/>
+      <stop offset="62%"  stop-color="#84ae79"/>
+      <stop offset="66%"  stop-color="#5b8158"/>
+      <stop offset="100%" stop-color="#16211a"/>
     </linearGradient>
 
     <!-- Low sun glow just above the treeline, tinted with brand gold. -->
     <radialGradient id="glow" cx="0.5" cy="0.615" r="0.42">
-      <stop offset="0%"   stop-color="${GOLD}" stop-opacity="0.42"/>
-      <stop offset="38%"  stop-color="${GOLD}" stop-opacity="0.14"/>
+      <stop offset="0%"   stop-color="${GOLD}" stop-opacity="0.52"/>
+      <stop offset="38%"  stop-color="${GOLD}" stop-opacity="0.19"/>
       <stop offset="100%" stop-color="${GOLD}" stop-opacity="0"/>
     </radialGradient>
 
@@ -115,12 +120,12 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
     <!-- Vignette keeps the eye centred and darkens the edges under the scrim. -->
     <radialGradient id="vig" cx="0.5" cy="0.52" r="0.78">
       <stop offset="55%"  stop-color="#000000" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.62"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.30"/>
     </radialGradient>
 
     <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="#0a1109" stop-opacity="0.5"/>
-      <stop offset="100%" stop-color="#070c07" stop-opacity="1"/>
+      <stop offset="0%"   stop-color="#132015" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#0d160e" stop-opacity="1"/>
     </linearGradient>
   </defs>
 
