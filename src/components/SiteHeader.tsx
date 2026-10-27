@@ -1,0 +1,274 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
+
+/**
+ * The site-wide header.
+ *
+ * Lifted out of the home page when the site went from one page to several.
+ * It owns the scroll state and the reveal-on-scroll-up behaviour, so every
+ * route gets them without repeating the logic.
+ *
+ * Navigation is route-aware: page links are constant, while in-page anchors
+ * and the call to action belong to whichever route is showing. A "Get a
+ * Quote" button on the Viridian page would point at the wrong funnel.
+ */
+
+type NavItem = { name: string; href: string };
+
+const PAGES: NavItem[] = [
+  { name: "The Viridian", href: "/products" },
+  // { name: "B2B Lane",  href: "/b2b" },        - awaiting content
+  // { name: "Longevity", href: "/longevity" },  - awaiting content
+];
+
+/** Anchors that only make sense while that route is on screen. */
+const ANCHORS: Record<string, NavItem[]> = {
+  "/": [
+    { name: "Why biochar", href: "#why" },
+    { name: "How it works", href: "#how" },
+  ],
+};
+
+const CTA: Record<string, NavItem> = {
+  "/": { name: "Get a Quote", href: "#contact" },
+  "/products": { name: "Join the waitlist", href: "#waitlist" },
+};
+
+const DEFAULT_CTA: NavItem = { name: "Get a Quote", href: "/#contact" };
+
+/**
+ * TODO: this descriptor predates the move to brokerage, a DTC lane and the
+ * DFW pilot. It needs replacing, but new positioning is the owner's to write
+ * rather than mine to invent.
+ */
+const DESCRIPTOR = "Biochar Distribution · Ark-La-Tex";
+
+export function SiteHeader() {
+  const pathname = usePathname();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [headerHidden, setHeaderHidden] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const lastY = useRef(0);
+
+  // Close the menu when the route changes, or it survives the navigation.
+  useEffect(() => setMobileMenuOpen(false), [pathname]);
+
+  useEffect(() => {
+    lastY.current = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setIsScrolled(y > 50);
+      // The 8px gate ignores trackpad jitter that would otherwise make the
+      // bar flicker; nothing hides until well past the fold.
+      if (Math.abs(y - lastY.current) > 8) {
+        setHeaderHidden(y > lastY.current && y > 260);
+        lastY.current = y;
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // An open menu must never ride away with the header.
+  const hideHeader = headerHidden && !mobileMenuOpen;
+
+  const anchors = ANCHORS[pathname] ?? [];
+  const cta = CTA[pathname] ?? DEFAULT_CTA;
+  const pages = PAGES.filter((p) => p.href !== pathname);
+  const links = [...anchors, ...pages];
+
+  const mobileItemStyle = {
+    fontSize: "15px",
+    fontWeight: 500,
+    padding: "13px 0",
+    borderBottom: "1px solid rgba(255,255,255,0.06)",
+  } as const;
+
+  return (
+    <header
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        // Constant padding. Animating padding between scroll states is a
+        // layout property and forces reflow; the compact feel comes from
+        // transform alone.
+        padding: "16px 0",
+        backgroundColor: isScrolled ? "rgba(15,20,16,0.92)" : "transparent",
+        backdropFilter: isScrolled ? "blur(14px)" : "none",
+        WebkitBackdropFilter: isScrolled ? "blur(14px)" : "none",
+        borderBottom: isScrolled
+          ? "1px solid rgba(255,255,255,0.07)"
+          : "1px solid transparent",
+        transform: hideHeader ? "translateY(-100%)" : "translateY(0)",
+        transition:
+          "transform 0.55s var(--ease-out-quart), background-color 0.45s var(--ease-out-quart), border-color 0.45s var(--ease-out-quart)",
+        // A fixed, backdrop-blurred bar over a full-bleed image will smear on
+        // some GPUs unless it owns its compositing layer.
+        backfaceVisibility: "hidden",
+        isolation: "isolate",
+        willChange: "transform, background-color",
+      }}
+    >
+      <div className="mx-auto flex max-w-[1240px] items-center justify-between px-6 sm:px-10">
+        <Link
+          href="/"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            textDecoration: "none",
+          }}
+        >
+          <Image
+            src="/logo.jpg"
+            alt="Nature's Mastermind"
+            width={32}
+            height={32}
+            priority
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: "9999px",
+              objectFit: "cover",
+              border: "1.5px solid rgba(255,255,255,0.15)",
+              flexShrink: 0,
+            }}
+          />
+          <div className="hidden md:block">
+            <p
+              style={{
+                fontSize: "13px",
+                fontWeight: 600,
+                color: "var(--creme)",
+                lineHeight: 1.2,
+              }}
+            >
+              Nature&apos;s Mastermind
+            </p>
+            <p
+              style={{
+                fontSize: "9px",
+                fontWeight: 500,
+                letterSpacing: "0.14em",
+                color: "var(--gold-muted)",
+                textTransform: "uppercase",
+              }}
+            >
+              {DESCRIPTOR}
+            </p>
+          </div>
+        </Link>
+
+        <nav className="hidden items-center gap-10 lg:flex">
+          {links.map((link) =>
+            link.href.startsWith("#") ? (
+              <a
+                key={link.name}
+                href={link.href}
+                className="nm-link"
+                style={{ fontSize: "13px", fontWeight: 500 }}
+              >
+                {link.name}
+              </a>
+            ) : (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="nm-link"
+                style={{ fontSize: "13px", fontWeight: 500 }}
+              >
+                {link.name}
+              </Link>
+            ),
+          )}
+          <a
+            href={cta.href}
+            className="nm-cta"
+            style={{
+              fontSize: "13px",
+              fontWeight: 700,
+              color: "#1a1a18",
+              backgroundColor: "var(--gold)",
+              borderRadius: "9999px",
+              padding: "9px 22px",
+              textDecoration: "none",
+            }}
+          >
+            {cta.name}
+          </a>
+        </nav>
+
+        <button
+          className="lg:hidden"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileMenuOpen}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: "var(--creme)",
+            padding: 4,
+          }}
+        >
+          {mobileMenuOpen ? (
+            <X style={{ width: 22, height: 22 }} />
+          ) : (
+            <Menu style={{ width: 22, height: 22 }} />
+          )}
+        </button>
+      </div>
+
+      {mobileMenuOpen && (
+        <div
+          style={{
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            right: 0,
+            backgroundColor: "rgba(15,20,16,0.97)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            backfaceVisibility: "hidden",
+            borderTop: "1px solid rgba(255,255,255,0.07)",
+            padding: "1.25rem 1.5rem 1.75rem",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {[...links, cta].map((link) =>
+            link.href.startsWith("#") ? (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="nm-link"
+                style={mobileItemStyle}
+              >
+                {link.name}
+              </a>
+            ) : (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="nm-link"
+                style={mobileItemStyle}
+              >
+                {link.name}
+              </Link>
+            ),
+          )}
+        </div>
+      )}
+    </header>
+  );
+}

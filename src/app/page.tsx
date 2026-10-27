@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef, type CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MapPin, CheckCircle2, Clock, Menu, X } from "lucide-react";
+import { MapPin, CheckCircle2, Clock } from "lucide-react";
 
 import {
   Form,
@@ -27,11 +27,6 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { contactSchema, type ContactInput } from "@/lib/contact-schema";
 import { checkZip, type ZipCheck } from "@/lib/delivery-area";
-
-const NAV_LINKS = [
-  { name: "Why biochar", href: "#why" },
-  { name: "How it works", href: "#how" },
-];
 
 /** easeOutQuart — the single curve shared by CSS and framer-motion.
  *  Mirrors --ease-out-quart in globals.css; keep the two in step. */
@@ -66,38 +61,10 @@ const STEPS = [
 
 export default function Home() {
   const { toast } = useToast();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [headerHidden, setHeaderHidden] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [zipInput, setZipInput] = useState("");
   const [zipResult, setZipResult] = useState<ZipCheck | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const lastY = useRef(0);
-
-  useEffect(() => {
-    lastY.current = window.scrollY;
-
-    const onScroll = () => {
-      const y = window.scrollY;
-      setIsScrolled(y > 50);
-
-      // Header reveal: retreat on downward scroll, return on upward.
-      // The 8px gate ignores trackpad jitter that would otherwise make
-      // the bar flicker, and nothing hides until well past the fold so
-      // the hero is never interrupted.
-      if (Math.abs(y - lastY.current) > 8) {
-        setHeaderHidden(y > lastY.current && y > 260);
-        lastY.current = y;
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // An open menu must never ride away with the header.
-  const hideHeader = headerHidden && !mobileMenuOpen;
 
   const form = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
@@ -170,175 +137,7 @@ export default function Home() {
   };
 
   return (
-    <div
-      className="min-h-screen font-sans"
-      style={{ backgroundColor: "var(--ink)", color: "var(--creme)" }}
-    >
-      {/* ── Nav ─────────────────────────────────────────────────── */}
-      <header
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 50,
-          // Constant padding. The previous build animated padding between
-          // scroll states, which is a layout property and forces reflow;
-          // the compact feel now comes from transform alone.
-          padding: "16px 0",
-          backgroundColor: isScrolled ? "rgba(15,20,16,0.92)" : "transparent",
-          backdropFilter: isScrolled ? "blur(14px)" : "none",
-          WebkitBackdropFilter: isScrolled ? "blur(14px)" : "none",
-          borderBottom: isScrolled
-            ? "1px solid rgba(255,255,255,0.07)"
-            : "1px solid transparent",
-          transform: hideHeader ? "translateY(-100%)" : "translateY(0)",
-          transition:
-            "transform 0.55s var(--ease-out-quart), background-color 0.45s var(--ease-out-quart), border-color 0.45s var(--ease-out-quart)",
-          // A fixed, backdrop-blurred bar over a full-bleed image will
-          // smear on some GPUs unless it owns its compositing layer.
-          backfaceVisibility: "hidden",
-          isolation: "isolate",
-          willChange: "transform, background-color",
-        }}
-      >
-        <div className="mx-auto flex max-w-[1240px] items-center justify-between px-6 sm:px-10">
-          <a
-            href="#hero"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.75rem",
-              textDecoration: "none",
-            }}
-          >
-            <Image
-              src="/logo.jpg"
-              alt="Nature's Mastermind"
-              width={32}
-              height={32}
-              priority
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: "9999px",
-                objectFit: "cover",
-                border: "1.5px solid rgba(255,255,255,0.15)",
-                flexShrink: 0,
-              }}
-            />
-            <div className="hidden md:block">
-              <p
-                style={{
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  color: "var(--creme)",
-                  lineHeight: 1.2,
-                }}
-              >
-                Nature&apos;s Mastermind
-              </p>
-              <p
-                style={{
-                  fontSize: "9px",
-                  fontWeight: 500,
-                  letterSpacing: "0.14em",
-                  color: "var(--gold-muted)",
-                  textTransform: "uppercase",
-                }}
-              >
-                Biochar Distribution · Ark-La-Tex
-              </p>
-            </div>
-          </a>
-
-          <nav className="hidden items-center gap-10 lg:flex">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="nm-link"
-                style={{ fontSize: "13px", fontWeight: 500 }}
-              >
-                {link.name}
-              </a>
-            ))}
-            <a
-              href="#contact"
-              className="nm-cta"
-              style={{
-                fontSize: "13px",
-                fontWeight: 700,
-                color: "#1a1a18",
-                backgroundColor: "var(--gold)",
-                borderRadius: "9999px",
-                padding: "9px 22px",
-                textDecoration: "none",
-              }}
-            >
-              Get a Quote
-            </a>
-          </nav>
-
-          <button
-            className="lg:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileMenuOpen}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "var(--creme)",
-              padding: 4,
-            }}
-          >
-            {mobileMenuOpen ? (
-              <X style={{ width: 22, height: 22 }} />
-            ) : (
-              <Menu style={{ width: 22, height: 22 }} />
-            )}
-          </button>
-        </div>
-
-        {mobileMenuOpen && (
-          <div
-            style={{
-              position: "absolute",
-              top: "100%",
-              left: 0,
-              right: 0,
-              backgroundColor: "rgba(15,20,16,0.97)",
-              backdropFilter: "blur(16px)",
-              WebkitBackdropFilter: "blur(16px)",
-              backfaceVisibility: "hidden",
-              borderTop: "1px solid rgba(255,255,255,0.07)",
-              padding: "1.25rem 1.5rem 1.75rem",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            {[...NAV_LINKS, { name: "Get a Quote", href: "#contact" }].map(
-              (link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="nm-link"
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: 500,
-                    padding: "13px 0",
-                    borderBottom: "1px solid rgba(255,255,255,0.06)",
-                  }}
-                >
-                  {link.name}
-                </a>
-              ),
-            )}
-          </div>
-        )}
-      </header>
+    <>
 
       {/* ── Section 1: Hero ──────────────────────────────────────── */}
       {/* Content sits low-left rather than dead-centre. Centred stacks
@@ -1006,50 +805,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Footer ───────────────────────────────────────────────── */}
-      <footer
-        className="px-6 py-14 sm:px-10"
-        style={{
-          backgroundColor: "var(--ink-deep)",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        <div className="mx-auto flex max-w-[1240px] flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-          <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
-            <Image
-              src="/logo.jpg"
-              alt=""
-              width={28}
-              height={28}
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: "9999px",
-                objectFit: "cover",
-                border: "1px solid rgba(255,255,255,0.12)",
-              }}
-            />
-            <div>
-              <p
-                style={{
-                  fontSize: "12px",
-                  fontWeight: 600,
-                  color: "rgba(245,239,230,0.45)",
-                }}
-              >
-                Nature&apos;s Mastermind
-              </p>
-              <p style={{ fontSize: "11px", color: "rgba(245,239,230,0.22)" }}>
-                A subsidiary of The Greenest Thumb Inc.
-              </p>
-            </div>
-          </div>
-
-          <p style={{ fontSize: "11px", color: "rgba(245,239,230,0.16)" }}>
-            © 2026 Nature&apos;s Mastermind
-          </p>
-        </div>
-      </footer>
-    </div>
+    </>
   );
 }

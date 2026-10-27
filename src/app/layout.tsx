@@ -3,6 +3,8 @@ import { Inter, Playfair_Display } from "next/font/google";
 
 import "./globals.css";
 import { Providers } from "./providers";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 
 /**
  * next/font self-hosts these, so no request ever goes to Google and
@@ -74,7 +76,11 @@ export default function RootLayout({
       className={`${playfair.variable} ${inter.variable}`}
     >
       <body className="font-sans antialiased">
-        <Providers>{children}</Providers>
+        <Providers>
+          <SiteHeader />
+          <main>{children}</main>
+          <SiteFooter />
+        </Providers>
       </body>
     </html>
   );
