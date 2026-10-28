@@ -22,24 +22,27 @@ type NavItem = { name: string; href: string };
 
 const PAGES: NavItem[] = [
   { name: "The Viridian", href: "/products" },
-  // { name: "B2B Lane",  href: "/b2b" },        - awaiting content
+  { name: "B2B Lane", href: "/b2b" },
   // { name: "Longevity", href: "/longevity" },  - awaiting content
 ];
 
 /** Anchors that only make sense while that route is on screen. */
 const ANCHORS: Record<string, NavItem[]> = {
-  "/": [
+  "/b2b": [
     { name: "Why biochar", href: "#why" },
     { name: "How it works", href: "#how" },
   ],
 };
 
-const CTA: Record<string, NavItem> = {
-  "/": { name: "Get a Quote", href: "#contact" },
+/**
+ * Each lane converts differently, so the button belongs to the route rather
+ * than the site. The landing page deliberately has none: its job is to route
+ * into the four lanes, not to push one of them.
+ */
+const CTA: Record<string, NavItem | undefined> = {
   "/products": { name: "Join the waitlist", href: "#waitlist" },
+  "/b2b": { name: "Get a Quote", href: "#contact" },
 };
-
-const DEFAULT_CTA: NavItem = { name: "Get a Quote", href: "/#contact" };
 
 /**
  * TODO: this descriptor predates the move to brokerage, a DTC lane and the
@@ -78,7 +81,7 @@ export function SiteHeader() {
   const hideHeader = headerHidden && !mobileMenuOpen;
 
   const anchors = ANCHORS[pathname] ?? [];
-  const cta = CTA[pathname] ?? DEFAULT_CTA;
+  const cta = CTA[pathname];
   const pages = PAGES.filter((p) => p.href !== pathname);
   const links = [...anchors, ...pages];
 
@@ -189,21 +192,23 @@ export function SiteHeader() {
               </Link>
             ),
           )}
-          <a
-            href={cta.href}
-            className="nm-cta"
-            style={{
-              fontSize: "13px",
-              fontWeight: 700,
-              color: "#1a1a18",
-              backgroundColor: "var(--gold)",
-              borderRadius: "9999px",
-              padding: "9px 22px",
-              textDecoration: "none",
-            }}
-          >
-            {cta.name}
-          </a>
+          {cta && (
+            <a
+              href={cta.href}
+              className="nm-cta"
+              style={{
+                fontSize: "13px",
+                fontWeight: 700,
+                color: "#1a1a18",
+                backgroundColor: "var(--gold)",
+                borderRadius: "9999px",
+                padding: "9px 22px",
+                textDecoration: "none",
+              }}
+            >
+              {cta.name}
+            </a>
+          )}
         </nav>
 
         <button
@@ -244,7 +249,7 @@ export function SiteHeader() {
             flexDirection: "column",
           }}
         >
-          {[...links, cta].map((link) =>
+          {[...links, ...(cta ? [cta] : [])].map((link) =>
             link.href.startsWith("#") ? (
               <a
                 key={link.name}

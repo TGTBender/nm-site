@@ -188,3 +188,13 @@ body {
   border-right: 1px solid var(--hairline);
   border-bottom: 1px solid var(--hairline);
 }
+
+/* Landing-page lane rows. Only the colour shifts — the row is large, and
+   moving it on hover would make the whole list feel unstable. */
+.nm-lane {
+  transition: background-color 0.4s var(--ease-out-quart);
+}
+.nm-lane:hover,
+.nm-lane:focus-visible {
+  background-color: rgba(255, 255, 255, 0.025);
+}
