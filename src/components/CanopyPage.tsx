@@ -5,10 +5,15 @@ import { motion } from "framer-motion";
 import {
   CANOPY_HOME,
   CANOPY_TRADE,
-  CANOPY_LAB_PANEL,
   CANOPY_GUARANTEES,
   type Feature,
 } from "@/content/canopy";
+import {
+  CanopyCard,
+  CanopyStatTile,
+  CanopyDeliveryTracker,
+  CanopyScreen,
+} from "@/components/CanopyUI";
 
 /** easeOutQuart — the curve shared by CSS and framer-motion site-wide. */
 const EASE: [number, number, number, number] = [0.165, 0.84, 0.44, 1];
@@ -28,10 +33,29 @@ const eyebrow = {
 };
 
 /**
- * Canopy has no product renders of its own, so this page is carried by type,
- * rule and space rather than photography — which suits software better than
- * a borrowed image would.
+ * Sample batch, for showing the interface.
+ *
+ * These are the app's own development figures, not a certified result. The
+ * caption inside the panel says so, deliberately placed inside the frame so
+ * it travels with any screenshot of it.
  */
+const SAMPLE_BATCH = {
+  id: "NM-BC-20260612-A",
+  physical: [
+    { label: "pH", value: "8.1" },
+    { label: "EC", value: "0.17 dS/m" },
+    { label: "Organic carbon", value: "61%" },
+    { label: "H/C ratio", value: "0.44" },
+  ],
+  nutrients: [
+    { label: "Nitrogen (N)", value: "0.8%" },
+    { label: "Phosphorus (P)", value: "0.3%" },
+    { label: "Potassium (K)", value: "1.9%" },
+    { label: "Calcium (Ca)", value: "2.4%" },
+    { label: "Magnesium (Mg)", value: "0.6%" },
+  ],
+};
+
 function FeatureList({ features }: { features: Feature[] }) {
   return (
     <div style={{ borderTop: "1px solid var(--hairline)" }}>
@@ -124,10 +148,200 @@ export function CanopyPage() {
         </div>
       </section>
 
+      {/* ── Traceability, shown ────────────────────────────────────
+          The app is a light interface. Dropping it onto the dark page as a
+          lifted panel shows the real product and gives the section its
+          contrast, rather than describing the interface in prose. */}
+      <section
+        className="px-6 py-28 sm:px-10 sm:py-36"
+        style={{ backgroundColor: "var(--ink-deep)" }}
+      >
+        <div className="mx-auto max-w-[1240px]">
+          <motion.div {...reveal()} className="mb-14 max-w-[46ch]">
+            <p style={{ ...eyebrow, color: "var(--gold)", marginBottom: "1.5rem" }}>
+              Proof, not promises
+            </p>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(2rem, 4.6vw, 3.5rem)",
+                fontWeight: 700,
+                lineHeight: 1.08,
+                letterSpacing: "-0.025em",
+                color: "var(--creme)",
+                marginBottom: "1.25rem",
+              }}
+            >
+              Every batch, on the record.
+            </h2>
+            <p
+              style={{
+                fontSize: "15px",
+                lineHeight: 1.75,
+                fontWeight: 300,
+                color: "rgba(245,239,230,0.45)",
+              }}
+            >
+              Scan the batch ID off a delivery and the certified panel opens.
+              The same numbers a brand-conscious grower can show their own
+              customers.
+            </p>
+          </motion.div>
+
+          <motion.div {...reveal(0.1)}>
+            <CanopyScreen>
+              <p
+                style={{
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                  color: "var(--gold)",
+                  marginBottom: "0.35rem",
+                }}
+              >
+                Traceability
+              </p>
+              <h3
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(1.5rem, 3vw, 2.25rem)",
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
+                  color: "var(--canopy-ink)",
+                  marginBottom: "1.5rem",
+                }}
+              >
+                Batch lookup
+              </h3>
+
+              <CanopyCard title={`Batch ${SAMPLE_BATCH.id}`}>
+                <h5
+                  className="mb-3"
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    color: "var(--canopy-ink)",
+                  }}
+                >
+                  Physical &amp; stability
+                </h5>
+                <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
+                  {SAMPLE_BATCH.physical.map((s) => (
+                    <CanopyStatTile key={s.label} {...s} />
+                  ))}
+                </div>
+
+                <h5
+                  className="mb-3 mt-6"
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    color: "var(--canopy-ink)",
+                  }}
+                >
+                  Nutrient profile
+                </h5>
+                <div className="grid gap-3 grid-cols-2 sm:grid-cols-5">
+                  {SAMPLE_BATCH.nutrients.map((s) => (
+                    <CanopyStatTile key={s.label} {...s} />
+                  ))}
+                </div>
+              </CanopyCard>
+
+              {/* Inside the frame on purpose, so it survives a screenshot. */}
+              <p
+                style={{
+                  marginTop: "1rem",
+                  fontSize: "11.5px",
+                  lineHeight: 1.6,
+                  color: "var(--canopy-muted)",
+                }}
+              >
+                Interface preview. Figures shown are sample values from the app
+                in development, not a certified result.
+              </p>
+            </CanopyScreen>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Delivery, shown ────────────────────────────────────── */}
+      <section
+        className="px-6 py-28 sm:px-10 sm:py-32"
+        style={{ backgroundColor: "var(--ink)" }}
+      >
+        <div className="mx-auto grid max-w-[1240px] grid-cols-1 items-center gap-14 md:grid-cols-12 md:gap-16">
+          <motion.div {...reveal()} className="md:col-span-5">
+            <p
+              style={{
+                ...eyebrow,
+                color: "var(--gold-muted)",
+                marginBottom: "1.5rem",
+              }}
+            >
+              Three words, not status codes
+            </p>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.875rem, 4vw, 3rem)",
+                fontWeight: 700,
+                lineHeight: 1.1,
+                letterSpacing: "-0.025em",
+                color: "var(--creme)",
+                marginBottom: "1.25rem",
+              }}
+            >
+              Where it is, in plain language.
+            </h2>
+            <p
+              style={{
+                fontSize: "15px",
+                lineHeight: 1.75,
+                fontWeight: 300,
+                color: "rgba(245,239,230,0.45)",
+                maxWidth: "36ch",
+              }}
+            >
+              The same three words you would use describing it yourself. Built
+              to sync from dispatch once that integration exists.
+            </p>
+          </motion.div>
+
+          <motion.div {...reveal(0.1)} className="md:col-span-7">
+            <CanopyScreen>
+              <CanopyCard title="Next delivery">
+                <div className="mb-6 grid gap-3 grid-cols-2 sm:grid-cols-3">
+                  <CanopyStatTile label="Window" value="8–12" caption="Morning" />
+                  <CanopyStatTile label="Units" value="2" caption="Supersacks" />
+                  <CanopyStatTile label="Status" value="Confirmed" />
+                </div>
+                <CanopyDeliveryTracker stage="in_route" />
+              </CanopyCard>
+              <p
+                style={{
+                  marginTop: "1rem",
+                  fontSize: "11.5px",
+                  lineHeight: 1.6,
+                  color: "var(--canopy-muted)",
+                }}
+              >
+                Interface preview. Sample account.
+              </p>
+            </CanopyScreen>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── Two sides ──────────────────────────────────────────── */}
       <section
-        className="px-6 pb-28 sm:px-10 sm:pb-36"
-        style={{ backgroundColor: "var(--ink)" }}
+        className="px-6 py-28 sm:px-10 sm:py-32"
+        style={{ backgroundColor: "var(--ink-deep)" }}
       >
         <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-16 md:grid-cols-2 md:gap-14">
           <div>
@@ -181,74 +395,6 @@ export function CanopyPage() {
             </motion.h2>
             <FeatureList features={CANOPY_TRADE} />
           </div>
-        </div>
-      </section>
-
-      {/* ── Traceability ───────────────────────────────────────── */}
-      <section
-        className="px-6 py-28 sm:px-10 sm:py-36"
-        style={{ backgroundColor: "var(--ink-deep)" }}
-      >
-        <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-12 md:grid-cols-12">
-          <motion.div {...reveal()} className="md:col-span-5">
-            <p style={{ ...eyebrow, color: "var(--gold)", marginBottom: "1.5rem" }}>
-              Proof, not promises
-            </p>
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(2rem, 4.2vw, 3.25rem)",
-                fontWeight: 700,
-                lineHeight: 1.08,
-                letterSpacing: "-0.025em",
-                color: "var(--creme)",
-                marginBottom: "1.25rem",
-              }}
-            >
-              Every batch, on the record.
-            </h2>
-            <p
-              style={{
-                fontSize: "15px",
-                lineHeight: 1.75,
-                fontWeight: 300,
-                color: "rgba(245,239,230,0.45)",
-                maxWidth: "38ch",
-              }}
-            >
-              Scan the batch ID off a delivery and the certified panel opens.
-              The same numbers a brand-conscious grower can show their own
-              customers.
-            </p>
-          </motion.div>
-
-          <motion.div {...reveal(0.1)} className="md:col-span-7">
-            <div className="nm-rule-grid grid grid-cols-2 sm:grid-cols-3">
-              {CANOPY_LAB_PANEL.map((item) => (
-                <div key={item} className="px-5 py-7">
-                  <p
-                    style={{
-                      fontSize: "13px",
-                      fontWeight: 500,
-                      color: "rgba(245,239,230,0.72)",
-                    }}
-                  >
-                    {item}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <p
-              style={{
-                marginTop: "1.25rem",
-                fontSize: "12px",
-                lineHeight: 1.7,
-                color: "rgba(245,239,230,0.26)",
-              }}
-            >
-              Panel contents per certified lab report. Values are per batch.
-            </p>
-          </motion.div>
         </div>
       </section>
 

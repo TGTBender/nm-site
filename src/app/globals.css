@@ -210,3 +210,18 @@ body {
 .nm-social:focus-visible {
   color: var(--gold);
 }
+
+/* ── Canopy surface ────────────────────────────────────────────
+   The app is a light interface sitting inside a dark site. These are
+   Canopy's own tokens, lifted from natures-mastermind/src/app/globals.css
+   and namespaced so they cannot be mistaken for the site's dark palette.
+   Keep them in step with the app: the marketing page is only honest while
+   it looks like the thing it is selling. */
+:root {
+  --canopy-surface: #faf8f4;
+  --canopy-card: #f5efe6;
+  --canopy-border: #ddd0bc;
+  --canopy-ink: #1a1a18;
+  --canopy-muted: #7a6a5a;
+  --canopy-button-text: #e8dcc8;
+}

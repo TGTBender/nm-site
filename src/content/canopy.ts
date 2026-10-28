@@ -63,20 +63,6 @@ export const CANOPY_TRADE: Feature[] = [
   },
 ];
 
-/** What a batch lookup returns. Concrete, and the reason the page exists. */
-export const CANOPY_LAB_PANEL: string[] = [
-  "pH",
-  "EC",
-  "Organic carbon",
-  "H/C ratio",
-  "Moisture",
-  "Silica",
-  "Heavy metals",
-  "N · P · K",
-  "Calcium",
-  "Magnesium",
-];
-
 /** The two commitments stated on the trade dashboard itself. */
 export const CANOPY_GUARANTEES: Feature[] = [
   {
