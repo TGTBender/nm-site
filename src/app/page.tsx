@@ -7,19 +7,20 @@ import { LandingPage } from "@/components/LandingPage";
  *
  * Its job is to route into the four lanes rather than to convert on one of
  * them, so it carries no single call to action. The wholesale content that
- * used to live here moved to /b2b largely intact — it was always the
+ * used to live here moved to /bge largely intact — it was always the
  * wholesale funnel.
  */
 export const metadata: Metadata = {
   title: {
-    absolute: "Nature's Mastermind — Biochar, brokered and delivered",
+    absolute:
+      "Nature's Mastermind — Bringing biochar from niche to normal",
   },
   description:
-    "Brokered biochar products, a direct-to-consumer line, a wholesale lane, and a long-term research project.",
+    "Bringing biochar from niche to normal, on a global scale. Soil remediation, food production, material enhancement and more — if biochar can do it, we will source it and provide it.",
   openGraph: {
     title: "Nature's Mastermind",
     description:
-      "Brokered biochar products, a direct-to-consumer line, a wholesale lane, and a long-term research project.",
+      "Bringing biochar from niche to normal, on a global scale.",
   },
 };
 

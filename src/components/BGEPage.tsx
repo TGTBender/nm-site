@@ -59,7 +59,7 @@ const STEPS = [
   },
 ];
 
-export function B2BPage() {
+export function BGEPage() {
   const { toast } = useToast();
   const [zipInput, setZipInput] = useState("");
   const [zipResult, setZipResult] = useState<ZipCheck | null>(null);

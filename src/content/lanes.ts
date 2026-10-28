@@ -1,14 +1,12 @@
 /**
- * The four lanes, as the landing page lists them.
+ * The lanes, as the landing page lists them.
  *
  * `href` is omitted while a lane has no page. The row then renders as plain
  * text rather than a dead link, and adding the route later is a one-line
  * change here.
  *
- * DRAFT COPY: the descriptions below are written from what the business has
- * said about each lane, not supplied as finished marketing copy. They are
- * meant to be corrected rather than trusted — particularly the Longevity
- * Project, where almost nothing is known yet.
+ * Descriptions are drafted from the business's own material and are meant to
+ * be corrected rather than trusted as finished marketing copy.
  */
 
 export type Lane = {
@@ -27,21 +25,22 @@ export const LANES: Lane[] = [
     status: "December",
   },
   {
-    name: "B2B Lane",
+    name: "The BGE",
     description:
-      "Wholesale supply for nurseries, landscapers, farms and garden centers — on schedule, on spec, with documentation on every run.",
-    href: "/b2b",
+      "The Black Glove Experience. Wholesale supply for nurseries, landscapers, farms and garden centers — on schedule, on spec, with documentation on every run.",
+    href: "/bge",
   },
   {
-    name: "Brokerage",
+    name: "Canopy",
     description:
-      "Sourcing and brokering biochar products, rather than operating production.",
-    status: "Detail to come",
+      "The app behind both lanes: a garden companion for the home, and an account portal with batch-level traceability for the trade.",
+    href: "/canopy",
+    status: "In build",
   },
   {
     name: "The Longevity Project",
     description:
-      "A long-term project under Nature's Mastermind. Details to follow.",
+      "A non-profit community garden programme under The Bender Foundation, funded by Nature's Mastermind.",
     status: "Detail to come",
   },
 ];

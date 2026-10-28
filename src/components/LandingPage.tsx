@@ -150,7 +150,7 @@ export function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.95, ease: EASE, delay: 0.08 }}
-            className="max-w-[16ch]"
+            className="max-w-[18ch]"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(2.75rem, 7.5vw, 6.5rem)",
@@ -161,7 +161,7 @@ export function LandingPage() {
               marginBottom: "2rem",
             }}
           >
-            One material. Four lanes.
+            Bring biochar from niche to normal.
           </motion.h1>
 
           <motion.p
@@ -176,8 +176,8 @@ export function LandingPage() {
               maxWidth: "46ch",
             }}
           >
-            Brokered biochar products, a direct-to-consumer line, a wholesale
-            lane, and a long-term research project.
+            On a global scale. If biochar can do it, we will source it, provide
+            it, and get dirty with you.
           </motion.p>
         </div>
       </section>
@@ -200,7 +200,7 @@ export function LandingPage() {
               marginBottom: "2.5rem",
             }}
           >
-            Where to go
+            The lanes
           </motion.p>
 
           <div style={{ borderTop: "1px solid var(--hairline)" }}>

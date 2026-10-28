@@ -22,13 +22,14 @@ type NavItem = { name: string; href: string };
 
 const PAGES: NavItem[] = [
   { name: "The Viridian", href: "/products" },
-  { name: "B2B Lane", href: "/b2b" },
+  { name: "The BGE", href: "/bge" },
+  { name: "Canopy", href: "/canopy" },
   // { name: "Longevity", href: "/longevity" },  - awaiting content
 ];
 
 /** Anchors that only make sense while that route is on screen. */
 const ANCHORS: Record<string, NavItem[]> = {
-  "/b2b": [
+  "/bge": [
     { name: "Why biochar", href: "#why" },
     { name: "How it works", href: "#how" },
   ],
@@ -41,7 +42,7 @@ const ANCHORS: Record<string, NavItem[]> = {
  */
 const CTA: Record<string, NavItem | undefined> = {
   "/products": { name: "Join the waitlist", href: "#waitlist" },
-  "/b2b": { name: "Get a Quote", href: "#contact" },
+  "/bge": { name: "Get a Quote", href: "#contact" },
 };
 
 /**
