@@ -3,18 +3,35 @@ import Link from "next/link";
 import { ACTIVE_SOCIALS } from "@/content/social";
 import { SOCIAL_ICONS } from "@/components/SocialIcons";
 
-/** Site-wide footer. Shared by every route through the root layout. */
-
+/**
+ * Site-wide footer, lit from below.
+ *
+ * A shaft of light rises from the base: a blurred beam and a tighter pool
+ * where it meets the floor, both on `screen` so they add light rather than
+ * painting over what is behind them. A contour field local to the footer
+ * answers the same pulse, masked to fade out with height so the lines
+ * emerge from the light instead of sitting on top of it.
+ *
+ * Everything breathes on one cycle and in phase — unlike the page-wide
+ * world, whose ink layers are deliberately offset — because here it should
+ * all read as a response to a single source.
+ *
+ * The source is below the content, so the social marks cast upward.
+ */
 export function SiteFooter() {
   return (
     <footer
-      className="px-6 py-14 sm:px-10"
+      className="nm-footer px-6 pb-16 pt-44 sm:px-10"
       style={{
-        backgroundColor: "var(--ink-deep)",
+        backgroundColor: "var(--nm-black)",
         borderTop: "1px solid rgba(255,255,255,0.06)",
       }}
     >
-      <div className="mx-auto flex max-w-[1240px] flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
+      <div className="nm-footer-lines" aria-hidden />
+      <div className="nm-footer-beam" aria-hidden />
+      <div className="nm-footer-pool" aria-hidden />
+
+      <div className="nm-footer-content mx-auto flex max-w-[1240px] flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
         <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
           <Image
             src="/logo.jpg"

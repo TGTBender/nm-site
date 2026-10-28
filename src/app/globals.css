@@ -203,7 +203,7 @@ body {
    colour logic as the rest of the site rather than a platform-coloured set. */
 .nm-social {
   display: inline-flex;
-  color: rgba(245, 239, 230, 0.3);
+  color: rgba(245, 239, 230, 0.44);
   transition: color 0.35s var(--ease-out-quart);
 }
 .nm-social:hover,
@@ -356,4 +356,131 @@ body {
     --py: 0px !important;
     animation: none !important;
   }
+}
+
+/* ── Footer: the beam ──────────────────────────────────────────
+   A shaft of light rising from the base of the footer. Everything here
+   breathes on one cycle and in phase, because it is all meant to read as
+   a response to a single source — the world's own contour layers are
+   deliberately out of phase, this is deliberately not.
+
+   The light is below the content, so anything it catches casts upward. */
+.nm-footer {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  --beam-cycle: 9s;
+}
+
+/* Contour field, local to the footer so it can answer the beam
+   independently of the page-wide world. Masked to fade out with height,
+   so the lines emerge from the light rather than sitting on top of it. */
+.nm-footer-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--nm-gold);
+  -webkit-mask-image: url("/pulse/contour-tile.svg"),
+    linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+  mask-image: url("/pulse/contour-tile.svg"),
+    linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+  -webkit-mask-size: max(100vw, 1300px) auto, 100% 100%;
+  mask-size: max(100vw, 1300px) auto, 100% 100%;
+  -webkit-mask-repeat: repeat-y, no-repeat;
+  mask-repeat: repeat-y, no-repeat;
+  -webkit-mask-position: center bottom, 0 0;
+  mask-position: center bottom, 0 0;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  animation: nmLineBreath var(--beam-cycle) ease-in-out infinite;
+}
+
+/* The shaft. screen blend so it adds light rather than painting over. */
+.nm-footer-beam {
+  position: absolute;
+  left: 50%;
+  bottom: -10%;
+  z-index: 1;
+  width: min(46vw, 620px);
+  height: 230%;
+  transform: translateX(-50%);
+  transform-origin: 50% 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(42px);
+  background: radial-gradient(
+    ellipse 34% 72% at 50% 100%,
+    rgba(201, 162, 39, 0.55) 0%,
+    rgba(201, 162, 39, 0.15) 42%,
+    rgba(201, 162, 39, 0) 74%
+  );
+  animation: nmBeamBreath var(--beam-cycle) ease-in-out infinite;
+}
+
+/* The pool where the shaft meets the floor — tighter and brighter. */
+.nm-footer-pool {
+  position: absolute;
+  left: 50%;
+  bottom: -70px;
+  z-index: 1;
+  width: min(38vw, 460px);
+  height: 160px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(34px);
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgba(233, 201, 106, 0.6) 0%,
+    rgba(201, 162, 39, 0.2) 45%,
+    rgba(201, 162, 39, 0) 75%
+  );
+  animation: nmPoolBreath var(--beam-cycle) ease-in-out infinite;
+}
+
+.nm-footer-content {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes nmBeamBreath {
+  0%, 100% { opacity: 0.5; transform: translateX(-50%) scaleY(0.94); }
+  50% { opacity: 1; transform: translateX(-50%) scaleY(1.06); }
+}
+@keyframes nmPoolBreath {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@keyframes nmLineBreath {
+  0%, 100% { opacity: 0.16; }
+  50% { opacity: 0.4; }
+}
+
+/* Lit from below, so the cast falls upward and tightens as the beam
+   brightens. */
+@keyframes nmIconCast {
+  0%, 100% {
+    filter: drop-shadow(0 -2px 4px rgba(201, 162, 39, 0.14));
+  }
+  50% {
+    filter: drop-shadow(0 -5px 10px rgba(201, 162, 39, 0.4));
+  }
+}
+.nm-social {
+  animation: nmIconCast var(--beam-cycle, 9s) ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nm-footer-lines,
+  .nm-footer-beam,
+  .nm-footer-pool,
+  .nm-social {
+    animation: none !important;
+  }
+  /* hold the mid-cycle state rather than the trough, so a still page
+     still looks lit */
+  .nm-footer-beam { opacity: 0.8; }
+  .nm-footer-pool { opacity: 0.8; }
+  .nm-footer-lines { opacity: 0.3; }
 }
