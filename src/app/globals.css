@@ -198,3 +198,15 @@ body {
 .nm-lane:focus-visible {
   background-color: rgba(255, 255, 255, 0.025);
 }
+
+/* Footer social marks. Muted creme at rest, brand gold on hover — the same
+   colour logic as the rest of the site rather than a platform-coloured set. */
+.nm-social {
+  display: inline-flex;
+  color: rgba(245, 239, 230, 0.3);
+  transition: color 0.35s var(--ease-out-quart);
+}
+.nm-social:hover,
+.nm-social:focus-visible {
+  color: var(--gold);
+}

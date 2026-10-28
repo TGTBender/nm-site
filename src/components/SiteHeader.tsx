@@ -24,7 +24,7 @@ const PAGES: NavItem[] = [
   { name: "The Viridian", href: "/products" },
   { name: "The BGE", href: "/bge" },
   { name: "Canopy", href: "/canopy" },
-  // { name: "Longevity", href: "/longevity" },  - awaiting content
+  { name: "Longevity", href: "/longevity" },
 ];
 
 /** Anchors that only make sense while that route is on screen. */
