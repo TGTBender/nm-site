@@ -442,11 +442,6 @@ body {
   animation: nmGlowBreath var(--beam-cycle) ease-in-out infinite;
 }
 
-.nm-footer-content {
-  position: relative;
-  z-index: 2;
-}
-
 @keyframes nmGlowBreath {
   0%, 100% { opacity: 0.58; transform: scaleY(0.95); }
   50% { opacity: 1; transform: scaleY(1.05); }
@@ -487,59 +482,63 @@ body {
   opacity: 1;
 }
 
-/* ── Lane panels ───────────────────────────────────────────────
-   A lane's image runs off the page edge and dissolves into the contour
-   field on its inner edge. A rectangle with margin on all four sides
-   reads as a window cut into the page; this reads as part of it.
+/* ── Lane scenes ───────────────────────────────────────────────
+   A lane that has a render gets a full-bleed scene: the image is the
+   ground for that panel and the headline sits on the dark field the
+   render was composed to leave empty.
 
-   The arc gives the inner corner the site's motif; the mask does the
-   actual blending, so there is no hard edge anywhere the image meets
-   the field. */
-/* Clipping and blending only. Position is left to the utility classes:
-   this file is appended after the Tailwind import, so declaring position
-   here beats md:absolute at equal specificity and silently kills the
-   bleed. */
-.nm-lane-media {
+   Earlier passes tried to cut the render out and blend it into the
+   contour field. That was the wrong idea — these renders carry their own
+   lighting environment, so against green they clashed and against black
+   they disappeared. As a full-bleed ground neither happens, and the only
+   edges to resolve are the top and bottom. */
+.nm-lane-scene {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-}
-.nm-lane-media-right {
-  border-radius: 0 0 0 100%;
   -webkit-mask-image: linear-gradient(
-    to right,
+    to bottom,
     transparent 0%,
-    rgba(0, 0, 0, 0.35) 14%,
-    #000 42%
+    #000 12%,
+    #000 88%,
+    transparent 100%
   );
   mask-image: linear-gradient(
-    to right,
+    to bottom,
     transparent 0%,
-    rgba(0, 0, 0, 0.35) 14%,
-    #000 42%
-  );
-}
-.nm-lane-media-left {
-  border-radius: 0 0 100% 0;
-  -webkit-mask-image: linear-gradient(
-    to left,
-    transparent 0%,
-    rgba(0, 0, 0, 0.35) 14%,
-    #000 42%
-  );
-  mask-image: linear-gradient(
-    to left,
-    transparent 0%,
-    rgba(0, 0, 0, 0.35) 14%,
-    #000 42%
+    #000 12%,
+    #000 88%,
+    transparent 100%
   );
 }
 
-/* On phones the image sits above the text at full width, so it fades at
-   the bottom into the copy instead of at one side. */
-@media (max-width: 767px) {
-  .nm-lane-media-right,
-  .nm-lane-media-left {
-    border-radius: 0;
-    -webkit-mask-image: linear-gradient(to top, transparent 0%, #000 38%);
-    mask-image: linear-gradient(to top, transparent 0%, #000 38%);
+/* The ground the copy sits on.
+   The render is dark, but not evenly — the lid catches the key light and
+   carries the gold seal, so copy laid straight over it is unreadable.
+   This darkens the side the copy occupies and clears before it reaches
+   the product: horizontal on wide screens, where the copy is beside the
+   box, vertical on narrow ones, where it is above it. */
+.nm-lane-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(11, 13, 12, 0.94) 0%,
+    rgba(11, 13, 12, 0.88) 26%,
+    rgba(11, 13, 12, 0.5) 46%,
+    rgba(11, 13, 12, 0) 64%
+  );
+}
+@media (min-width: 768px) {
+  .nm-lane-scrim {
+    background: linear-gradient(
+      to right,
+      rgba(11, 13, 12, 0.94) 0%,
+      rgba(11, 13, 12, 0.82) 28%,
+      rgba(11, 13, 12, 0.4) 46%,
+      rgba(11, 13, 12, 0) 62%
+    );
   }
 }
+

@@ -24,17 +24,12 @@ import { EASE, reveal } from "@/lib/motion";
  * colour transition — the field runs straight through the whole run.
  */
 function LanePanel({ lane, index }: { lane: Lane; index: number }) {
-  const mediaRight = index % 2 === 0;
   const hasMedia = Boolean(lane.image);
 
   const body = (
     <div className="relative mx-auto w-full max-w-[1240px] px-6 sm:px-10">
       <div
-        className={
-          hasMedia
-            ? `md:w-[44%] ${mediaRight ? "" : "md:ml-auto"}`
-            : "md:w-[72%]"
-        }
+        className={hasMedia ? "max-w-[30rem] md:w-[42%]" : "md:w-[72%]"}
       >
         <motion.p
           {...reveal()}
@@ -114,44 +109,39 @@ function LanePanel({ lane, index }: { lane: Lane; index: number }) {
     </div>
   );
 
-  const panel = (
-    <div className="relative py-24 md:py-32">
-      {lane.image && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 1, ease: EASE }}
-          className={[
-            "nm-lane-media",
-            mediaRight ? "nm-lane-media-right" : "nm-lane-media-left",
-            "relative mb-10 h-[58vw] max-h-[340px] w-full",
-            // off the page edge on wide screens, so it belongs to the page
-            // rather than sitting on top of it
-            "md:absolute md:inset-y-0 md:mb-0 md:h-auto md:max-h-none md:w-[52%]",
-            mediaRight ? "md:right-0" : "md:left-0",
-          ].join(" ")}
-        >
-          <Image
-            src={lane.image.desktop}
-            alt={lane.image.alt}
-            fill
-            sizes="(min-width: 768px) 52vw, 100vw"
-            className="hidden object-cover md:block"
-            style={{ objectPosition: "42% 50%" }}
-          />
-          <Image
-            src={lane.image.mobile}
-            alt={lane.image.alt}
-            fill
-            sizes="100vw"
-            className="object-cover md:hidden"
-            style={{ objectPosition: "center 44%" }}
-          />
-        </motion.div>
-      )}
+  // A lane with a render becomes a full-bleed scene; one without stays
+  // typographic, which reads as deliberate rather than as a gap.
+  //
+  // The two widths are different compositions, not one composition
+  // reflowed. Wide, the render leaves its left third empty and the copy
+  // sits in it. Narrow, there is no empty side to sit in — the product
+  // fills the measure — so the copy takes the top and the product drops
+  // below it. Both are held apart by the scrim; see .nm-lane-scrim.
+  const panel = lane.image ? (
+    <div className="relative flex min-h-[86vh] items-start overflow-hidden py-24 md:min-h-[76vh] md:items-center md:py-28">
+      <div className="nm-lane-scene">
+        <Image
+          src={lane.image.desktop}
+          alt={lane.image.alt}
+          fill
+          sizes="100vw"
+          className="hidden object-cover md:block"
+          style={{ objectPosition: "62% 50%" }}
+        />
+        <Image
+          src={lane.image.mobile}
+          alt={lane.image.alt}
+          fill
+          sizes="100vw"
+          className="object-cover md:hidden"
+          style={{ objectPosition: "center 74%" }}
+        />
+        <div className="nm-lane-scrim" aria-hidden />
+      </div>
       {body}
     </div>
+  ) : (
+    <div className="relative py-24 md:py-32">{body}</div>
   );
 
   return lane.href ? (
@@ -176,7 +166,7 @@ export function LandingPage() {
           carries its image. */}
       <section
         className="sec flex min-h-[78vh] items-end px-6 pb-48 pt-40 sm:px-10"
-        data-bg="black"
+        data-bg="deep"
       >
         <div className="mx-auto w-full max-w-[1240px]">
           <motion.p
@@ -234,7 +224,7 @@ export function LandingPage() {
       {/* ── The lanes ──────────────────────────────────────────────
           One themed section holding every panel, so the colour field runs
           through the whole run without a transition between lanes. */}
-      <section id="lanes" className="sec px-0 py-40 sm:py-48" data-bg="deep">
+      <section id="lanes" className="sec px-0 py-40 sm:py-48" data-bg="black">
         <div className="mx-auto mb-8 w-full max-w-[1240px] px-6 sm:px-10">
           <motion.p
             {...reveal()}
