@@ -378,25 +378,11 @@ body {
   isolation: isolate;
   --beam-cycle: 9s;
 }
-
-/* Contour field, local to the footer so it can answer the beam
-   independently of the page-wide world. Masked to fade out with height,
-   so the lines emerge from the light rather than sitting on top of it. */
-.nm-footer-lines {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: var(--nm-gold);
-  -webkit-mask-image: url("/pulse/contour-tile.svg");
-  mask-image: url("/pulse/contour-tile.svg");
-  -webkit-mask-size: max(100vw, 1300px) auto;
-  mask-size: max(100vw, 1300px) auto;
-  -webkit-mask-repeat: repeat-y;
-  mask-repeat: repeat-y;
-  -webkit-mask-position: center bottom;
-  mask-position: center bottom;
-  animation: nmLineBreath var(--beam-cycle) ease-in-out infinite;
+/* The footer is a .sec, so it is transparent and the world paints behind
+   it. Its own content still needs to clear the underglow. */
+.nm-footer-content {
+  position: relative;
+  z-index: 2;
 }
 
 /* The underglow: a band of light along the whole bottom edge, fading
@@ -442,10 +428,6 @@ body {
   0%, 100% { opacity: 0.58; transform: scaleY(0.95); }
   50% { opacity: 1; transform: scaleY(1.05); }
 }
-@keyframes nmLineBreath {
-  0%, 100% { opacity: 0.34; }
-  50% { opacity: 0.58; }
-}
 
 /* Lit from below, so the cast falls upward and tightens as the beam
    brightens. */
@@ -462,7 +444,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nm-footer-lines,
   .nm-footer-underglow,
   .nm-social {
     animation: none !important;
@@ -470,7 +451,6 @@ body {
   /* hold the mid-cycle state rather than the trough, so a still page
      still looks lit */
   .nm-footer-underglow { opacity: 0.8; transform: none; }
-  .nm-footer-lines { opacity: 0.3; }
 }
 
 /* The lane call to action sits inside the row's link, so it answers the
@@ -482,4 +462,61 @@ body {
 .nm-lane:hover .nm-lane-cta,
 .nm-lane:focus-visible .nm-lane-cta {
   opacity: 1;
+}
+
+/* ── Lane panels ───────────────────────────────────────────────
+   A lane's image runs off the page edge and dissolves into the contour
+   field on its inner edge. A rectangle with margin on all four sides
+   reads as a window cut into the page; this reads as part of it.
+
+   The arc gives the inner corner the site's motif; the mask does the
+   actual blending, so there is no hard edge anywhere the image meets
+   the field. */
+/* Clipping and blending only. Position is left to the utility classes:
+   this file is appended after the Tailwind import, so declaring position
+   here beats md:absolute at equal specificity and silently kills the
+   bleed. */
+.nm-lane-media {
+  overflow: hidden;
+}
+.nm-lane-media-right {
+  border-radius: 0 0 0 100%;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 14%,
+    #000 42%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 14%,
+    #000 42%
+  );
+}
+.nm-lane-media-left {
+  border-radius: 0 0 100% 0;
+  -webkit-mask-image: linear-gradient(
+    to left,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 14%,
+    #000 42%
+  );
+  mask-image: linear-gradient(
+    to left,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 14%,
+    #000 42%
+  );
+}
+
+/* On phones the image sits above the text at full width, so it fades at
+   the bottom into the copy instead of at one side. */
+@media (max-width: 767px) {
+  .nm-lane-media-right,
+  .nm-lane-media-left {
+    border-radius: 0;
+    -webkit-mask-image: linear-gradient(to top, transparent 0%, #000 38%);
+    mask-image: linear-gradient(to top, transparent 0%, #000 38%);
+  }
 }

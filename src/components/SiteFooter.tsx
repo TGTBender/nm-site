@@ -21,13 +21,9 @@ import { SOCIAL_ICONS } from "@/components/SocialIcons";
 export function SiteFooter() {
   return (
     <footer
-      className="nm-footer px-6 pb-9 pt-16 sm:px-10"
-      style={{
-        backgroundColor: "var(--nm-black)",
-        borderTop: "1px solid rgba(255,255,255,0.06)",
-      }}
+      className="sec nm-footer px-6 pb-9 pt-16 sm:px-10"
+      data-bg="black"
     >
-      <div className="nm-footer-lines" aria-hidden />
       <div className="nm-footer-underglow" aria-hidden />
 
       <div className="nm-footer-content mx-auto flex max-w-[1240px] flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">

@@ -48,9 +48,14 @@ export const LANES: Lane[] = [
     status: "In build",
   },
   {
+    // Deliberately claims nothing. No entity, no legal form, no partners,
+    // no funding — the same restraint the /longevity teaser keeps, and for
+    // the same reason. See content/longevity.ts.
     name: "The Longevity Project",
     description:
-      "A non-profit community garden programme under The Bender Foundation, funded by Nature's Mastermind.",
-    status: "Detail to come",
+      "Gardens, teaching, and ground to prove the material in. Something we are building alongside the business.",
+    href: "/longevity",
+    status: "A first look",
+    cta: "See what we are building",
   },
 ];
