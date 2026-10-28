@@ -126,8 +126,8 @@ export function LandingPage() {
           photograph to stand for all of them, and the product renders
           belong to the lane that owns them. */}
       <section
-        className="flex min-h-[78vh] items-end px-6 pb-20 pt-40 sm:px-10 sm:pb-28"
-        style={{ backgroundColor: "var(--ink)" }}
+        className="sec flex min-h-[78vh] items-end px-6 pb-48 pt-40 sm:px-10"
+        data-bg="black"
       >
         <div className="mx-auto w-full max-w-[1240px]">
           <motion.p
@@ -185,8 +185,8 @@ export function LandingPage() {
       {/* ── The lanes ─────────────────────────────────────────────── */}
       <section
         id="lanes"
-        className="px-6 pb-28 sm:px-10 sm:pb-36"
-        style={{ backgroundColor: "var(--ink)" }}
+        className="sec px-6 py-48 sm:px-10"
+        data-bg="deep"
       >
         <div className="mx-auto max-w-[1240px]">
           <motion.p
@@ -213,8 +213,9 @@ export function LandingPage() {
 
       {/* ── The Viridian, featured ────────────────────────────────── */}
       <section
-        className="relative flex items-center overflow-hidden px-6 sm:px-10"
-        style={{ minHeight: "70vh", backgroundColor: "var(--ink-deep)" }}
+        className="sec relative flex items-center overflow-hidden px-6 py-48 sm:px-10"
+        data-bg="black"
+        style={{ minHeight: "70vh" }}
       >
         <div className="absolute inset-0 hidden md:block">
           <Image

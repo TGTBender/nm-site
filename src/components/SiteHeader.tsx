@@ -105,9 +105,12 @@ export function SiteHeader() {
         // layout property and forces reflow; the compact feel comes from
         // transform alone.
         padding: "16px 0",
-        backgroundColor: isScrolled ? "rgba(15,20,16,0.92)" : "transparent",
-        backdropFilter: isScrolled ? "blur(14px)" : "none",
-        WebkitBackdropFilter: isScrolled ? "blur(14px)" : "none",
+        // Low alpha on purpose. The world background now paints the ground,
+        // and a near-opaque bar in the old ink sat on top of it as a separate
+        // slab. At this weight the contour field reads through the blur.
+        backgroundColor: isScrolled ? "rgba(11,13,12,0.62)" : "transparent",
+        backdropFilter: isScrolled ? "blur(18px) saturate(140%)" : "none",
+        WebkitBackdropFilter: isScrolled ? "blur(18px) saturate(140%)" : "none",
         borderBottom: isScrolled
           ? "1px solid rgba(255,255,255,0.07)"
           : "1px solid transparent",
@@ -240,7 +243,7 @@ export function SiteHeader() {
             top: "100%",
             left: 0,
             right: 0,
-            backgroundColor: "rgba(15,20,16,0.97)",
+            backgroundColor: "rgba(11,13,12,0.92)",
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
             backfaceVisibility: "hidden",

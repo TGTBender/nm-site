@@ -225,3 +225,135 @@ body {
   --canopy-muted: #7a6a5a;
   --canopy-button-text: #e8dcc8;
 }
+
+/* ── The world background ──────────────────────────────────────
+   From the NM Background Study (Pulse, 2026-10-28). One continuous colour
+   field and one continuous contour field spanning the whole document;
+   sections are transparent and world.ts paints the page from each
+   section's data-bg.
+
+   Adapted from the study's world.css: asset paths point at /pulse/, and its
+   CSS reset and html/body background are deliberately NOT carried over —
+   Tailwind and the site's own foundation already own those, and overriding
+   the body background would break routes that have no .sec sections.
+
+   RULE from the study: a section needs at least 280px of top and bottom
+   padding so no content sits inside a transition — the zone is 560px for
+   dark<->cream and 360px otherwise. */
+:root {
+  --nm-black: #0b0d0c;
+  --nm-deep: #06382b;
+  --nm-green: #0b5c45;
+  --nm-gold: #c9a227;
+  --nm-cream: #efe6d2;
+}
+
+.sec {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+#world {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+#world .field,
+#world .lines,
+#world .glow {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+#world .field {
+  top: 0;
+  bottom: 0;
+}
+
+/* Contour field: one tiling SVG as a mask, intersected with a per-layer
+   alpha gradient so each ink only shows in its own sections. */
+#world .lines {
+  top: 0;
+  bottom: 0;
+  -webkit-mask-image: url("/pulse/contour-tile.svg"), var(--m);
+  mask-image: url("/pulse/contour-tile.svg"), var(--m);
+  -webkit-mask-size: max(100vw, 1300px) auto, 100% 100%;
+  mask-size: max(100vw, 1300px) auto, 100% 100%;
+  -webkit-mask-repeat: repeat-y, no-repeat;
+  mask-repeat: repeat-y, no-repeat;
+  -webkit-mask-position: center var(--py, 0px), 0 0;
+  mask-position: center var(--py, 0px), 0 0;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+#world .lines.gold {
+  background: var(--nm-gold);
+  opacity: 0.34;
+}
+#world .lines.green {
+  /* gold lines on cream: stronger weight */
+  background: var(--nm-gold);
+  opacity: 0.85;
+}
+#world .lines.ink {
+  /* tone-on-tone deep gold on the gold band */
+  background: #7a5f0f;
+  opacity: 0.5;
+}
+
+/* Soft horizon glow at each boundary. */
+#world .glow {
+  height: 520px;
+  transform: translateY(-50%);
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 50%,
+    rgba(var(--gc, 239, 230, 210), var(--ga, 0.08)),
+    rgba(var(--gc, 239, 230, 210), 0) 70%
+  );
+}
+
+#grain {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("/pulse/grain.svg");
+}
+
+/* Each ink layer breathes slowly and out of phase, so the page never
+   flashes. */
+@keyframes nmPulseDark {
+  0%, 100% { opacity: 0.26; }
+  50% { opacity: 0.46; }
+}
+@keyframes nmPulseCream {
+  0%, 100% { opacity: 0.68; }
+  50% { opacity: 0.95; }
+}
+@keyframes nmPulseBand {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.58; }
+}
+#world .lines.gold {
+  animation: nmPulseDark 9s ease-in-out infinite;
+}
+#world .lines.green {
+  animation: nmPulseCream 9s ease-in-out infinite;
+  animation-delay: -3s;
+}
+#world .lines.ink {
+  animation: nmPulseBand 9s ease-in-out infinite;
+  animation-delay: -6s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #world .lines {
+    --py: 0px !important;
+    animation: none !important;
+  }
+}

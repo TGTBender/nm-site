@@ -4,6 +4,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { SiteHeader } from "@/components/SiteHeader";
+import { WorldBackground } from "@/components/WorldBackground";
 import { SiteFooter } from "@/components/SiteFooter";
 
 /**
@@ -77,6 +78,7 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased">
         <Providers>
+          <WorldBackground />
           <SiteHeader />
           <main>{children}</main>
           <SiteFooter />
