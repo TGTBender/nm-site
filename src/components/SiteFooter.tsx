@@ -23,6 +23,8 @@ export function SiteFooter() {
     <footer
       className="sec nm-footer px-6 pb-9 pt-16 sm:px-10"
       data-bg="black"
+      // Joins the world where one exists; never creates one on its own.
+      data-world-tail=""
     >
       <div className="nm-footer-underglow" aria-hidden />
 

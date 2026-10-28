@@ -86,13 +86,22 @@ export function buildWorld() {
   const w = document.getElementById("world");
   if (!w) return;
   const secs = Array.from(document.querySelectorAll<HTMLElement>(".sec"));
-  if (!secs.length) {
-    // No themed sections on this route: leave the world empty so the page's
+
+  // The footer joins the world but must not conjure one. It is a .sec on
+  // every route, so counting it would mean every page paints a full
+  // document-height field — and since #world is positioned while an
+  // ordinary page section is static, that field renders OVER pages that
+  // still own their backgrounds, blanking them.
+  const content = secs.filter((s) => !s.hasAttribute("data-world-tail"));
+  if (!content.length) {
+    // No themed content on this route: leave the world empty so the page's
     // own backgrounds show through rather than painting over them.
     w.innerHTML = "";
     w.style.height = "0px";
+    document.documentElement.dataset.world = "off";
     return;
   }
+  document.documentElement.dataset.world = "on";
 
   w.innerHTML = "";
   const docH = document.documentElement.scrollHeight;
@@ -123,8 +132,16 @@ export function buildWorld() {
   w.appendChild(f);
 
   // 2) ink layers — alpha is 1 inside sections using that ink, eased to 0
-  //    across the zones, then intersected with the tiling contour mask
-  (["gold", "green", "ink"] as const).forEach((ink) => {
+  //    across the zones, then intersected with the tiling contour mask.
+  //
+  //    Only inks some section actually uses are built. Each layer spans the
+  //    whole document, carries the tiling mask and runs an animation, so an
+  //    unused one is several megapixels re-composited every frame to show
+  //    nothing at all.
+  const usedInks = new Set(names.map((n) => INK[n]));
+  (["gold", "green", "ink"] as const)
+    .filter((ink) => usedInks.has(ink))
+    .forEach((ink) => {
     const ms: string[] = [];
     const push = (a: number, c: number) =>
       ms.push("rgba(0,0,0," + c + ") " + a.toFixed(1) + "px");

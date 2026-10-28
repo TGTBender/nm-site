@@ -296,6 +296,16 @@ body {
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
 }
+/* Each ink layer spans the entire document and animates its opacity.
+   Without its own compositing layer that is a repaint of a very large
+   masked surface on every frame; with one it is a cheap compositor
+   property. */
+#world .lines {
+  will-change: opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 #world .lines.gold {
   background: var(--nm-gold);
   opacity: 0.34;
@@ -323,6 +333,11 @@ body {
 }
 
 #grain {
+  /* A fixed, blended, viewport-sized layer sits over everything that
+     animates beneath it. Promoting it keeps the blend off the main
+     thread's paint path. */
+  will-change: opacity;
+  transform: translateZ(0);
   position: fixed;
   inset: 0;
   z-index: 50;
@@ -373,11 +388,19 @@ body {
 
    The light is below the content, so anything it catches casts upward. */
 .nm-footer {
+  /* The ground on routes with no world behind the footer. Where a world
+     does paint, the rule below clears this — an opaque footer at z-index 2
+     would cover the field and put the seam straight back. */
+  background-color: var(--nm-black);
   position: relative;
   overflow: hidden;
   isolation: isolate;
   --beam-cycle: 9s;
 }
+[data-world="on"] .nm-footer {
+  background-color: transparent;
+}
+
 /* The footer is a .sec, so it is transparent and the world paints behind
    it. Its own content still needs to clear the underglow. */
 .nm-footer-content {
