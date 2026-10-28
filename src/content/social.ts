@@ -1,9 +1,12 @@
 /**
  * Social links.
  *
- * Add the real profile URL to a platform and its icon appears in the footer.
- * Leave `url` empty and it is skipped entirely — an icon that links nowhere
- * is worse than no icon.
+ * Every platform listed renders its mark. A platform with a `url` renders as
+ * a real link; one without renders as a non-interactive mark instead, so the
+ * footer is visually complete before the accounts are connected and nothing
+ * on the page is a dead link.
+ *
+ * Adding a URL upgrades that mark to a link with no other change.
  */
 
 export type Social = { name: string; url: string };
@@ -15,5 +18,3 @@ export const SOCIALS: Social[] = [
   { name: "LinkedIn", url: "" },
   { name: "YouTube", url: "" },
 ];
-
-export const ACTIVE_SOCIALS = SOCIALS.filter((s) => s.url.trim().length > 0);
