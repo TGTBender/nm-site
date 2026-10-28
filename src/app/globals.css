@@ -396,47 +396,60 @@ body {
   animation: nmLineBreath var(--beam-cycle) ease-in-out infinite;
 }
 
-/* The shaft. screen blend so it adds light rather than painting over. */
-.nm-footer-beam {
+/* The underglow: a band of light along the whole bottom edge, fading
+   upward. Full width on purpose — an earlier pass used a narrow centred
+   shaft, which is a different thing entirely.
+
+   Built from a uniform linear ramp so the light reaches the left and right
+   edges at the same strength, with a very wide low ellipse over it for a
+   little variation across the span. screen blend, so it adds light rather
+   than painting over the contours. */
+.nm-footer-underglow {
   position: absolute;
-  left: 50%;
-  bottom: -10%;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 1;
-  width: min(46vw, 620px);
-  height: 230%;
-  transform: translateX(-50%);
-  transform-origin: 50% 100%;
+  height: 72%;
   pointer-events: none;
   mix-blend-mode: screen;
-  filter: blur(42px);
-  background: radial-gradient(
-    ellipse 34% 72% at 50% 100%,
-    rgba(201, 162, 39, 0.55) 0%,
-    rgba(201, 162, 39, 0.15) 42%,
-    rgba(201, 162, 39, 0) 74%
-  );
-  animation: nmBeamBreath var(--beam-cycle) ease-in-out infinite;
+  filter: blur(26px);
+  background:
+    radial-gradient(
+      ellipse 85% 100% at 50% 100%,
+      rgba(233, 201, 106, 0.3) 0%,
+      rgba(201, 162, 39, 0) 72%
+    ),
+    linear-gradient(
+      to top,
+      rgba(233, 201, 106, 0.52) 0%,
+      rgba(201, 162, 39, 0.28) 14%,
+      rgba(201, 162, 39, 0.1) 34%,
+      rgba(201, 162, 39, 0) 68%
+    );
+  animation: nmGlowBreath var(--beam-cycle) ease-in-out infinite;
 }
 
-/* The pool where the shaft meets the floor — tighter and brighter. */
-.nm-footer-pool {
+/* The lit edge itself — a thin bright line where the light source sits. */
+.nm-footer-edge {
   position: absolute;
-  left: 50%;
-  bottom: -70px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 1;
-  width: min(38vw, 460px);
-  height: 160px;
-  transform: translateX(-50%);
+  height: 2px;
   pointer-events: none;
   mix-blend-mode: screen;
-  filter: blur(34px);
-  background: radial-gradient(
-    ellipse 50% 50% at 50% 50%,
-    rgba(233, 201, 106, 0.6) 0%,
-    rgba(201, 162, 39, 0.2) 45%,
-    rgba(201, 162, 39, 0) 75%
+  filter: blur(1.5px);
+  background: linear-gradient(
+    to right,
+    rgba(201, 162, 39, 0) 0%,
+    rgba(240, 212, 130, 0.75) 18%,
+    rgba(245, 222, 150, 0.9) 50%,
+    rgba(240, 212, 130, 0.75) 82%,
+    rgba(201, 162, 39, 0) 100%
   );
-  animation: nmPoolBreath var(--beam-cycle) ease-in-out infinite;
+  animation: nmEdgeBreath var(--beam-cycle) ease-in-out infinite;
 }
 
 .nm-footer-content {
@@ -444,12 +457,12 @@ body {
   z-index: 2;
 }
 
-@keyframes nmBeamBreath {
-  0%, 100% { opacity: 0.5; transform: translateX(-50%) scaleY(0.94); }
-  50% { opacity: 1; transform: translateX(-50%) scaleY(1.06); }
+@keyframes nmGlowBreath {
+  0%, 100% { opacity: 0.58; transform: scaleY(0.95); }
+  50% { opacity: 1; transform: scaleY(1.05); }
 }
-@keyframes nmPoolBreath {
-  0%, 100% { opacity: 0.55; }
+@keyframes nmEdgeBreath {
+  0%, 100% { opacity: 0.6; }
   50% { opacity: 1; }
 }
 @keyframes nmLineBreath {
@@ -473,14 +486,14 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .nm-footer-lines,
-  .nm-footer-beam,
-  .nm-footer-pool,
+  .nm-footer-underglow,
+  .nm-footer-edge,
   .nm-social {
     animation: none !important;
   }
   /* hold the mid-cycle state rather than the trough, so a still page
      still looks lit */
-  .nm-footer-beam { opacity: 0.8; }
-  .nm-footer-pool { opacity: 0.8; }
+  .nm-footer-underglow { opacity: 0.8; transform: none; }
+  .nm-footer-edge { opacity: 0.8; }
   .nm-footer-lines { opacity: 0.3; }
 }
