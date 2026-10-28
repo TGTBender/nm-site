@@ -29,7 +29,6 @@ export function SiteFooter() {
     >
       <div className="nm-footer-lines" aria-hidden />
       <div className="nm-footer-underglow" aria-hidden />
-      <div className="nm-footer-edge" aria-hidden />
 
       <div className="nm-footer-content mx-auto flex max-w-[1240px] flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
         <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>

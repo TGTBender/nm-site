@@ -248,6 +248,13 @@ body {
   --nm-cream: #efe6d2;
 }
 
+/* #world is absolutely positioned and sized to the document. Without a
+   positioned ancestor it resolves against the viewport instead, which works
+   by coincidence at scroll 0 and breaks under any transformed ancestor. */
+body {
+  position: relative;
+}
+
 .sec {
   position: relative;
   z-index: 2;
@@ -381,18 +388,14 @@ body {
   z-index: 0;
   pointer-events: none;
   background: var(--nm-gold);
-  -webkit-mask-image: url("/pulse/contour-tile.svg"),
-    linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
-  mask-image: url("/pulse/contour-tile.svg"),
-    linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
-  -webkit-mask-size: max(100vw, 1300px) auto, 100% 100%;
-  mask-size: max(100vw, 1300px) auto, 100% 100%;
-  -webkit-mask-repeat: repeat-y, no-repeat;
-  mask-repeat: repeat-y, no-repeat;
-  -webkit-mask-position: center bottom, 0 0;
-  mask-position: center bottom, 0 0;
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
+  -webkit-mask-image: url("/pulse/contour-tile.svg");
+  mask-image: url("/pulse/contour-tile.svg");
+  -webkit-mask-size: max(100vw, 1300px) auto;
+  mask-size: max(100vw, 1300px) auto;
+  -webkit-mask-repeat: repeat-y;
+  mask-repeat: repeat-y;
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
   animation: nmLineBreath var(--beam-cycle) ease-in-out infinite;
 }
 
@@ -410,46 +413,24 @@ body {
   right: 0;
   bottom: 0;
   z-index: 1;
-  height: 72%;
+  height: 100%;
   pointer-events: none;
   mix-blend-mode: screen;
-  filter: blur(26px);
+  filter: blur(54px);
   background:
     radial-gradient(
-      ellipse 85% 100% at 50% 100%,
-      rgba(233, 201, 106, 0.3) 0%,
-      rgba(201, 162, 39, 0) 72%
+      ellipse 62% 86% at 48% 104%,
+      rgba(240, 212, 130, 0.46) 0%,
+      rgba(201, 162, 39, 0.2) 40%,
+      rgba(201, 162, 39, 0) 76%
     ),
     linear-gradient(
       to top,
-      rgba(233, 201, 106, 0.52) 0%,
-      rgba(201, 162, 39, 0.28) 14%,
-      rgba(201, 162, 39, 0.1) 34%,
-      rgba(201, 162, 39, 0) 68%
+      rgba(201, 162, 39, 0.3) 0%,
+      rgba(201, 162, 39, 0.14) 26%,
+      rgba(201, 162, 39, 0) 62%
     );
   animation: nmGlowBreath var(--beam-cycle) ease-in-out infinite;
-}
-
-/* The lit edge itself — a thin bright line where the light source sits. */
-.nm-footer-edge {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  height: 2px;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  filter: blur(1.5px);
-  background: linear-gradient(
-    to right,
-    rgba(201, 162, 39, 0) 0%,
-    rgba(240, 212, 130, 0.75) 18%,
-    rgba(245, 222, 150, 0.9) 50%,
-    rgba(240, 212, 130, 0.75) 82%,
-    rgba(201, 162, 39, 0) 100%
-  );
-  animation: nmEdgeBreath var(--beam-cycle) ease-in-out infinite;
 }
 
 .nm-footer-content {
@@ -461,13 +442,9 @@ body {
   0%, 100% { opacity: 0.58; transform: scaleY(0.95); }
   50% { opacity: 1; transform: scaleY(1.05); }
 }
-@keyframes nmEdgeBreath {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
-}
 @keyframes nmLineBreath {
-  0%, 100% { opacity: 0.16; }
-  50% { opacity: 0.4; }
+  0%, 100% { opacity: 0.34; }
+  50% { opacity: 0.58; }
 }
 
 /* Lit from below, so the cast falls upward and tightens as the beam
@@ -487,13 +464,11 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .nm-footer-lines,
   .nm-footer-underglow,
-  .nm-footer-edge,
   .nm-social {
     animation: none !important;
   }
   /* hold the mid-cycle state rather than the trough, so a still page
      still looks lit */
   .nm-footer-underglow { opacity: 0.8; transform: none; }
-  .nm-footer-edge { opacity: 0.8; }
   .nm-footer-lines { opacity: 0.3; }
 }
