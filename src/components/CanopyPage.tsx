@@ -14,16 +14,7 @@ import {
   CanopyDeliveryTracker,
   CanopyScreen,
 } from "@/components/CanopyUI";
-
-/** easeOutQuart — the curve shared by CSS and framer-motion site-wide. */
-const EASE: [number, number, number, number] = [0.165, 0.84, 0.44, 1];
-
-const reveal = (delay = 0) => ({
-  initial: { opacity: 0, y: 18 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-80px" },
-  transition: { duration: 0.75, ease: EASE, delay },
-});
+import { EASE, reveal } from "@/lib/motion";
 
 const eyebrow = {
   fontSize: "11px",

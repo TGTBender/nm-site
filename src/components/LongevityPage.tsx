@@ -3,9 +3,7 @@
 import { motion } from "framer-motion";
 
 import { LONGEVITY_CARDS } from "@/content/longevity";
-
-/** easeOutQuart — the curve shared by CSS and framer-motion site-wide. */
-const EASE: [number, number, number, number] = [0.165, 0.84, 0.44, 1];
+import { EASE } from "@/lib/motion";
 
 /**
  * A trailer, not a page.

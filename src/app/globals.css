@@ -416,10 +416,10 @@ body {
   height: 100%;
   pointer-events: none;
   mix-blend-mode: screen;
-  filter: blur(54px);
+  filter: blur(40px);
   background:
     radial-gradient(
-      ellipse 62% 86% at 48% 104%,
+      ellipse 58% 110% at 48% 108%,
       rgba(240, 212, 130, 0.46) 0%,
       rgba(201, 162, 39, 0.2) 40%,
       rgba(201, 162, 39, 0) 76%
@@ -471,4 +471,15 @@ body {
      still looks lit */
   .nm-footer-underglow { opacity: 0.8; transform: none; }
   .nm-footer-lines { opacity: 0.3; }
+}
+
+/* The lane call to action sits inside the row's link, so it answers the
+   row's hover rather than carrying its own. */
+.nm-lane-cta {
+  transition: opacity 0.35s var(--ease-out-quart);
+  opacity: 0.85;
+}
+.nm-lane:hover .nm-lane-cta,
+.nm-lane:focus-visible .nm-lane-cta {
+  opacity: 1;
 }

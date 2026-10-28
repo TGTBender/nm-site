@@ -14,6 +14,10 @@ export type Lane = {
   description: string;
   href?: string;
   status?: string;
+  /** Only the shipping product carries a preview. The weight is the point:
+   *  one lane is real and the others are not yet. */
+  image?: { desktop: string; mobile: string; alt: string };
+  cta?: string;
 };
 
 export const LANES: Lane[] = [
@@ -23,6 +27,12 @@ export const LANES: Lane[] = [
       "Charged biochar and liquid nutrient, brought together at home. The direct-to-consumer line, opening in Dallas–Fort Worth.",
     href: "/products",
     status: "December",
+    cta: "See The Viridian",
+    image: {
+      desktop: "/viridian/closed.jpg",
+      mobile: "/viridian/closed-mobile.jpg",
+      alt: "The closed Viridian box in dark emerald with a gold foil Nature's Mastermind seal.",
+    },
   },
   {
     name: "The BGE",

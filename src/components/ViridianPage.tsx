@@ -24,16 +24,7 @@ import {
   VIRIDIAN_LAUNCH,
   type ViridianSection,
 } from "@/content/viridian";
-
-/** easeOutQuart — the curve shared by CSS and framer-motion site-wide. */
-const EASE: [number, number, number, number] = [0.165, 0.84, 0.44, 1];
-
-const reveal = (delay = 0) => ({
-  initial: { opacity: 0, y: 18 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-80px" },
-  transition: { duration: 0.75, ease: EASE, delay },
-});
+import { reveal } from "@/lib/motion";
 
 const eyebrowStyle: CSSProperties = {
   fontSize: "11px",
@@ -58,11 +49,16 @@ const eyebrowStyle: CSSProperties = {
 function Scene({
   section,
   minHeight,
+  primary = false,
 }: {
   section: ViridianSection;
   minHeight: string;
+  /** The first scene carries the page's h1. Every scene rendered an h2,
+   *  which left the route with no level-one heading at all. */
+  primary?: boolean;
 }) {
   const { eyebrow, headline, subline, body, cta, image } = section;
+  const Heading = primary ? motion.h1 : motion.h2;
 
   return (
     <section
@@ -100,7 +96,7 @@ function Scene({
             {eyebrow}
           </motion.p>
 
-          <motion.h2
+          <Heading
             {...reveal(0.06)}
             style={{
               fontFamily: "var(--font-display)",
@@ -113,7 +109,7 @@ function Scene({
             }}
           >
             {headline}
-          </motion.h2>
+          </Heading>
 
           <motion.p
             {...reveal(0.12)}
@@ -364,7 +360,7 @@ function WaitlistForm() {
 export function ViridianPage() {
   return (
     <>
-      <Scene section={VIRIDIAN_INTRO} minHeight="88vh" />
+      <Scene section={VIRIDIAN_INTRO} minHeight="88vh" primary />
       <Scene section={VIRIDIAN_HOW} minHeight="76vh" />
       <Scene section={VIRIDIAN_LAUNCH} minHeight="76vh" />
 

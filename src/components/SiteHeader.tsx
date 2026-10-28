@@ -60,7 +60,14 @@ export function SiteHeader() {
   const lastY = useRef(0);
 
   // Close the menu when the route changes, or it survives the navigation.
-  useEffect(() => setMobileMenuOpen(false), [pathname]);
+  // Adjusted during render rather than in an effect: setState inside an
+  // effect body cascades an extra render, and this is the pattern React
+  // documents for responding to a changed value.
+  const [lastPath, setLastPath] = useState(pathname);
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
+    setMobileMenuOpen(false);
+  }
 
   useEffect(() => {
     lastY.current = window.scrollY;

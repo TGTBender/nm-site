@@ -21,7 +21,7 @@ import { SOCIAL_ICONS } from "@/components/SocialIcons";
 export function SiteFooter() {
   return (
     <footer
-      className="nm-footer px-6 pb-16 pt-44 sm:px-10"
+      className="nm-footer px-6 pb-9 pt-16 sm:px-10"
       style={{
         backgroundColor: "var(--nm-black)",
         borderTop: "1px solid rgba(255,255,255,0.06)",

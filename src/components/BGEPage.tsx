@@ -27,19 +27,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { contactSchema, type ContactInput } from "@/lib/contact-schema";
 import { checkZip, type ZipCheck } from "@/lib/delivery-area";
-
-/** easeOutQuart — the single curve shared by CSS and framer-motion.
- *  Mirrors --ease-out-quart in globals.css; keep the two in step. */
-const EASE: [number, number, number, number] = [0.165, 0.84, 0.44, 1];
-
-/** Shared reveal. Distances stay small: the point is to feel authored,
- *  not to announce itself. */
-const reveal = (delay = 0) => ({
-  initial: { opacity: 0, y: 18 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-80px" },
-  transition: { duration: 0.75, ease: EASE, delay },
-});
+import { EASE, reveal } from "@/lib/motion";
 
 /* Facts stated elsewhere on this page, surfaced as a scannable grid.
    Nothing here asserts anything the copy does not already claim. */
@@ -64,7 +52,6 @@ export function BGEPage() {
   const [zipInput, setZipInput] = useState("");
   const [zipResult, setZipResult] = useState<ZipCheck | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
 
   const form = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),

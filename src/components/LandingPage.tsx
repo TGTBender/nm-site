@@ -6,16 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 import { LANES, type Lane } from "@/content/lanes";
-
-/** easeOutQuart — the curve shared by CSS and framer-motion site-wide. */
-const EASE: [number, number, number, number] = [0.165, 0.84, 0.44, 1];
-
-const reveal = (delay = 0) => ({
-  initial: { opacity: 0, y: 18 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-80px" },
-  transition: { duration: 0.75, ease: EASE, delay },
-});
+import { EASE, reveal } from "@/lib/motion";
 
 /**
  * A lane row.
@@ -30,7 +21,7 @@ const reveal = (delay = 0) => ({
 function LaneRow({ lane, index }: { lane: Lane; index: number }) {
   const inner = (
     <div
-      className="grid grid-cols-1 items-baseline gap-4 py-10 sm:gap-10 sm:py-12 md:grid-cols-12"
+      className="grid grid-cols-1 items-start gap-4 py-12 sm:gap-10 sm:py-14 md:grid-cols-12"
       style={{ borderBottom: "1px solid var(--hairline)" }}
     >
       <div className="md:col-span-1">
@@ -90,14 +81,63 @@ function LaneRow({ lane, index }: { lane: Lane; index: number }) {
         </p>
       </div>
 
+      {/* The row's own arrow is suppressed when the lane carries a call to
+          action, which already has one — otherwise the row shows two. */}
       <div className="flex md:col-span-1 md:justify-end">
-        {lane.href ? (
+        {lane.href && !lane.cta ? (
           <ArrowRight
             aria-hidden
             style={{ width: 20, height: 20, color: "var(--gold)" }}
           />
         ) : null}
       </div>
+
+      {/* The preview belongs to the lane, not to a section of its own. Only
+          the shipping product has one, which is the hierarchy: one of these
+          is real and the rest are not yet. */}
+      {lane.image && (
+        <div className="md:col-span-10 md:col-start-2">
+          <div
+            className="nm-arc-br relative mt-2 overflow-hidden"
+            style={{ aspectRatio: "16 / 7" }}
+          >
+            <Image
+              src={lane.image.desktop}
+              alt={lane.image.alt}
+              fill
+              sizes="(min-width: 768px) 80vw, 100vw"
+              className="hidden object-cover md:block"
+              // bias left: the render's lit backdrop falls off to the upper
+              // right, and the arc cut turns it into a bright wedge that
+              // competes with the box
+              style={{ objectPosition: "38% 52%" }}
+            />
+            <Image
+              src={lane.image.mobile}
+              alt={lane.image.alt}
+              fill
+              sizes="100vw"
+              className="object-cover md:hidden"
+              style={{ objectPosition: "center 42%" }}
+            />
+          </div>
+
+          {lane.cta && (
+            <span
+              className="nm-lane-cta mt-7 inline-flex items-center gap-2"
+              style={{
+                fontSize: "13px",
+                fontWeight: 700,
+                letterSpacing: "0.02em",
+                color: "var(--gold)",
+              }}
+            >
+              {lane.cta}
+              <ArrowRight aria-hidden style={{ width: 15, height: 15 }} />
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 
@@ -211,97 +251,6 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── The Viridian, featured ────────────────────────────────── */}
-      <section
-        className="sec relative flex items-center overflow-hidden px-6 py-48 sm:px-10"
-        data-bg="black"
-        style={{ minHeight: "70vh" }}
-      >
-        <div className="absolute inset-0 hidden md:block">
-          <Image
-            src="/viridian/closed.jpg"
-            alt="The closed Viridian box in dark emerald with a gold foil Nature's Mastermind seal."
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-        <div className="absolute inset-0 md:hidden">
-          <Image
-            src="/viridian/closed-mobile.jpg"
-            alt="The closed Viridian box in dark emerald with a gold foil Nature's Mastermind seal."
-            fill
-            sizes="100vw"
-            className="object-cover"
-            style={{ objectPosition: "center 40%" }}
-          />
-        </div>
-
-        <div className="relative mx-auto w-full max-w-[1240px]">
-          <div className="max-w-[34rem]">
-            <motion.p
-              {...reveal()}
-              style={{
-                fontSize: "11px",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                fontWeight: 600,
-                color: "var(--gold)",
-                marginBottom: "1.5rem",
-              }}
-            >
-              Arriving this December
-            </motion.p>
-            <motion.h2
-              {...reveal(0.06)}
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(2.25rem, 5vw, 4rem)",
-                fontWeight: 700,
-                lineHeight: 1.05,
-                letterSpacing: "-0.025em",
-                color: "var(--creme)",
-                marginBottom: "1.25rem",
-              }}
-            >
-              The Viridian.
-            </motion.h2>
-            <motion.p
-              {...reveal(0.12)}
-              style={{
-                fontSize: "1.0625rem",
-                lineHeight: 1.7,
-                fontWeight: 300,
-                color: "rgba(245,239,230,0.62)",
-                maxWidth: "32ch",
-                marginBottom: "2.5rem",
-              }}
-            >
-              Charged biochar and liquid nutrient, brought together at home.
-              Dallas–Fort Worth first.
-            </motion.p>
-            <motion.div {...reveal(0.18)}>
-              <Link
-                href="/products"
-                className="nm-cta"
-                style={{
-                  display: "inline-block",
-                  backgroundColor: "var(--gold)",
-                  color: "#1a1a18",
-                  fontWeight: 700,
-                  fontSize: "15px",
-                  padding: "17px 44px",
-                  borderRadius: "9999px",
-                  textDecoration: "none",
-                  letterSpacing: "0.02em",
-                }}
-              >
-                See The Viridian
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }
