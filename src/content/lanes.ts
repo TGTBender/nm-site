@@ -18,9 +18,25 @@ export type Lane = {
    *  one lane is real and the others are not yet. */
   image?: { desktop: string; mobile: string; alt: string };
   cta?: string;
+  /** The lane the landing page leads with. Exactly one should carry it:
+   *  it takes the gold border in the platform grid. It marks what the
+   *  business is actually trading today, not a favourite, so it moves
+   *  when the answer to that changes. */
+  primary?: boolean;
 };
 
+/* Ordered as the landing page presents them — the supply lane first,
+   because that is the one with customers. */
 export const LANES: Lane[] = [
+  {
+    name: "The BGE",
+    description:
+      "The Black Glove Experience. Wholesale supply for nurseries, landscapers, farms and garden centers — on schedule, on spec, with documentation on every run.",
+    href: "/bge",
+    status: "Live",
+    cta: "Start a conversation",
+    primary: true,
+  },
   {
     name: "The Viridian",
     description:
@@ -33,12 +49,6 @@ export const LANES: Lane[] = [
       mobile: "/viridian/closed-mobile.jpg",
       alt: "The closed Viridian box in dark emerald with a gold foil Nature's Mastermind seal.",
     },
-  },
-  {
-    name: "The BGE",
-    description:
-      "The Black Glove Experience. Wholesale supply for nurseries, landscapers, farms and garden centers — on schedule, on spec, with documentation on every run.",
-    href: "/bge",
   },
   {
     name: "Canopy",

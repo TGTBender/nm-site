@@ -542,3 +542,21 @@ body {
   }
 }
 
+
+/* ── Light grounds ─────────────────────────────────────────────
+   The world paints a cream field behind these sections, so the type has
+   to invert. Setting it on the section means a child only overrides what
+   it actually needs to, and the hairline token flips with it so rules
+   drawn on cream are ink rather than the white used on dark.
+
+   --ink-soft / --ink-faint are the cream-ground equivalents of the
+   rgba(245,239,230,.x) creme ramps used on the dark sections. */
+[data-bg="cream"] {
+  color: var(--nm-black);
+  --hairline: var(--hairline-ink);
+  --ink-soft: rgba(28, 24, 16, 0.72);
+  --ink-faint: rgba(28, 24, 16, 0.52);
+  /* The brand gold is tuned for dark grounds; on cream it needs to go
+     deeper to clear 4.5:1 against #EFE6D2. */
+  --gold-on-light: #7a5c12;
+}

@@ -1,248 +1,944 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  Beef,
+  Building2,
+  Droplets,
+  Fish,
+  FlaskConical,
+  Gauge,
+  Layers,
+  LineChart,
+  Recycle,
+  Sprout,
+  Truck,
+  Wind,
+  type LucideIcon,
+} from "lucide-react";
 
-import { LANES, type Lane } from "@/content/lanes";
+import { LANES } from "@/content/lanes";
+import {
+  EVIDENCE_LABELS,
+  EVIDENCE_ROWS,
+  EVIDENCE_STATS,
+  MARKETS,
+  MODEL_STEPS,
+  OPERATING_STATUS,
+  PENDING_NOTE,
+  STATE_LABEL,
+  WAYS_IN,
+  type State,
+} from "@/content/home";
 import { EASE, reveal } from "@/lib/motion";
 
 /**
- * A lane panel.
+ * The landing page.
  *
- * Each lane gets a panel rather than a row in a list. The image runs off the
- * page edge and dissolves into the contour field on its inner edge: a
- * rectangle with margin on all four sides reads as a window cut into the
- * page, which is exactly what this is not meant to be.
+ * Built to the founder's layout: an evidence-forward B2B page that leads
+ * with what the business can document rather than with what it sells. The
+ * grounds run black → deep → cream → black → green → cream → black, which
+ * is the first thing on this site to use the world's full palette; the
+ * engine draws every transition, so each section only declares its ground
+ * and keeps enough padding to stay out of the zone (280px beside cream,
+ * 180px elsewhere — see the rule in globals.css).
  *
- * Sides alternate so the eye crosses the page as it descends. A lane with no
- * image yet gives its copy the full measure instead, so the panel reads as
- * complete rather than half empty.
- *
- * Every panel sits inside one themed section, so none of them introduces a
- * colour transition — the field runs straight through the whole run.
+ * WHERE THE FIGURES ARE. The evidence section renders from content/home.ts
+ * and every number there is currently `null`, so it shows a pending state
+ * instead. That is deliberate and it is the whole point of the page: the
+ * headline promises a source for every claim, and the one thing that
+ * cannot appear under it is a number nobody can source yet.
  */
-function LanePanel({ lane, index }: { lane: Lane; index: number }) {
-  const hasMedia = Boolean(lane.image);
 
-  const body = (
-    <div className="relative mx-auto w-full max-w-[1240px] px-6 sm:px-10">
-      <div
-        className={hasMedia ? "max-w-[30rem] md:w-[42%]" : "md:w-[72%]"}
-      >
-        <motion.p
-          {...reveal()}
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "1.125rem",
-            fontWeight: 700,
-            color: "var(--gold)",
-            opacity: 0.45,
-            marginBottom: "1.25rem",
-          }}
-        >
-          {String(index + 1).padStart(2, "0")}
-        </motion.p>
+const MARKET_ICONS: LucideIcon[] = [
+  Sprout,
+  Droplets,
+  Wind,
+  Beef,
+  Building2,
+  Recycle,
+  Layers,
+  Fish,
+  LineChart,
+];
 
-        <motion.h3
-          {...reveal(0.05)}
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(2rem, 4.4vw, 3.5rem)",
-            fontWeight: 700,
-            lineHeight: 1.06,
-            letterSpacing: "-0.025em",
-            color: "var(--creme)",
-          }}
-        >
-          {lane.name}
-        </motion.h3>
+const MODEL_ICONS: LucideIcon[] = [FlaskConical, Truck, Layers, Gauge];
 
-        {lane.status && (
-          <motion.p
-            {...reveal(0.09)}
-            style={{
-              marginTop: "0.9rem",
-              fontSize: "10px",
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              fontWeight: 600,
-              color: "var(--gold-muted)",
-            }}
-          >
-            {lane.status}
-          </motion.p>
-        )}
+const eyebrow = {
+  fontSize: "10px",
+  letterSpacing: "0.22em",
+  textTransform: "uppercase",
+  fontWeight: 600,
+} as const;
 
-        <motion.p
-          {...reveal(0.13)}
-          style={{
-            marginTop: "1.5rem",
-            fontSize: "1rem",
-            lineHeight: 1.8,
-            fontWeight: 300,
-            color: "rgba(245,239,230,0.54)",
-            maxWidth: "44ch",
-          }}
-        >
-          {lane.description}
-        </motion.p>
+const display = {
+  fontFamily: "var(--font-display)",
+  fontWeight: 700,
+  letterSpacing: "-0.03em",
+  lineHeight: 1.04,
+} as const;
 
-        {lane.href && (
-          <motion.p {...reveal(0.18)} style={{ marginTop: "2.25rem" }}>
-            <span
-              className="nm-lane-cta inline-flex items-center gap-2"
-              style={{
-                fontSize: "13px",
-                fontWeight: 700,
-                letterSpacing: "0.02em",
-                color: "var(--gold)",
-              }}
-            >
-              {lane.cta ?? "Open " + lane.name}
-              <ArrowRight aria-hidden style={{ width: 15, height: 15 }} />
-            </span>
-          </motion.p>
-        )}
-      </div>
-    </div>
-  );
-
-  // A lane with a render becomes a full-bleed scene; one without stays
-  // typographic, which reads as deliberate rather than as a gap.
-  //
-  // The two widths are different compositions, not one composition
-  // reflowed. Wide, the render leaves its left third empty and the copy
-  // sits in it. Narrow, there is no empty side to sit in — the product
-  // fills the measure — so the copy takes the top and the product drops
-  // below it. Both are held apart by the scrim; see .nm-scrim.
-  const panel = lane.image ? (
-    <div className="relative flex min-h-[86vh] items-start overflow-hidden py-24 md:min-h-[76vh] md:items-center md:py-28">
-      <div className="nm-scene">
-        <Image
-          src={lane.image.desktop}
-          alt={lane.image.alt}
-          fill
-          sizes="100vw"
-          className="hidden object-cover md:block"
-          style={{ objectPosition: "62% 50%" }}
-        />
-        <Image
-          src={lane.image.mobile}
-          alt={lane.image.alt}
-          fill
-          sizes="100vw"
-          className="object-cover md:hidden"
-          style={{ objectPosition: "center 74%" }}
-        />
-        <div className="nm-scrim" aria-hidden />
-      </div>
-      {body}
-    </div>
-  ) : (
-    <div className="relative py-24 md:py-32">{body}</div>
-  );
-
-  return lane.href ? (
-    <Link
-      href={lane.href}
-      className="nm-lane"
-      style={{ display: "block", textDecoration: "none" }}
+/** Section label: "01 / Evidence". */
+function Label({ num, text, tone }: { num: string; text: string; tone?: string }) {
+  return (
+    <motion.p
+      {...reveal()}
+      style={{ ...eyebrow, color: tone ?? "var(--gold-muted)", marginBottom: "2rem" }}
     >
-      {panel}
-    </Link>
-  ) : (
-    panel
+      {num} <span style={{ opacity: 0.45 }}>/</span> {text}
+    </motion.p>
+  );
+}
+
+/** Status pill. `active` is the only one that gets the solid gold. */
+function Badge({ state }: { state: State }) {
+  const solid = state === "active";
+  return (
+    <span
+      style={{
+        ...eyebrow,
+        fontSize: "9px",
+        whiteSpace: "nowrap",
+        padding: "0.3rem 0.55rem",
+        borderRadius: "2px",
+        color: solid ? "var(--nm-black)" : "var(--gold-muted)",
+        backgroundColor: solid ? "var(--gold)" : "transparent",
+        border: solid ? "1px solid var(--gold)" : "1px solid rgba(212,168,90,0.34)",
+      }}
+    >
+      {STATE_LABEL[state]}
+    </span>
   );
 }
 
 export function LandingPage() {
   return (
     <>
-      {/* ── Hero ───────────────────────────────────────────────────
-          Type only, on the deep ground. The lanes differ too much for one
-          photograph to stand for all of them, and each lane's own panel
-          carries its image. */}
+      {/* ── Hero ───────────────────────────────────────────────── */}
       <section
-        className="sec flex min-h-[78vh] items-end px-6 pb-48 pt-40 sm:px-10"
+        className="sec px-6 pb-44 pt-36 sm:px-10"
+        data-bg="black"
+        id="top"
+      >
+        <div className="mx-auto grid w-full max-w-[1240px] grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-7">
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: EASE }}
+              style={{ ...eyebrow, color: "var(--gold)", marginBottom: "2rem" }}
+            >
+              Nature&apos;s Mastermind
+              <span style={{ opacity: 0.45 }}>
+                {" "}
+                · A subsidiary of The Greenest Thumb
+              </span>
+            </motion.p>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.95, ease: EASE, delay: 0.08 }}
+              className="max-w-[11ch]"
+              style={{
+                ...display,
+                fontSize: "clamp(2.75rem, 6.6vw, 5.75rem)",
+                color: "var(--creme)",
+              }}
+            >
+              Biochar, built to a{" "}
+              <span style={{ color: "var(--gold)" }}>standard.</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, ease: EASE, delay: 0.22 }}
+              style={{
+                marginTop: "2.25rem",
+                fontSize: "1.0625rem",
+                lineHeight: 1.75,
+                fontWeight: 300,
+                color: "rgba(245,239,230,0.58)",
+                maxWidth: "48ch",
+              }}
+            >
+              We source, document and deliver biochar and the inputs that go
+              with it — and we are building the infrastructure to supply it at
+              scale, across agriculture and industry.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: EASE, delay: 0.34 }}
+              className="mt-10 flex flex-wrap items-center gap-4"
+            >
+              {/* .nm-cta and .nm-quiet carry only hover/focus behaviour —
+                  appearance is the caller's, as everywhere else on the
+                  site. Solid gold leads; the outline follows. */}
+              <Link
+                href="/bge"
+                className="nm-cta inline-flex items-center gap-2"
+                style={{
+                  ...eyebrow,
+                  backgroundColor: "var(--gold)",
+                  color: "var(--nm-black)",
+                  padding: "0.95rem 1.5rem",
+                  borderRadius: "2px",
+                  textDecoration: "none",
+                }}
+              >
+                Request a briefing
+                <ArrowRight aria-hidden style={{ width: 14, height: 14 }} />
+              </Link>
+              <Link
+                href="#evidence"
+                className="nm-quiet inline-flex items-center"
+                style={{
+                  ...eyebrow,
+                  color: "rgba(245,239,230,0.76)",
+                  border: "1px solid rgba(245,239,230,0.2)",
+                  padding: "0.95rem 1.5rem",
+                  borderRadius: "2px",
+                  textDecoration: "none",
+                }}
+              >
+                Review the evidence
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Operating status. The page's first honest act: it says what is
+              running and what is not, before it asks for anything. */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.3 }}
+            className="lg:col-span-5"
+          >
+            <div
+              style={{
+                border: "1px solid rgba(212,168,90,0.22)",
+                backgroundColor: "rgba(6,56,43,0.46)",
+                backdropFilter: "blur(2px)",
+                borderRadius: "3px",
+                padding: "1.5rem",
+              }}
+            >
+              <p
+                style={{
+                  ...eyebrow,
+                  color: "var(--gold)",
+                  paddingBottom: "1.1rem",
+                  marginBottom: "0.4rem",
+                  borderBottom: "1px solid rgba(212,168,90,0.18)",
+                }}
+              >
+                Operating status
+              </p>
+
+              <ul>
+                {OPERATING_STATUS.map((row) => (
+                  <li
+                    key={row.name}
+                    className="flex items-center justify-between gap-4"
+                    style={{
+                      padding: "0.85rem 0",
+                      borderBottom: "1px solid rgba(245,239,230,0.07)",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 300,
+                        color: "rgba(245,239,230,0.76)",
+                      }}
+                    >
+                      {row.name}
+                    </span>
+                    <Badge state={row.state} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Market strip: the breadth claim, stated as icons rather than as a
+            sentence promising nine working product lines. */}
+        <motion.ul
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.9, ease: EASE, delay: 0.5 }}
+          className="mx-auto mt-24 flex w-full max-w-[1240px] flex-wrap gap-x-10 gap-y-6"
+        >
+          {MARKETS.map((m, i) => {
+            const Icon = MARKET_ICONS[i];
+            return (
+              <li key={m.name} className="flex items-center gap-2">
+                <Icon
+                  aria-hidden
+                  style={{
+                    width: 14,
+                    height: 14,
+                    color: m.live ? "var(--gold)" : "rgba(245,239,230,0.3)",
+                  }}
+                />
+                <span
+                  style={{
+                    ...eyebrow,
+                    fontSize: "9px",
+                    color: m.live ? "var(--gold-muted)" : "rgba(245,239,230,0.3)",
+                  }}
+                >
+                  {m.name}
+                </span>
+              </li>
+            );
+          })}
+        </motion.ul>
+      </section>
+
+      {/* ── 01 Evidence ────────────────────────────────────────── */}
+      <section
+        className="sec px-6 py-56 sm:px-10"
         data-bg="deep"
+        id="evidence"
       >
         <div className="mx-auto w-full max-w-[1240px]">
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-            style={{
-              fontSize: "11px",
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              fontWeight: 600,
-              color: "var(--gold)",
-              marginBottom: "1.75rem",
-            }}
-          >
-            Nature&apos;s Mastermind
-          </motion.p>
+          <Label num="01" text="Evidence" />
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.95, ease: EASE, delay: 0.08 }}
-            className="max-w-[18ch]"
+          <motion.h2
+            {...reveal(0.05)}
+            className="max-w-[16ch]"
             style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(2.75rem, 7.5vw, 6.5rem)",
-              fontWeight: 700,
-              lineHeight: 1.02,
-              letterSpacing: "-0.03em",
+              ...display,
+              fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
               color: "var(--creme)",
-              marginBottom: "2rem",
             }}
           >
-            Bring biochar from niche to normal.
-          </motion.h1>
+            Every claim has a source.{" "}
+            <span style={{ color: "var(--gold)" }}>Here is the data.</span>
+          </motion.h2>
+
+          <div className="mt-20 grid grid-cols-1 gap-12 sm:grid-cols-3">
+            {EVIDENCE_STATS.map((s, i) => (
+              <motion.div key={s.caption} {...reveal(0.08 + i * 0.06)}>
+                <p
+                  style={{
+                    ...display,
+                    fontSize: "clamp(2.75rem, 6vw, 4.5rem)",
+                    color: s.value ? "var(--gold)" : "rgba(212,168,90,0.3)",
+                  }}
+                >
+                  {s.value ?? "—"}
+                </p>
+                <p
+                  style={{
+                    marginTop: "1rem",
+                    fontSize: "0.875rem",
+                    lineHeight: 1.7,
+                    fontWeight: 300,
+                    color: "rgba(245,239,230,0.52)",
+                    maxWidth: "26ch",
+                  }}
+                >
+                  {s.caption}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div {...reveal(0.1)} className="mt-20 overflow-x-auto">
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  {["Parameter", "Result", "Reference"].map((h) => (
+                    <th
+                      key={h}
+                      style={{
+                        ...eyebrow,
+                        fontSize: "9px",
+                        textAlign: "left",
+                        color: "var(--gold-muted)",
+                        padding: "0 1rem 0.9rem 0",
+                        borderBottom: "1px solid rgba(212,168,90,0.22)",
+                      }}
+                    >
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {EVIDENCE_ROWS.map((r) => (
+                  <tr key={r.parameter}>
+                    {[r.parameter, r.result, r.reference].map((cell, c) => (
+                      <td
+                        key={c}
+                        style={{
+                          fontSize: "0.875rem",
+                          fontWeight: 300,
+                          padding: "1.05rem 1rem 1.05rem 0",
+                          borderBottom: "1px solid rgba(245,239,230,0.08)",
+                          color:
+                            cell === null
+                              ? "rgba(245,239,230,0.26)"
+                              : c === 0
+                                ? "rgba(245,239,230,0.82)"
+                                : "rgba(245,239,230,0.58)",
+                        }}
+                      >
+                        {cell ?? "Pending"}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </motion.div>
 
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE, delay: 0.24 }}
+            {...reveal(0.12)}
             style={{
-              fontSize: "1.0625rem",
-              lineHeight: 1.75,
+              marginTop: "2rem",
+              fontSize: "12px",
+              lineHeight: 1.7,
               fontWeight: 300,
-              color: "rgba(245,239,230,0.55)",
-              maxWidth: "46ch",
+              color: "rgba(245,239,230,0.38)",
+              maxWidth: "58ch",
             }}
           >
-            On a global scale. If biochar can do it, we will source it, provide
-            it, and get dirty with you.
+            {PENDING_NOTE}
           </motion.p>
         </div>
       </section>
 
-      {/* ── The lanes ──────────────────────────────────────────────
-          One themed section holding every panel, so the colour field runs
-          through the whole run without a transition between lanes. */}
-      <section id="lanes" className="sec px-0 py-40 sm:py-48" data-bg="black">
-        <div className="mx-auto mb-8 w-full max-w-[1240px] px-6 sm:px-10">
-          <motion.p
-            {...reveal()}
+      {/* ── 02 Operating model ─────────────────────────────────── */}
+      <section className="sec px-6 py-72 sm:px-10" data-bg="cream" id="model">
+        <div className="mx-auto w-full max-w-[1240px]">
+          <Label num="02" text="Operating model" tone="var(--gold-on-light)" />
+
+          <motion.h2
+            {...reveal(0.05)}
+            className="max-w-[18ch]"
             style={{
-              fontSize: "11px",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              fontWeight: 600,
-              color: "var(--gold-muted)",
+              ...display,
+              fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
+              color: "var(--nm-black)",
             }}
           >
-            The lanes
-          </motion.p>
-        </div>
+            Source. Ship. Show.{" "}
+            <span style={{ color: "var(--gold-on-light)" }}>Measure.</span>
+          </motion.h2>
 
-        {LANES.map((lane, i) => (
-          <LanePanel key={lane.name} lane={lane} index={i} />
-        ))}
+          <div className="mt-20 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
+            {MODEL_STEPS.map((step, i) => {
+              const Icon = MODEL_ICONS[i];
+              return (
+                <motion.div key={step.title} {...reveal(0.06 + i * 0.05)}>
+                  <p style={{ ...eyebrow, fontSize: "9px", color: "var(--gold-on-light)" }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </p>
+                  <Icon
+                    aria-hidden
+                    style={{
+                      width: 22,
+                      height: 22,
+                      margin: "1.5rem 0 1.25rem",
+                      color: "var(--gold-on-light)",
+                    }}
+                  />
+                  <h3
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "1.25rem",
+                      fontWeight: 700,
+                      color: "var(--nm-black)",
+                    }}
+                  >
+                    {step.title}
+                  </h3>
+                  <p
+                    style={{
+                      marginTop: "0.85rem",
+                      fontSize: "0.9375rem",
+                      lineHeight: 1.75,
+                      fontWeight: 300,
+                      color: "var(--ink-soft)",
+                    }}
+                  >
+                    {step.text}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div
+            {...reveal(0.1)}
+            className="mt-24 border-t pt-14"
+            style={{ borderColor: "var(--hairline)" }}
+          >
+            <h3
+              style={{
+                ...display,
+                fontSize: "clamp(1.5rem, 3vw, 2.25rem)",
+                color: "var(--nm-black)",
+              }}
+            >
+              Each delivery is documented.
+            </h3>
+            <p
+              style={{
+                marginTop: "1.25rem",
+                fontSize: "1rem",
+                lineHeight: 1.8,
+                fontWeight: 300,
+                color: "var(--ink-soft)",
+                maxWidth: "52ch",
+              }}
+            >
+              A record that what you were sent is what was specified — the
+              batch it came from, and what is known about it. It travels with
+              the material rather than waiting to be asked for.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── 03 Markets ─────────────────────────────────────────── */}
+      <section
+        className="sec px-6 pb-56 pt-72 sm:px-10"
+        data-bg="black"
+        id="markets"
+      >
+        <div className="mx-auto w-full max-w-[1240px]">
+          <Label num="03" text="Markets" />
+
+          <motion.h2
+            {...reveal(0.05)}
+            className="max-w-[16ch]"
+            style={{
+              ...display,
+              fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
+              color: "var(--creme)",
+            }}
+          >
+            Nine markets.{" "}
+            <span style={{ color: "var(--gold)" }}>One is live.</span>
+          </motion.h2>
+
+          <motion.p
+            {...reveal(0.08)}
+            style={{
+              marginTop: "1.5rem",
+              fontSize: "1rem",
+              lineHeight: 1.8,
+              fontWeight: 300,
+              color: "rgba(245,239,230,0.5)",
+              maxWidth: "46ch",
+            }}
+          >
+            We publish what we can prove. Everything else, we label as what it
+            is — under evaluation.
+          </motion.p>
+
+          <div className="mt-16 grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-3">
+            {MARKETS.map((m, i) => {
+              const Icon = MARKET_ICONS[i];
+              return (
+                <motion.div
+                  key={m.name}
+                  {...reveal(0.04 + (i % 3) * 0.05)}
+                  style={{
+                    border: "1px solid var(--hairline)",
+                    padding: "1.75rem",
+                    backgroundColor: m.live
+                      ? "rgba(201,145,42,0.05)"
+                      : "transparent",
+                  }}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <Icon
+                      aria-hidden
+                      style={{
+                        width: 20,
+                        height: 20,
+                        color: m.live ? "var(--gold)" : "rgba(245,239,230,0.34)",
+                      }}
+                    />
+                    {m.live ? (
+                      <Badge state="active" />
+                    ) : (
+                      <span
+                        style={{
+                          ...eyebrow,
+                          fontSize: "9px",
+                          color: "rgba(245,239,230,0.32)",
+                        }}
+                      >
+                        Under evaluation
+                      </span>
+                    )}
+                  </div>
+
+                  <h3
+                    style={{
+                      marginTop: "2.5rem",
+                      fontFamily: "var(--font-display)",
+                      fontSize: "1.125rem",
+                      fontWeight: 700,
+                      color: m.live ? "var(--creme)" : "rgba(245,239,230,0.62)",
+                    }}
+                  >
+                    {m.name}
+                  </h3>
+                  <p
+                    style={{
+                      marginTop: "0.6rem",
+                      fontSize: "0.8125rem",
+                      lineHeight: 1.7,
+                      fontWeight: 300,
+                      color: "rgba(245,239,230,0.42)",
+                    }}
+                  >
+                    {m.note}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 04 Platform ────────────────────────────────────────── */}
+      <section className="sec px-6 py-56 sm:px-10" data-bg="green" id="platform">
+        <div className="mx-auto w-full max-w-[1240px]">
+          <Label num="04" text="Platform" />
+
+          <motion.h2
+            {...reveal(0.05)}
+            className="max-w-[16ch]"
+            style={{
+              ...display,
+              fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
+              color: "var(--creme)",
+            }}
+          >
+            Four lanes.{" "}
+            <span style={{ color: "var(--gold)" }}>One standard.</span>
+          </motion.h2>
+
+          <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {LANES.map((lane, i) => {
+              const body = (
+                <>
+                  {/* The slot renders even when empty, so every heading in
+                      the row starts on the same line. A lane without a
+                      status otherwise pulls its title up and the grid
+                      reads as four unrelated cards. */}
+                  <p
+                    aria-hidden={!lane.status}
+                    style={{ ...eyebrow, fontSize: "9px", color: "var(--gold-muted)" }}
+                  >
+                    {lane.status ?? " "}
+                  </p>
+                  <h3
+                    style={{
+                      marginTop: "1.75rem",
+                      fontFamily: "var(--font-display)",
+                      fontSize: "1.375rem",
+                      fontWeight: 700,
+                      lineHeight: 1.2,
+                      color: "var(--creme)",
+                    }}
+                  >
+                    {lane.name}
+                  </h3>
+                  <p
+                    style={{
+                      marginTop: "0.9rem",
+                      fontSize: "0.875rem",
+                      lineHeight: 1.75,
+                      fontWeight: 300,
+                      color: "rgba(245,239,230,0.56)",
+                    }}
+                  >
+                    {lane.description}
+                  </p>
+                  {lane.href && (
+                    <span
+                      className="nm-lane-cta mt-7 inline-flex items-center gap-2"
+                      style={{
+                        fontSize: "12px",
+                        fontWeight: 700,
+                        color: "var(--gold)",
+                      }}
+                    >
+                      {lane.cta ?? "Open " + lane.name}
+                      <ArrowRight aria-hidden style={{ width: 14, height: 14 }} />
+                    </span>
+                  )}
+                </>
+              );
+
+              const card = (
+                <div
+                  className="flex h-full flex-col"
+                  style={{
+                    border: lane.primary
+                      ? "1px solid rgba(201,145,42,0.45)"
+                      : "1px solid var(--hairline)",
+                    backgroundColor: lane.primary
+                      ? "rgba(201,145,42,0.07)"
+                      : "rgba(11,13,12,0.22)",
+                    padding: "1.75rem",
+                    borderRadius: "3px",
+                  }}
+                >
+                  {body}
+                </div>
+              );
+
+              return (
+                <motion.div key={lane.name} {...reveal(0.05 + i * 0.05)}>
+                  {lane.href ? (
+                    <Link
+                      href={lane.href}
+                      className="nm-lane block h-full"
+                      style={{ textDecoration: "none" }}
+                    >
+                      {card}
+                    </Link>
+                  ) : (
+                    card
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 05 Standard of evidence ────────────────────────────── */}
+      <section className="sec px-6 py-72 sm:px-10" data-bg="cream" id="standard">
+        <div className="mx-auto w-full max-w-[1240px]">
+          <Label num="05" text="Standard of evidence" tone="var(--gold-on-light)" />
+
+          <motion.h2
+            {...reveal(0.05)}
+            className="max-w-[16ch]"
+            style={{
+              ...display,
+              fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
+              color: "var(--nm-black)",
+            }}
+          >
+            How we label{" "}
+            <span style={{ color: "var(--gold-on-light)" }}>what we know.</span>
+          </motion.h2>
+
+          <motion.p
+            {...reveal(0.08)}
+            style={{
+              marginTop: "1.5rem",
+              fontSize: "1rem",
+              lineHeight: 1.8,
+              fontWeight: 300,
+              color: "var(--ink-soft)",
+              maxWidth: "48ch",
+            }}
+          >
+            Every claim in our research, and on this site, is one of three
+            things.
+          </motion.p>
+
+          <div className="mt-16 grid grid-cols-1 gap-px md:grid-cols-3">
+            {EVIDENCE_LABELS.map((e, i) => (
+              <motion.div
+                key={e.tag}
+                {...reveal(0.06 + i * 0.06)}
+                style={{
+                  border: "1px solid var(--hairline)",
+                  padding: "1.75rem",
+                }}
+              >
+                <span
+                  style={{
+                    ...eyebrow,
+                    fontSize: "9px",
+                    color: "var(--gold-on-light)",
+                    border: "1px solid rgba(122,92,18,0.3)",
+                    padding: "0.3rem 0.55rem",
+                    borderRadius: "2px",
+                  }}
+                >
+                  {e.tag}
+                </span>
+                <h3
+                  style={{
+                    marginTop: "2.25rem",
+                    fontFamily: "var(--font-display)",
+                    fontSize: "1.25rem",
+                    fontWeight: 700,
+                    color: "var(--nm-black)",
+                  }}
+                >
+                  {e.title}
+                </h3>
+                <p
+                  style={{
+                    marginTop: "0.85rem",
+                    fontSize: "0.9375rem",
+                    lineHeight: 1.75,
+                    fontWeight: 300,
+                    color: "var(--ink-soft)",
+                  }}
+                >
+                  {e.text}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 06 Three ways in ───────────────────────────────────── */}
+      <section className="sec px-6 pb-56 pt-72 sm:px-10" data-bg="black" id="mission">
+        <div className="mx-auto w-full max-w-[1240px]">
+          <Label num="06" text="Ways in" />
+
+          <motion.h2
+            {...reveal(0.05)}
+            style={{
+              ...display,
+              fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
+              color: "var(--creme)",
+            }}
+          >
+            Three ways <span style={{ color: "var(--gold)" }}>in.</span>
+          </motion.h2>
+
+          <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-10">
+            {WAYS_IN.map((w, i) => (
+              <motion.div key={w.title} {...reveal(0.06 + i * 0.06)}>
+                <h3
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "1.375rem",
+                    fontWeight: 700,
+                    color: "var(--creme)",
+                  }}
+                >
+                  {w.title}
+                </h3>
+                <p
+                  style={{
+                    marginTop: "0.6rem",
+                    fontSize: "0.8125rem",
+                    fontWeight: 300,
+                    color: "var(--gold-muted)",
+                  }}
+                >
+                  {w.text}
+                </p>
+
+                <ul
+                  className="mt-8 border-t"
+                  style={{ borderColor: "var(--hairline)" }}
+                >
+                  {w.points.map((p) => (
+                    <li
+                      key={p}
+                      style={{
+                        padding: "1rem 0",
+                        borderBottom: "1px solid var(--hairline)",
+                        fontSize: "0.875rem",
+                        lineHeight: 1.7,
+                        fontWeight: 300,
+                        color: "rgba(245,239,230,0.56)",
+                      }}
+                    >
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+
+                <Link
+                  href={w.cta.href}
+                  className="nm-link mt-8 inline-flex items-center gap-2"
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 700,
+                    color: "var(--gold)",
+                  }}
+                >
+                  {w.cta.label}
+                  <ArrowRight aria-hidden style={{ width: 14, height: 14 }} />
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Closing band ───────────────────────────────────────────
+          Opaque and hard-edged on purpose: it is NOT a .sec, so the world
+          neither paints it nor has to resolve a gold→black transition in
+          the 157px of footer below it. Carries no phone or address —
+          those publish only once the founder confirms them. */}
+      <section
+        className="relative px-6 py-28 sm:px-10"
+        style={{ backgroundColor: "var(--nm-gold)", zIndex: 2 }}
+      >
+        <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-10 md:flex-row md:items-end md:justify-between">
+          <motion.h2
+            {...reveal()}
+            className="max-w-[12ch]"
+            style={{
+              ...display,
+              fontSize: "clamp(2rem, 5vw, 3.75rem)",
+              color: "#1a1405",
+            }}
+          >
+            Request a briefing.
+          </motion.h2>
+
+          <motion.div {...reveal(0.1)}>
+            <p
+              style={{
+                fontSize: "1rem",
+                lineHeight: 1.75,
+                fontWeight: 300,
+                color: "rgba(26,20,5,0.76)",
+                maxWidth: "38ch",
+                marginBottom: "1.75rem",
+              }}
+            >
+              Tell us the format, the volume and the season. We will come back
+              with what we can supply and what we can document.
+            </p>
+            <Link
+              href="/bge"
+              className="inline-flex items-center gap-2"
+              style={{
+                ...eyebrow,
+                backgroundColor: "#1a1405",
+                color: "var(--nm-gold)",
+                padding: "0.9rem 1.5rem",
+                borderRadius: "2px",
+                textDecoration: "none",
+              }}
+            >
+              Start here
+              <ArrowRight aria-hidden style={{ width: 14, height: 14 }} />
+            </Link>
+          </motion.div>
+        </div>
       </section>
     </>
   );
