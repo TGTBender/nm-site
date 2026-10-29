@@ -1,8 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 
-import { LONGEVITY_CARDS } from "@/content/longevity";
+import {
+  DISCLOSURE,
+  LONGEVITY_CARDS,
+  LONGEVITY_TITLE_IMAGE,
+  type Card,
+} from "@/content/longevity";
 import { EASE } from "@/lib/motion";
 
 /**
@@ -13,18 +19,59 @@ import { EASE } from "@/lib/motion";
  * that withholds reads as deliberate where a thin overview would read as
  * unfinished.
  *
- * Nothing here is a commitment. See content/longevity.ts for what the page
- * deliberately does not say.
+ * The cards alternate scene and silence on purpose. Two of the three carry
+ * a full-bleed image; the middle one is black. Three scenes in a row would
+ * be a gallery, and a gallery is an overview — the thing this page is not.
+ * The cut to black is what makes the next scene land.
+ *
+ * Nothing here is a commitment, and the imagery is a design study rather
+ * than a record of anything built. See content/longevity.ts for what the
+ * page deliberately does not say, and for the disclosure that must stay.
  */
+
+/** A full-bleed scene, shared with the landing page's lane panels: the
+ *  image is the ground, and .nm-scrim darkens the side the copy sits on so
+ *  type never has to compete with the picture. */
+function Scene({
+  image,
+  priority = false,
+}: {
+  image: NonNullable<Card["image"]>;
+  priority?: boolean;
+}) {
+  return (
+    <div className="nm-scene">
+      <Image
+        src={image.desktop}
+        alt={image.alt}
+        fill
+        sizes="100vw"
+        priority={priority}
+        className="hidden object-cover md:block"
+      />
+      <Image
+        src={image.mobile}
+        alt={image.alt}
+        fill
+        sizes="100vw"
+        priority={priority}
+        className="object-cover md:hidden"
+      />
+      <div className="nm-scrim" aria-hidden />
+    </div>
+  );
+}
+
 export function LongevityPage() {
   return (
     <>
-      {/* ── Title card ─────────────────────────────────────────── */}
-      <section
-        className="flex min-h-[86vh] items-center px-6 sm:px-10"
-        style={{ backgroundColor: "var(--ink-deep)" }}
-      >
-        <div className="mx-auto w-full max-w-[1240px]">
+      {/* ── Title card ─────────────────────────────────────────────
+          Dusk at the gate. The render's sky is clean and unbroken on the
+          left, which is why the crop keeps it: the headline sits there. */}
+      <section className="relative flex min-h-[92vh] items-center overflow-hidden px-6 py-28 sm:px-10">
+        <Scene image={LONGEVITY_TITLE_IMAGE} priority />
+
+        <div className="relative mx-auto w-full max-w-[1240px]">
           <motion.p
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
@@ -80,7 +127,7 @@ export function LongevityPage() {
               fontSize: "1.0625rem",
               lineHeight: 1.75,
               fontWeight: 300,
-              color: "rgba(245,239,230,0.5)",
+              color: "rgba(245,239,230,0.62)",
               maxWidth: "40ch",
             }}
           >
@@ -90,16 +137,26 @@ export function LongevityPage() {
         </div>
       </section>
 
-      {/* ── Cards ──────────────────────────────────────────────── */}
+      {/* ── Cards ──────────────────────────────────────────────────
+          A card with a scene runs taller and full-bleed; a card without
+          keeps its flat ground and its own breathing room. */}
       {LONGEVITY_CARDS.map((card, i) => (
         <section
           key={card.line}
-          className="flex min-h-[64vh] items-center px-6 sm:px-10"
-          style={{
-            backgroundColor: i % 2 === 0 ? "var(--ink)" : "var(--ink-deep)",
-          }}
+          className={
+            card.image
+              ? "relative flex min-h-[88vh] items-center overflow-hidden px-6 py-28 sm:px-10"
+              : "flex min-h-[64vh] items-center px-6 sm:px-10"
+          }
+          style={
+            card.image
+              ? undefined
+              : { backgroundColor: i % 2 === 0 ? "var(--ink)" : "var(--ink-deep)" }
+          }
         >
-          <div className="mx-auto w-full max-w-[1240px]">
+          {card.image && <Scene image={card.image} />}
+
+          <div className="relative mx-auto w-full max-w-[1240px]">
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -122,7 +179,7 @@ export function LongevityPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-120px" }}
               transition={{ duration: 0.9, ease: EASE, delay: 0.08 }}
-              className="max-w-[20ch]"
+              className={card.image ? "max-w-[16ch] md:w-[46%]" : "max-w-[20ch]"}
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: "clamp(2rem, 5.4vw, 4rem)",
@@ -146,7 +203,13 @@ export function LongevityPage() {
                   fontSize: "1rem",
                   lineHeight: 1.8,
                   fontWeight: 300,
-                  color: "rgba(245,239,230,0.42)",
+                  // Brighter over a scene than over flat ground. The scrim
+                  // is dark but not as dark as the ink sections, and the
+                  // brightest scene here (the raised bed at close range)
+                  // leaves this line with the least to sit on.
+                  color: card.image
+                    ? "rgba(245,239,230,0.7)"
+                    : "rgba(245,239,230,0.42)",
                   maxWidth: "42ch",
                 }}
               >
@@ -157,7 +220,9 @@ export function LongevityPage() {
         </section>
       ))}
 
-      {/* ── Closing card ───────────────────────────────────────── */}
+      {/* ── Closing card ───────────────────────────────────────────
+          Cut to black. The disclosure runs here because this is the one
+          card everyone who finishes the page reaches. */}
       <section
         className="flex min-h-[52vh] items-center px-6 sm:px-10"
         style={{ backgroundColor: "var(--ink-deep)" }}
@@ -177,6 +242,23 @@ export function LongevityPage() {
             }}
           >
             More soon.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: EASE, delay: 0.3 }}
+            style={{
+              marginTop: "3rem",
+              fontSize: "12px",
+              lineHeight: 1.7,
+              fontWeight: 300,
+              color: "rgba(245,239,230,0.34)",
+              maxWidth: "46ch",
+            }}
+          >
+            {DISCLOSURE}
           </motion.p>
         </div>
       </section>

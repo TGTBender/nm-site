@@ -116,10 +116,10 @@ function LanePanel({ lane, index }: { lane: Lane; index: number }) {
   // reflowed. Wide, the render leaves its left third empty and the copy
   // sits in it. Narrow, there is no empty side to sit in — the product
   // fills the measure — so the copy takes the top and the product drops
-  // below it. Both are held apart by the scrim; see .nm-lane-scrim.
+  // below it. Both are held apart by the scrim; see .nm-scrim.
   const panel = lane.image ? (
     <div className="relative flex min-h-[86vh] items-start overflow-hidden py-24 md:min-h-[76vh] md:items-center md:py-28">
-      <div className="nm-lane-scene">
+      <div className="nm-scene">
         <Image
           src={lane.image.desktop}
           alt={lane.image.alt}
@@ -136,7 +136,7 @@ function LanePanel({ lane, index }: { lane: Lane; index: number }) {
           className="object-cover md:hidden"
           style={{ objectPosition: "center 74%" }}
         />
-        <div className="nm-lane-scrim" aria-hidden />
+        <div className="nm-scrim" aria-hidden />
       </div>
       {body}
     </div>
