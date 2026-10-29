@@ -596,3 +596,85 @@ body {
   --on-dark-muted: rgba(245, 239, 230, 0.66);
   --on-dark-faint: rgba(245, 239, 230, 0.5);
 }
+
+/* ── The Canopy invitation ─────────────────────────────────────
+   The card that sits under the work mat in every Viridian box: deep
+   emerald, gold foil frame, styled as a private invitation. The page
+   opens with it because that is how a buyer meets Canopy — the box is
+   the introduction, and the site should not be a louder one.
+
+   The foil edge is a gradient behind a 1px inset rather than a flat
+   border, because flat gold reads as a yellow line and foil reads as
+   metal only when the light along it varies. The second rule inside is
+   the engraving convention: one line does the framing, two say
+   invitation. */
+.nm-invitation {
+  position: relative;
+  padding: 1px;
+  border-radius: 3px;
+  background: linear-gradient(
+    118deg,
+    #7d5f14 0%,
+    #e8cb78 18%,
+    #c9a227 38%,
+    #6f5411 58%,
+    #dcb95c 78%,
+    #8a6a18 100%
+  );
+}
+.nm-invitation-inner {
+  position: relative;
+  border-radius: 2px;
+  background:
+    radial-gradient(
+      ellipse 80% 120% at 50% 0%,
+      rgba(201, 162, 39, 0.1) 0%,
+      rgba(201, 162, 39, 0) 62%
+    ),
+    var(--nm-deep);
+  overflow: hidden;
+}
+/* The inner engraved rule. Inset rather than a border on the panel, so
+   it reads as printed on the card instead of as a second edge. */
+.nm-invitation-inner::before {
+  content: "";
+  position: absolute;
+  inset: 11px;
+  border: 1px solid rgba(201, 162, 39, 0.34);
+  border-radius: 1px;
+  pointer-events: none;
+}
+@media (min-width: 640px) {
+  .nm-invitation-inner::before {
+    inset: 15px;
+  }
+}
+/* Short centred rules either side of the wordmark. */
+.nm-invitation-rule {
+  height: 1px;
+  width: 3.5rem;
+  background: linear-gradient(
+    to right,
+    rgba(201, 162, 39, 0),
+    rgba(201, 162, 39, 0.75),
+    rgba(201, 162, 39, 0)
+  );
+}
+
+/* ── The green ground ──────────────────────────────────────────
+   #0B5C45 is far lighter than the ink grounds, and the palette was
+   tuned against ink. Measured on green, the brand gold lands at 2.88:1,
+   gold-muted at 3.63:1 and muted body copy at 4.0:1 — all under AA,
+   while the same tokens pass comfortably on black and deep.
+
+   Rather than rewrite call sites, the tokens are redefined for this
+   ground only: anything inside a green section picks these up and the
+   rest of the site is untouched. The gold here is lighter than the
+   brand gold because on green it has to be; it is the same hue, read
+   at the lightness the ground demands. */
+[data-bg="green"] {
+  --gold: #e8c87a;
+  --gold-muted: #eccf88;
+  --on-dark-muted: rgba(245, 239, 230, 0.84);
+  --on-dark-faint: rgba(245, 239, 230, 0.7);
+}

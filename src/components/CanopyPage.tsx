@@ -72,7 +72,7 @@ function FeatureList({ features }: { features: Feature[] }) {
               fontSize: "14px",
               lineHeight: 1.75,
               fontWeight: 300,
-              color: "rgba(245,239,230,0.45)",
+              color: "var(--on-dark-muted)",
               maxWidth: "46ch",
             }}
           >
@@ -88,48 +88,116 @@ export function CanopyPage() {
   return (
     <>
       {/* ── Hero ───────────────────────────────────────────────── */}
+      {/* Canopy was the last page still painting its own flat grounds
+          while the rest of the site ran on the world, which is most of
+          why it felt like a different site. The sections below declare a
+          ground and let the engine draw the field and the transitions;
+          the padding is set to keep content clear of the 360px zone.
+
+          The run ends on black because the footer is black — a different
+          ground here would put a colour transition inside 157px of
+          footer and bleed it through the underglow. */}
       <section
-        className="flex min-h-[72vh] items-end px-6 pb-20 pt-40 sm:px-10 sm:pb-28"
-        style={{ backgroundColor: "var(--ink)" }}
+        className="sec flex min-h-[86vh] items-center px-6 pb-48 pt-40 sm:px-10"
+        data-bg="black"
       >
         <div className="mx-auto w-full max-w-[1240px]">
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-            style={{ ...eyebrow, color: "var(--gold)", marginBottom: "1.75rem" }}
-          >
-            Nature&apos;s Mastermind · In build
-          </motion.p>
+          {/* The invitation, as it is printed: 285 x 108 mm, deep emerald,
+              gold foil frame. The aspect is held at wide screens and let
+              go on phones, where 2.6:1 would leave the type too small to
+              read for the sake of a shape nobody can check.
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+              WHAT IT DOES NOT SAY. The card's copy rule is Canopy facts
+              only — no tier prices, and no Longevity Project. It also
+              says nothing about how the invitation is redeemed, because
+              code-versus-QR is still an open decision; promising a
+              mechanism here would commit the box to one. */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.95, ease: EASE, delay: 0.08 }}
-            className="max-w-[14ch]"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(2.75rem, 7.5vw, 6.5rem)",
-              fontWeight: 700,
-              lineHeight: 1.02,
-              letterSpacing: "-0.03em",
-              color: "var(--creme)",
-              marginBottom: "2rem",
-            }}
+            transition={{ duration: 1.1, ease: EASE }}
+            className="nm-invitation mx-auto w-full max-w-[52rem]"
           >
-            Canopy
-          </motion.h1>
+            <div className="nm-invitation-inner px-7 py-14 text-center sm:px-16 sm:py-20">
+              <p
+                style={{
+                  ...eyebrow,
+                  color: "var(--gold-muted)",
+                  marginBottom: "2.5rem",
+                }}
+              >
+                Nature&apos;s Mastermind
+              </p>
+
+              <div className="flex items-center justify-center gap-5">
+                <span className="nm-invitation-rule" aria-hidden />
+                <h1
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "clamp(2.5rem, 7vw, 4.5rem)",
+                    fontWeight: 700,
+                    lineHeight: 1,
+                    letterSpacing: "-0.02em",
+                    color: "var(--creme)",
+                  }}
+                >
+                  Canopy
+                </h1>
+                <span className="nm-invitation-rule" aria-hidden />
+              </div>
+
+              <p
+                className="mx-auto"
+                style={{
+                  marginTop: "2.25rem",
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(1.0625rem, 1.9vw, 1.375rem)",
+                  lineHeight: 1.6,
+                  color: "var(--creme)",
+                  maxWidth: "34ch",
+                }}
+              >
+                You are invited to keep the record of everything you grow.
+              </p>
+
+              <p
+                className="mx-auto"
+                style={{
+                  marginTop: "1.5rem",
+                  fontSize: "0.9375rem",
+                  lineHeight: 1.8,
+                  fontWeight: 300,
+                  color: "var(--on-dark)",
+                  maxWidth: "40ch",
+                }}
+              >
+                A card sits under the work mat in every Viridian box. This is
+                what is behind it.
+              </p>
+
+              <p
+                style={{
+                  ...eyebrow,
+                  marginTop: "3rem",
+                  color: "var(--gold-muted)",
+                }}
+              >
+                In build
+              </p>
+            </div>
+          </motion.div>
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE, delay: 0.24 }}
+            transition={{ duration: 0.8, ease: EASE, delay: 0.45 }}
+            className="mx-auto mt-16 text-center"
             style={{
               fontSize: "1.0625rem",
               lineHeight: 1.75,
               fontWeight: 300,
-              color: "rgba(245,239,230,0.55)",
-              maxWidth: "48ch",
+              color: "var(--on-dark)",
+              maxWidth: "52ch",
             }}
           >
             One app, two sides. A garden companion at home, and an account
@@ -143,10 +211,7 @@ export function CanopyPage() {
           The app is a light interface. Dropping it onto the dark page as a
           lifted panel shows the real product and gives the section its
           contrast, rather than describing the interface in prose. */}
-      <section
-        className="px-6 py-28 sm:px-10 sm:py-36"
-        style={{ backgroundColor: "var(--ink-deep)" }}
-      >
+      <section className="sec px-6 py-56 sm:px-10" data-bg="deep">
         <div className="mx-auto max-w-[1240px]">
           <motion.div {...reveal()} className="mb-14 max-w-[46ch]">
             <p style={{ ...eyebrow, color: "var(--gold)", marginBottom: "1.5rem" }}>
@@ -170,7 +235,7 @@ export function CanopyPage() {
                 fontSize: "15px",
                 lineHeight: 1.75,
                 fontWeight: 300,
-                color: "rgba(245,239,230,0.45)",
+                color: "var(--on-dark-muted)",
               }}
             >
               Scan the batch ID off a delivery and the certified panel opens.
@@ -262,10 +327,7 @@ export function CanopyPage() {
       </section>
 
       {/* ── Delivery, shown ────────────────────────────────────── */}
-      <section
-        className="px-6 py-28 sm:px-10 sm:py-32"
-        style={{ backgroundColor: "var(--ink)" }}
-      >
+      <section className="sec px-6 py-56 sm:px-10" data-bg="black">
         <div className="mx-auto grid max-w-[1240px] grid-cols-1 items-center gap-14 md:grid-cols-12 md:gap-16">
           <motion.div {...reveal()} className="md:col-span-5">
             <p
@@ -295,7 +357,7 @@ export function CanopyPage() {
                 fontSize: "15px",
                 lineHeight: 1.75,
                 fontWeight: 300,
-                color: "rgba(245,239,230,0.45)",
+                color: "var(--on-dark-muted)",
                 maxWidth: "36ch",
               }}
             >
@@ -330,10 +392,7 @@ export function CanopyPage() {
       </section>
 
       {/* ── Two sides ──────────────────────────────────────────── */}
-      <section
-        className="px-6 py-28 sm:px-10 sm:py-32"
-        style={{ backgroundColor: "var(--ink-deep)" }}
-      >
+      <section className="sec px-6 py-56 sm:px-10" data-bg="green">
         <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-16 md:grid-cols-2 md:gap-14">
           <div>
             <motion.p
@@ -390,10 +449,7 @@ export function CanopyPage() {
       </section>
 
       {/* ── Guarantees ─────────────────────────────────────────── */}
-      <section
-        className="px-6 py-28 sm:px-10 sm:py-32"
-        style={{ backgroundColor: "var(--ink)" }}
-      >
+      <section className="sec px-6 py-56 sm:px-10" data-bg="black">
         <div className="mx-auto max-w-[1240px]">
           <motion.p
             {...reveal()}
@@ -425,7 +481,7 @@ export function CanopyPage() {
                     fontSize: "1rem",
                     lineHeight: 1.75,
                     fontWeight: 300,
-                    color: "rgba(245,239,230,0.52)",
+                    color: "var(--on-dark)",
                     maxWidth: "34ch",
                   }}
                 >
@@ -447,7 +503,7 @@ export function CanopyPage() {
               fontSize: "14px",
               lineHeight: 1.8,
               fontWeight: 300,
-              color: "rgba(245,239,230,0.38)",
+              color: "var(--on-dark-muted)",
               maxWidth: "52ch",
             }}
           >

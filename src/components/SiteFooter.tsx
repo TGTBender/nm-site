@@ -49,13 +49,13 @@ export function SiteFooter() {
               style={{
                 fontSize: "12px",
                 fontWeight: 600,
-                color: "rgba(245,239,230,0.72)",
+                color: "var(--on-dark)",
                 textDecoration: "none",
               }}
             >
               Nature&apos;s Mastermind
             </Link>
-            <p style={{ fontSize: "11px", color: "rgba(245,239,230,0.46)" }}>
+            <p style={{ fontSize: "11px", color: "var(--on-dark-muted)" }}>
               A subsidiary of The Greenest Thumb Inc.
             </p>
           </div>
@@ -95,7 +95,7 @@ export function SiteFooter() {
             })}
           </ul>
 
-          <p style={{ fontSize: "11px", color: "rgba(245,239,230,0.38)" }}>
+          <p style={{ fontSize: "11px", color: "var(--on-dark-muted)" }}>
             © 2026 Nature&apos;s Mastermind
           </p>
         </div>
