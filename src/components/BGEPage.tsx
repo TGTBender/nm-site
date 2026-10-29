@@ -196,7 +196,7 @@ export function BGEPage() {
                 marginBottom: "1px",
               }}
             />
-            Ark-La-Tex Region · Biochar Distribution
+            Wholesale Supply · Biochar Distribution
           </motion.p>
 
           <motion.h1
@@ -232,9 +232,9 @@ export function BGEPage() {
                 fontWeight: 300,
               }}
             >
-              Reliable biochar delivery for nurseries, landscapers, farms, and
-              garden centers across the Ark-La-Tex — on schedule, on spec, with
-              documentation on every run.
+              Reliable biochar delivery for nurseries, landscapers, farms and
+              garden centers — on schedule, on spec, with documentation on
+              every run.
             </motion.p>
 
             <motion.div
@@ -312,8 +312,8 @@ export function BGEPage() {
               </p>
               <p>
                 The problem isn&apos;t demand. It&apos;s access. Consistent,
-                reliable, documented biochar has been nearly impossible to source
-                in the Ark-La-Tex. Shipments that don&apos;t show. Specs that
+                reliable, documented biochar has been nearly impossible to source.
+                Shipments that don&apos;t show. Specs that
                 don&apos;t match. No paperwork for the customers who ask questions.
                 We built Nature&apos;s Mastermind to close that gap — for good.
               </p>

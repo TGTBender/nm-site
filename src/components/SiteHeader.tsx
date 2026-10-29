@@ -45,12 +45,12 @@ const CTA: Record<string, NavItem | undefined> = {
   "/bge": { name: "Get a Quote", href: "#contact" },
 };
 
-/**
- * TODO: this descriptor predates the move to brokerage, a DTC lane and the
- * DFW pilot. It needs replacing, but new positioning is the owner's to write
- * rather than mine to invent.
- */
-const DESCRIPTOR = "Biochar Distribution · Ark-La-Tex";
+/* The region claim was pulled at the founder's direction while the
+   business moves from one territory to brokerage; it goes back when
+   there is a territory to name again. The descriptor now says what the
+   business does rather than where, which is also the landing page's
+   headline. */
+const DESCRIPTOR = "Biochar, built to a standard";
 
 export function SiteHeader() {
   const pathname = usePathname();

@@ -34,16 +34,14 @@ const SITE_URL = "https://naturesmastermind.com";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Nature's Mastermind — Biochar Distribution for the Ark-La-Tex",
+    default: "Nature's Mastermind — Biochar, built to a standard",
     template: "%s · Nature's Mastermind",
   },
   description:
-    "Reliable biochar delivery for nurseries, landscapers, farms, and garden centers across the Ark-La-Tex — on schedule, on spec, with documentation on every run.",
+    "We source, document and deliver biochar and the inputs that go with it — on schedule, on spec, with documentation on every run.",
   keywords: [
     "biochar",
     "biochar supplier",
-    "Ark-La-Tex",
-    "Shreveport",
     "soil amendment",
     "nursery supply",
     "landscaping supply",
@@ -54,13 +52,13 @@ export const metadata: Metadata = {
     siteName: "Nature's Mastermind",
     title: "A biochar supply lane that actually shows up.",
     description:
-      "Reliable biochar delivery for nurseries, landscapers, farms, and garden centers across the Ark-La-Tex.",
+      "We source, document and deliver biochar and the inputs that go with it — on schedule, on spec.",
   },
   twitter: {
     card: "summary_large_image",
     title: "A biochar supply lane that actually shows up.",
     description:
-      "Reliable biochar delivery across the Ark-La-Tex — on schedule, on spec.",
+      "Biochar, sourced and documented — on schedule, on spec.",
   },
   robots: { index: true, follow: true },
 };

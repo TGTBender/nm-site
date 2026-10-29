@@ -96,4 +96,4 @@ Keep `sizes` accurate. It's what tells the browser which `srcset` entry to
 pull; a wrong value means it downloads a far larger file than it renders.
 
 **Alt text**: describe what is happening, not what the file is. "Supersacks
-being unloaded at a nursery in Shreveport" — not "delivery photo".
+being unloaded at a nursery" — not "delivery photo".
