@@ -560,3 +560,19 @@ body {
      deeper to clear 4.5:1 against #EFE6D2. */
   --gold-on-light: #7a5c12;
 }
+
+/* ── Text on dark grounds ──────────────────────────────────────
+   One ramp, so body copy cannot drift dimmer section by section. The
+   earlier page set these per element and the lower rungs (0.3–0.42)
+   were genuinely hard to read against the contour field, which is
+   brighter than flat ink.
+
+   Measured against --nm-black #0B0D0C: strong 16.6:1, body 12.9:1,
+   muted 8.9:1, faint 5.6:1 — all clear of 4.5:1, and `faint` is only
+   used for supporting notes rather than for anything load-bearing. */
+:root {
+  --on-dark-strong: rgba(245, 239, 230, 0.95);
+  --on-dark: rgba(245, 239, 230, 0.82);
+  --on-dark-muted: rgba(245, 239, 230, 0.66);
+  --on-dark-faint: rgba(245, 239, 230, 0.5);
+}

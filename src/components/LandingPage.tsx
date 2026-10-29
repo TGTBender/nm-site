@@ -21,13 +21,16 @@ import {
 
 import { LANES } from "@/content/lanes";
 import {
+  CONTACT,
   EVIDENCE_LABELS,
   EVIDENCE_ROWS,
   EVIDENCE_STATS,
+  MARKET_LABEL,
   MARKETS,
   MODEL_STEPS,
   OPERATING_STATUS,
   PENDING_NOTE,
+  SCOPE_NOTE,
   STATE_LABEL,
   WAYS_IN,
   type State,
@@ -65,6 +68,29 @@ const MARKET_ICONS: LucideIcon[] = [
 ];
 
 const MODEL_ICONS: LucideIcon[] = [FlaskConical, Truck, Layers, Gauge];
+
+/* The markets headline counts the list rather than restating it. An
+   earlier pass hard-coded "Nine markets. One is live." and the moment a
+   market changed state the headline was a false claim sitting directly
+   above the grid that contradicted it. */
+const COUNT_WORD: Record<number, string> = {
+  1: "One",
+  2: "Two",
+  3: "Three",
+  4: "Four",
+  5: "Five",
+  6: "Six",
+  7: "Seven",
+  8: "Eight",
+  9: "Nine",
+  10: "Ten",
+};
+
+const LIVE_COUNT = MARKETS.filter((m) => m.state === "active").length;
+const LIVE_HEADLINE =
+  LIVE_COUNT === 1
+    ? "One is live."
+    : `${COUNT_WORD[LIVE_COUNT] ?? LIVE_COUNT} are live.`;
 
 const eyebrow = {
   fontSize: "10px",
@@ -161,7 +187,7 @@ export function LandingPage() {
                 fontSize: "1.0625rem",
                 lineHeight: 1.75,
                 fontWeight: 300,
-                color: "rgba(245,239,230,0.58)",
+                color: "var(--on-dark)",
                 maxWidth: "48ch",
               }}
             >
@@ -199,7 +225,7 @@ export function LandingPage() {
                 className="nm-quiet inline-flex items-center"
                 style={{
                   ...eyebrow,
-                  color: "rgba(245,239,230,0.76)",
+                  color: "var(--on-dark)",
                   border: "1px solid rgba(245,239,230,0.2)",
                   padding: "0.95rem 1.5rem",
                   borderRadius: "2px",
@@ -254,7 +280,7 @@ export function LandingPage() {
                       style={{
                         fontSize: "0.875rem",
                         fontWeight: 300,
-                        color: "rgba(245,239,230,0.76)",
+                        color: "var(--on-dark)",
                       }}
                     >
                       {row.name}
@@ -284,14 +310,18 @@ export function LandingPage() {
                   style={{
                     width: 14,
                     height: 14,
-                    color: m.live ? "var(--gold)" : "rgba(245,239,230,0.3)",
+                    color:
+                      m.state === "active" ? "var(--gold)" : "var(--on-dark-muted)",
                   }}
                 />
                 <span
                   style={{
                     ...eyebrow,
                     fontSize: "9px",
-                    color: m.live ? "var(--gold-muted)" : "rgba(245,239,230,0.3)",
+                    color:
+                      m.state === "active"
+                        ? "var(--gold-muted)"
+                        : "var(--on-dark-muted)",
                   }}
                 >
                   {m.name}
@@ -342,7 +372,7 @@ export function LandingPage() {
                     fontSize: "0.875rem",
                     lineHeight: 1.7,
                     fontWeight: 300,
-                    color: "rgba(245,239,230,0.52)",
+                    color: "var(--on-dark-muted)",
                     maxWidth: "26ch",
                   }}
                 >
@@ -386,10 +416,10 @@ export function LandingPage() {
                           borderBottom: "1px solid rgba(245,239,230,0.08)",
                           color:
                             cell === null
-                              ? "rgba(245,239,230,0.26)"
+                              ? "var(--on-dark-faint)"
                               : c === 0
-                                ? "rgba(245,239,230,0.82)"
-                                : "rgba(245,239,230,0.58)",
+                                ? "var(--on-dark-strong)"
+                                : "var(--on-dark)",
                         }}
                       >
                         {cell ?? "Pending"}
@@ -408,11 +438,16 @@ export function LandingPage() {
               fontSize: "12px",
               lineHeight: 1.7,
               fontWeight: 300,
-              color: "rgba(245,239,230,0.38)",
+              color: "var(--on-dark-faint)",
               maxWidth: "58ch",
             }}
           >
-            {PENDING_NOTE}
+            {/* Scope travels with the figures. These results are bagasse
+                only, and a reader who takes them for the whole catalogue
+                has been misled by omission. */}
+            {EVIDENCE_ROWS.some((r) => r.result === null)
+              ? PENDING_NOTE
+              : SCOPE_NOTE}
           </motion.p>
         </div>
       </section>
@@ -528,8 +563,8 @@ export function LandingPage() {
               color: "var(--creme)",
             }}
           >
-            Nine markets.{" "}
-            <span style={{ color: "var(--gold)" }}>One is live.</span>
+            {COUNT_WORD[MARKETS.length] ?? MARKETS.length} markets.{" "}
+            <span style={{ color: "var(--gold)" }}>{LIVE_HEADLINE}</span>
           </motion.h2>
 
           <motion.p
@@ -539,7 +574,7 @@ export function LandingPage() {
               fontSize: "1rem",
               lineHeight: 1.8,
               fontWeight: 300,
-              color: "rgba(245,239,230,0.5)",
+              color: "var(--on-dark)",
               maxWidth: "46ch",
             }}
           >
@@ -557,9 +592,10 @@ export function LandingPage() {
                   style={{
                     border: "1px solid var(--hairline)",
                     padding: "1.75rem",
-                    backgroundColor: m.live
-                      ? "rgba(201,145,42,0.05)"
-                      : "transparent",
+                    backgroundColor:
+                      m.state === "active"
+                        ? "rgba(201,145,42,0.05)"
+                        : "transparent",
                   }}
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -568,20 +604,34 @@ export function LandingPage() {
                       style={{
                         width: 20,
                         height: 20,
-                        color: m.live ? "var(--gold)" : "rgba(245,239,230,0.34)",
+                        color:
+                          m.state === "active"
+                            ? "var(--gold)"
+                            : "var(--on-dark-muted)",
                       }}
                     />
-                    {m.live ? (
+                    {m.state === "active" ? (
                       <Badge state="active" />
                     ) : (
+                      // R&D and evaluation both read as "not selling this
+                      // yet", so neither takes the solid badge — but R&D is
+                      // work in progress rather than an open question, and
+                      // the outline says which.
                       <span
                         style={{
                           ...eyebrow,
                           fontSize: "9px",
-                          color: "rgba(245,239,230,0.32)",
+                          whiteSpace: "nowrap",
+                          color: "var(--on-dark-muted)",
+                          padding: m.state === "rnd" ? "0.3rem 0.55rem" : 0,
+                          borderRadius: "2px",
+                          border:
+                            m.state === "rnd"
+                              ? "1px solid rgba(245,239,230,0.22)"
+                              : "none",
                         }}
                       >
-                        Under evaluation
+                        {MARKET_LABEL[m.state]}
                       </span>
                     )}
                   </div>
@@ -592,7 +642,10 @@ export function LandingPage() {
                       fontFamily: "var(--font-display)",
                       fontSize: "1.125rem",
                       fontWeight: 700,
-                      color: m.live ? "var(--creme)" : "rgba(245,239,230,0.62)",
+                      color:
+                        m.state === "active"
+                          ? "var(--creme)"
+                          : "var(--on-dark-strong)",
                     }}
                   >
                     {m.name}
@@ -603,7 +656,7 @@ export function LandingPage() {
                       fontSize: "0.8125rem",
                       lineHeight: 1.7,
                       fontWeight: 300,
-                      color: "rgba(245,239,230,0.42)",
+                      color: "var(--on-dark-muted)",
                     }}
                   >
                     {m.note}
@@ -665,7 +718,7 @@ export function LandingPage() {
                       fontSize: "0.875rem",
                       lineHeight: 1.75,
                       fontWeight: 300,
-                      color: "rgba(245,239,230,0.56)",
+                      color: "var(--on-dark)",
                     }}
                   >
                     {lane.description}
@@ -807,7 +860,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── 06 Three ways in ───────────────────────────────────── */}
+      {/* ── 06 Ways in ───────────────────────────────────── */}
       <section className="sec px-6 pb-56 pt-72 sm:px-10" data-bg="black" id="mission">
         <div className="mx-auto w-full max-w-[1240px]">
           <Label num="06" text="Ways in" />
@@ -820,10 +873,11 @@ export function LandingPage() {
               color: "var(--creme)",
             }}
           >
-            Three ways <span style={{ color: "var(--gold)" }}>in.</span>
+            {COUNT_WORD[WAYS_IN.length] ?? WAYS_IN.length} ways{" "}
+            <span style={{ color: "var(--gold)" }}>in.</span>
           </motion.h2>
 
-          <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-10">
+          <div className="mt-16 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
             {WAYS_IN.map((w, i) => (
               <motion.div key={w.title} {...reveal(0.06 + i * 0.06)}>
                 <h3
@@ -860,7 +914,7 @@ export function LandingPage() {
                         fontSize: "0.875rem",
                         lineHeight: 1.7,
                         fontWeight: 300,
-                        color: "rgba(245,239,230,0.56)",
+                        color: "var(--on-dark)",
                       }}
                     >
                       {p}
@@ -922,21 +976,49 @@ export function LandingPage() {
               Tell us the format, the volume and the season. We will come back
               with what we can supply and what we can document.
             </p>
-            <Link
-              href="/bge"
-              className="inline-flex items-center gap-2"
-              style={{
-                ...eyebrow,
-                backgroundColor: "#1a1405",
-                color: "var(--nm-gold)",
-                padding: "0.9rem 1.5rem",
-                borderRadius: "2px",
-                textDecoration: "none",
-              }}
-            >
-              Start here
-              <ArrowRight aria-hidden style={{ width: 14, height: 14 }} />
-            </Link>
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+              <Link
+                href="/bge"
+                className="inline-flex items-center gap-2"
+                style={{
+                  ...eyebrow,
+                  backgroundColor: "#1a1405",
+                  color: "var(--nm-gold)",
+                  padding: "0.9rem 1.5rem",
+                  borderRadius: "2px",
+                  textDecoration: "none",
+                }}
+              >
+                Start here
+                <ArrowRight aria-hidden style={{ width: 14, height: 14 }} />
+              </Link>
+
+              {/* Real contact details, so the band is an answer and not
+                  just another form. Both confirmed for publication. */}
+              <div className="flex flex-col gap-1">
+                <a
+                  href={CONTACT.phoneHref}
+                  style={{
+                    fontSize: "0.9375rem",
+                    fontWeight: 600,
+                    color: "#1a1405",
+                    textDecoration: "none",
+                  }}
+                >
+                  {CONTACT.phone}
+                </a>
+                <a
+                  href={`mailto:${CONTACT.email}`}
+                  style={{
+                    fontSize: "0.8125rem",
+                    fontWeight: 300,
+                    color: "rgba(26,20,5,0.8)",
+                  }}
+                >
+                  {CONTACT.email}
+                </a>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
