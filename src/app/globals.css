@@ -518,27 +518,47 @@ body {
    This darkens the side the copy occupies and clears before it reaches
    the product: horizontal on wide screens, where the copy is beside the
    box, vertical on narrow ones, where it is above it. */
+/* Two layers, because one was not enough.
+ *
+ * The directional gradient had fallen to 0.45 alpha by the RIGHT-HAND end
+ * of the copy measure, which is exactly where the longest lines finish.
+ * Measured against the three Longevity scenes, body copy there came out
+ * at 2.8–3.1:1 — under AA, and visibly hard to read on the brightest of
+ * them. The gradient now holds its weight out past the measure before it
+ * clears.
+ *
+ * The flat base under it sets a floor, so no part of a scene is ever
+ * fully unscrimmed. That matters on phones, where the copy is centred
+ * vertically rather than pinned to the lit edge and so cannot rely on
+ * the direction of the gradient at all. These are atmospheric frames
+ * rather than product shots, so a little less of the picture is a fair
+ * trade for type that reads. */
 .nm-scrim {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgba(11, 13, 12, 0.94) 0%,
-    rgba(11, 13, 12, 0.88) 26%,
-    rgba(11, 13, 12, 0.5) 46%,
-    rgba(11, 13, 12, 0) 64%
-  );
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(11, 13, 12, 0.92) 0%,
+      rgba(11, 13, 12, 0.86) 30%,
+      rgba(11, 13, 12, 0.6) 50%,
+      rgba(11, 13, 12, 0) 76%
+    ),
+    linear-gradient(rgba(11, 13, 12, 0.3), rgba(11, 13, 12, 0.3));
 }
 @media (min-width: 768px) {
   .nm-scrim {
-    background: linear-gradient(
-      to right,
-      rgba(11, 13, 12, 0.94) 0%,
-      rgba(11, 13, 12, 0.82) 28%,
-      rgba(11, 13, 12, 0.4) 46%,
-      rgba(11, 13, 12, 0) 62%
-    );
+    background:
+      linear-gradient(
+        to right,
+        rgba(11, 13, 12, 0.92) 0%,
+        rgba(11, 13, 12, 0.88) 30%,
+        rgba(11, 13, 12, 0.72) 46%,
+        rgba(11, 13, 12, 0.3) 58%,
+        rgba(11, 13, 12, 0) 72%
+      ),
+      linear-gradient(rgba(11, 13, 12, 0.26), rgba(11, 13, 12, 0.26));
   }
 }
 

@@ -127,7 +127,7 @@ export function LongevityPage() {
               fontSize: "1.0625rem",
               lineHeight: 1.75,
               fontWeight: 300,
-              color: "rgba(245,239,230,0.62)",
+              color: "var(--on-dark)",
               maxWidth: "40ch",
             }}
           >
@@ -166,8 +166,11 @@ export function LongevityPage() {
                 fontFamily: "var(--font-display)",
                 fontSize: "0.875rem",
                 fontWeight: 700,
-                color: "var(--gold)",
-                opacity: 0.45,
+                // Was var(--gold) at 0.45 opacity, which on the brighter
+                // scenes left the card number barely present. The muted
+                // gold is dimmer than the brand gold by design, so it
+                // still sits behind the headline without disappearing.
+                color: "var(--gold-muted)",
                 marginBottom: "1.75rem",
               }}
             >
@@ -203,13 +206,13 @@ export function LongevityPage() {
                   fontSize: "1rem",
                   lineHeight: 1.8,
                   fontWeight: 300,
-                  // Brighter over a scene than over flat ground. The scrim
-                  // is dark but not as dark as the ink sections, and the
-                  // brightest scene here (the raised bed at close range)
-                  // leaves this line with the least to sit on.
+                  // Brighter over a scene than over flat ground: even
+                  // through the scrim, a photograph is a noisier ground
+                  // than flat ink and needs more separation to read at
+                  // the same apparent weight.
                   color: card.image
-                    ? "rgba(245,239,230,0.7)"
-                    : "rgba(245,239,230,0.42)",
+                    ? "var(--on-dark)"
+                    : "var(--on-dark-muted)",
                   maxWidth: "42ch",
                 }}
               >
@@ -254,7 +257,7 @@ export function LongevityPage() {
               fontSize: "12px",
               lineHeight: 1.7,
               fontWeight: 300,
-              color: "rgba(245,239,230,0.34)",
+              color: "var(--on-dark-muted)",
               maxWidth: "46ch",
             }}
           >
