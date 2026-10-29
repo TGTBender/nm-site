@@ -135,30 +135,32 @@ export function BGEPage() {
         className="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden px-6 pb-20 pt-32 sm:px-10 sm:pb-28"
         style={{ backgroundColor: "var(--ink)" }}
       >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            // WebP rather than PNG: identical art, 77 KB vs 738 KB on the
-            // largest above-the-fold element.
-            //
-            // Layered backgrounds: if the image is ever missing the browser
-            // skips that layer and falls through to the gradient, so the hero
-            // still reads as intentional rather than as a broken image.
-            backgroundImage:
-              "url('/delivery.webp'), radial-gradient(ellipse at 50% 30%, #35563a 0%, #1b2a1d 55%, #0f1410 100%)",
-            backgroundSize: "cover, cover",
-            backgroundPosition: "center top, center",
-            backgroundRepeat: "no-repeat, no-repeat",
-            // Was 0.35, which put the art ~6 luminance points above the bare
-            // section ink — effectively invisible. The art was authored dark
-            // to survive that; both were lifted together.
-            opacity: 0.88,
-            zIndex: 0,
-          }}
-        />
+        {/* The load arriving. This replaced an illustrated treeline that
+            stood in until there was a real delivery frame to use — the
+            whole lane is a promise about delivery, so the hero should be
+            one rather than a landscape behind the word. */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+          <Image
+            src="/bge/load.jpg"
+            alt="A flatbed load of Nature's Mastermind bulk bags, strapped to pallets, at a nursery."
+            fill
+            priority
+            sizes="100vw"
+            className="hidden object-cover md:block"
+            style={{ objectPosition: "center 42%" }}
+          />
+          <Image
+            src="/bge/load-mobile.jpg"
+            alt="A flatbed load of Nature's Mastermind bulk bags, strapped to pallets, at a nursery."
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover md:hidden"
+            style={{ objectPosition: "center 45%" }}
+          />
+        </div>
         {/* Scrim weighted to the lower edge, where the type sits. The upper
-            band is left almost clear so the treeline and horizon glow are
+            band is left almost clear so the load and the golden-hour sky are
             actually visible; it ramps hard through the lower half to hold
             contrast under the headline. */}
         <div
@@ -357,57 +359,118 @@ export function BGEPage() {
         </div>
       </section>
 
-      {/* ── Signature motif ──────────────────────────────────────
-          The arc sweep, carrying a full-bleed image against a forest
-          block. This is the slot a real delivery photograph drops
-          into — swap the src and nothing else changes. */}
+      {/* ── The material ─────────────────────────────────────────
+          A full-bleed band, no copy over it. The lane is named for a
+          black glove and this is the frame that earns the name, so it
+          is left to carry itself; a headline across it would be the
+          caption explaining a joke. */}
+      <section className="relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 1, ease: EASE }}
+          className="relative h-[62vw] min-h-[320px] md:h-[38vw] md:min-h-[420px]"
+        >
+          <Image
+            src="/bge/scoop.jpg"
+            alt="A gloved hand holding a scoop of biochar over a raised bed at sunset."
+            fill
+            sizes="100vw"
+            className="hidden object-cover md:block"
+          />
+          <Image
+            src="/bge/scoop-mobile.jpg"
+            alt="A gloved hand holding a scoop of biochar over a raised bed at sunset."
+            fill
+            sizes="100vw"
+            className="object-cover md:hidden"
+          />
+          {/* Feathered top and bottom only, so the band joins the
+              sections either side instead of sitting between them as a
+              cut-out rectangle. */}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              background:
+                "linear-gradient(to bottom, var(--ink) 0%, rgba(15,20,16,0) 18%, rgba(15,20,16,0) 82%, var(--ink) 100%)",
+            }}
+          />
+        </motion.div>
+      </section>
+
+      {/* ── What is printed on the bag ───────────────────────────
+          The documentation claim, shown rather than asserted. The batch
+          card and the code on the bag are the mechanism behind "with
+          documentation on every run" in the lane copy. */}
       <section
-        className="relative overflow-hidden"
-        style={{ backgroundColor: "var(--forest)" }}
+        className="relative overflow-hidden px-6 py-28 sm:px-10 sm:py-36"
+        style={{ backgroundColor: "var(--ink)" }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2">
+        <div className="mx-auto grid max-w-[1240px] grid-cols-1 items-center gap-14 md:grid-cols-2 md:gap-16">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.9, ease: EASE }}
-            className="nm-arc-br relative h-[46vw] min-h-[260px] overflow-hidden md:h-[34vw] md:min-h-[380px]"
+            className="relative h-[72vw] min-h-[300px] overflow-hidden md:h-[30vw] md:min-h-[400px]"
+            style={{ borderRadius: "3px" }}
           >
             <Image
-              src="/delivery.webp"
-              alt="Biochar delivery across the Ark-La-Tex"
+              src="/bge/bag.jpg"
+              alt="A Nature's Mastermind bulk bag on a pallet, with a batch card pocket and a scannable code on its face."
               fill
               sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover"
-              style={{ objectPosition: "center 35%" }}
+              className="hidden object-cover md:block"
+            />
+            <Image
+              src="/bge/bag-mobile.jpg"
+              alt="A Nature's Mastermind bulk bag on a pallet, with a batch card pocket and a scannable code on its face."
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="object-cover md:hidden"
             />
           </motion.div>
 
-          <div className="flex items-center px-6 py-16 sm:px-10 md:py-0">
-            <motion.div {...reveal(0.1)} className="max-w-[38ch]">
-              <p
-                style={{
-                  ...eyebrowStyle,
-                  color: "var(--gold-muted)",
-                  marginBottom: "1.5rem",
-                }}
-              >
-                On the ground
-              </p>
-              <p
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "clamp(1.5rem, 2.6vw, 2.25rem)",
-                  fontWeight: 700,
-                  lineHeight: 1.25,
-                  color: "var(--creme)",
-                  letterSpacing: "-0.015em",
-                }}
-              >
-                Built around the delivery, not the order form.
-              </p>
-            </motion.div>
-          </div>
+          <motion.div {...reveal(0.1)} className="max-w-[40ch]">
+            <p
+              style={{
+                ...eyebrowStyle,
+                color: "var(--gold-muted)",
+                marginBottom: "1.5rem",
+              }}
+            >
+              On the bag
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.5rem, 2.6vw, 2.25rem)",
+                fontWeight: 700,
+                lineHeight: 1.25,
+                color: "var(--creme)",
+                letterSpacing: "-0.015em",
+              }}
+            >
+              Built around the delivery, not the order form.
+            </p>
+            <p
+              style={{
+                marginTop: "1.5rem",
+                fontSize: "1rem",
+                lineHeight: 1.8,
+                fontWeight: 300,
+                color: "var(--on-dark)",
+              }}
+            >
+              Every bag carries its own batch card and a code that returns
+              the record for what is inside it. You should not have to ring
+              anyone to find out what you were sent.
+            </p>
+          </motion.div>
         </div>
       </section>
 
@@ -419,12 +482,37 @@ export function BGEPage() {
       >
         <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-10 md:grid-cols-12 md:gap-12">
           <motion.div {...reveal()} className="md:col-span-3">
-            <p
-              className="md:sticky md:top-28"
-              style={{ ...eyebrowStyle, color: "var(--gold-muted)" }}
-            >
-              How to get it
-            </p>
+            <div className="md:sticky md:top-28">
+              <p style={{ ...eyebrowStyle, color: "var(--gold-muted)" }}>
+                How to get it
+              </p>
+
+              {/* The end of the sequence, in the rail rather than across
+                  the page: the steps are the subject here, and this is
+                  what they are for. Carries no copy — what biochar does
+                  in ground is a claim, and this page does not make it. */}
+              <div
+                className="relative mt-10 hidden overflow-hidden md:block"
+                style={{ aspectRatio: "3 / 4", borderRadius: "3px" }}
+              >
+                <Image
+                  src="/bge/application-mobile.jpg"
+                  alt="Gloved hands working biochar into the soil at the base of a tree."
+                  fill
+                  sizes="25vw"
+                  className="object-cover"
+                />
+                <div
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "linear-gradient(to bottom, rgba(15,20,16,0) 55%, rgba(15,20,16,0.55) 100%)",
+                  }}
+                />
+              </div>
+            </div>
           </motion.div>
 
           <div className="md:col-span-9">
