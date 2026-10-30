@@ -113,7 +113,7 @@ export function BGEPage() {
             transition={{ duration: 0.7, ease: EASE, delay: 0.05 }}
             style={{
               ...eyebrowStyle,
-              fontSize: "9px",
+              fontSize: "var(--text-micro)",
               display: "inline-block",
               color: "var(--gold-muted)",
               border: "1px solid rgba(212,168,90,0.4)",
@@ -153,7 +153,7 @@ export function BGEPage() {
               style={{
                 fontSize: "1.0625rem",
                 lineHeight: "1.75",
-                color: "rgba(245,239,230,0.55)",
+                color: "var(--on-dark)",
                 maxWidth: "44ch",
                 fontWeight: 300,
               }}

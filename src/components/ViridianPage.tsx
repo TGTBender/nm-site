@@ -121,7 +121,7 @@ function Scene({
               {...reveal(0.09)}
               style={{
                 ...eyebrowStyle,
-                fontSize: "10px",
+                fontSize: "var(--text-micro)",
                 color: "var(--gold-muted)",
                 marginBottom: "1.25rem",
               }}
@@ -151,7 +151,7 @@ function Scene({
                 fontSize: "15px",
                 lineHeight: 1.8,
                 fontWeight: 300,
-                color: "rgba(245,239,230,0.42)",
+                color: "var(--on-dark-muted)",
                 maxWidth: "38ch",
               }}
             >
@@ -196,7 +196,7 @@ const inputStyle: CSSProperties = {
 };
 
 const labelStyle: CSSProperties = {
-  color: "rgba(245,239,230,0.45)",
+  color: "var(--on-dark-muted)",
   fontSize: "11px",
   letterSpacing: "0.1em",
   textTransform: "uppercase",
@@ -252,7 +252,7 @@ function WaitlistForm() {
             style={{
               fontSize: "14px",
               lineHeight: 1.7,
-              color: "rgba(245,239,230,0.45)",
+              color: "var(--on-dark-muted)",
               marginTop: "0.35rem",
               maxWidth: "36ch",
             }}
@@ -429,7 +429,7 @@ export function ViridianPage() {
                   fontSize: "15px",
                   lineHeight: 1.7,
                   fontWeight: 300,
-                  color: "rgba(245,239,230,0.42)",
+                  color: "var(--on-dark-muted)",
                   maxWidth: "34ch",
                 }}
               >

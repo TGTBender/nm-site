@@ -33,7 +33,7 @@ export default function PrivacyPage() {
       <div className="mx-auto w-full max-w-[72ch]">
         <p
           style={{
-            fontSize: "10px",
+            fontSize: "var(--text-micro)",
             letterSpacing: "0.22em",
             textTransform: "uppercase",
             fontWeight: 600,

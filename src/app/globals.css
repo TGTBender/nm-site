@@ -9,7 +9,7 @@
   --brown: #3b2510;
   --brown-light: #6b4c2a;
   --gold: #c9912a;
-  --gold-muted: #d4a85a;
+  --gold-muted: #e2bd72;
   --black: #1a1a18;
   --off-white: #faf8f4;
 
@@ -222,7 +222,7 @@ body {
   --canopy-card: #f5efe6;
   --canopy-border: #ddd0bc;
   --canopy-ink: #1a1a18;
-  --canopy-muted: #7a6a5a;
+  --canopy-muted: #6a5a4a;
   --canopy-button-text: #e8dcc8;
 }
 
@@ -247,12 +247,18 @@ body {
   --nm-gold: #c9a227;
   --nm-cream: #efe6d2;
 
+  /* The eyebrow/label size. Nine pixels of letterspaced uppercase is an
+     editorial detail on a desktop and a squint on a phone, so it grows
+     below the sm breakpoint. Contrast and size compound at this scale:
+     the same ratio that reads cleanly at 16px does not at 9px. */
+  --text-micro: 10px;
+
   /* The brand gold is tuned for dark grounds. On any light surface it has
      to go deeper to clear 4.5:1 — that means the cream world ground, and
      also the Canopy app panels, which are near-white and sit inside dark
      sections. Declared here rather than inside the cream block so a light
      panel anywhere on the site can reach it. */
-  --gold-on-light: #7a5c12;
+  --gold-on-light: #6b5010;
 }
 
 /* #world is absolutely positioned and sized to the document. Without a
@@ -685,4 +691,13 @@ body {
   --gold-muted: #eccf88;
   --on-dark-muted: rgba(245, 239, 230, 0.84);
   --on-dark-faint: rgba(245, 239, 230, 0.7);
+}
+
+
+/* Small type needs more size on a phone, where it is also being read at
+   arm's length in daylight. */
+@media (max-width: 640px) {
+  :root {
+    --text-micro: 11.5px;
+  }
 }

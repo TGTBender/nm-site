@@ -96,7 +96,7 @@ const LIVE_HEADLINE =
       : LIVE_COUNT + " are live.";
 
 const eyebrow = {
-  fontSize: "10px",
+  fontSize: "var(--text-micro)",
   letterSpacing: "0.22em",
   textTransform: "uppercase",
   fontWeight: 600,
@@ -128,7 +128,7 @@ function Badge({ state }: { state: State }) {
     <span
       style={{
         ...eyebrow,
-        fontSize: "9px",
+        fontSize: "var(--text-micro)",
         whiteSpace: "nowrap",
         padding: "0.3rem 0.55rem",
         borderRadius: "2px",
@@ -323,7 +323,7 @@ export function LandingPage() {
                 <span
                   style={{
                     ...eyebrow,
-                    fontSize: "9px",
+                    fontSize: "var(--text-micro)",
                     color:
                       m.state === "active"
                         ? "var(--gold-muted)"
@@ -397,7 +397,7 @@ export function LandingPage() {
                       key={h}
                       style={{
                         ...eyebrow,
-                        fontSize: "9px",
+                        fontSize: "var(--text-micro)",
                         textAlign: "left",
                         color: "var(--gold-muted)",
                         padding: "0 1rem 0.9rem 0",
@@ -444,7 +444,9 @@ export function LandingPage() {
               fontSize: "12px",
               lineHeight: 1.7,
               fontWeight: 300,
-              color: "var(--on-dark-muted)",
+              // Legal attribution, and the smallest text anyone actually has to
+              // read on the page. It takes the body rung, not a muted one.
+              color: "var(--on-dark)",
               maxWidth: "58ch",
             }}
           >
@@ -481,7 +483,7 @@ export function LandingPage() {
               const Icon = MODEL_ICONS[i];
               return (
                 <motion.div key={step.title} {...reveal(0.06 + i * 0.05)}>
-                  <p style={{ ...eyebrow, fontSize: "9px", color: "var(--gold-on-light)" }}>
+                  <p style={{ ...eyebrow, fontSize: "var(--text-micro)", color: "var(--gold-on-light)" }}>
                     {String(i + 1).padStart(2, "0")}
                   </p>
                   <Icon
@@ -626,7 +628,7 @@ export function LandingPage() {
                       <span
                         style={{
                           ...eyebrow,
-                          fontSize: "9px",
+                          fontSize: "var(--text-micro)",
                           whiteSpace: "nowrap",
                           color: "var(--on-dark-muted)",
                           padding:
@@ -703,7 +705,7 @@ export function LandingPage() {
                       reads as four unrelated cards. */}
                   <p
                     aria-hidden={!lane.status}
-                    style={{ ...eyebrow, fontSize: "9px", color: "var(--gold-muted)" }}
+                    style={{ ...eyebrow, fontSize: "var(--text-micro)", color: "var(--gold-muted)" }}
                   >
                     {lane.status ?? " "}
                   </p>
@@ -830,7 +832,7 @@ export function LandingPage() {
                 <span
                   style={{
                     ...eyebrow,
-                    fontSize: "9px",
+                    fontSize: "var(--text-micro)",
                     color: "var(--gold-on-light)",
                     border: "1px solid rgba(122,92,18,0.3)",
                     padding: "0.3rem 0.55rem",

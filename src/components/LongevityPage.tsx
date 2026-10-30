@@ -133,8 +133,7 @@ export function LongevityPage() {
               maxWidth: "40ch",
             }}
           >
-            Something we are building alongside the business. Not ready to
-            explain yet — close enough to show you the shape of it.
+            A project we can be proud of, details coming soon.
           </motion.p>
         </div>
       </section>

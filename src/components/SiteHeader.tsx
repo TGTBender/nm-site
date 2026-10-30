@@ -174,7 +174,7 @@ export function SiteHeader() {
             </p>
             <p
               style={{
-                fontSize: "9px",
+                fontSize: "var(--text-micro)",
                 fontWeight: 500,
                 letterSpacing: "0.14em",
                 color: "var(--gold-muted)",

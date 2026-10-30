@@ -87,7 +87,7 @@ export function OilFieldPage() {
             <span
               style={{
                 ...eyebrowStyle,
-                fontSize: "9px",
+                fontSize: "var(--text-micro)",
                 color: "var(--nm-black)",
                 backgroundColor: "var(--gold)",
                 padding: "0.3rem 0.55rem",

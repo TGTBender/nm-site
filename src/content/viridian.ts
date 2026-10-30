@@ -44,7 +44,7 @@ export const VIRIDIAN_INTRO: ViridianSection = {
 export const VIRIDIAN_HOW: ViridianSection = {
   eyebrow: "The Viridian",
   headline: "So thirsty it defies logic.",
-  subline: "Dock it. Twist it. Watch the liquid disappear.",
+  subline: "Dock it. Lock it. Watch the liquid disappear.",
   body: "Two tubes meet with a magnetic click. One twist and the biochar draws the liquid nutrient in on its own: no pump, no mess, no guesswork.",
   image: {
     desktop: "/viridian/dock.jpg",

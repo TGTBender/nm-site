@@ -16,8 +16,11 @@ import {
 } from "@/components/CanopyUI";
 import { EASE, reveal } from "@/lib/motion";
 
+/* Eyebrows run small, so they take the muted gold rather than the brand
+   gold: at this size the brand value measured 4.7:1 on the deep ground,
+   which clears the AA floor and still squints on a phone. */
 const eyebrow = {
-  fontSize: "11px",
+  fontSize: "var(--text-micro)",
   letterSpacing: "0.2em",
   textTransform: "uppercase" as const,
   fontWeight: 600,
@@ -207,7 +210,7 @@ export function CanopyPage() {
       <section className="sec px-6 py-56 sm:px-10" data-bg="deep">
         <div className="mx-auto max-w-[1240px]">
           <motion.div {...reveal()} className="mb-14 max-w-[46ch]">
-            <p style={{ ...eyebrow, color: "var(--gold)", marginBottom: "1.5rem" }}>
+            <p style={{ ...eyebrow, color: "var(--gold-muted)", marginBottom: "1.5rem" }}>
               Proof, not promises
             </p>
             <h2
@@ -376,7 +379,7 @@ export function CanopyPage() {
           <div>
             <motion.p
               {...reveal()}
-              style={{ ...eyebrow, color: "var(--gold)", marginBottom: "1.5rem" }}
+              style={{ ...eyebrow, color: "var(--gold-muted)", marginBottom: "1.5rem" }}
             >
               At home
             </motion.p>
