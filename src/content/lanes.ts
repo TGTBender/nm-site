@@ -5,8 +5,10 @@
  * text rather than a dead link, and adding the route later is a one-line
  * change here.
  *
- * Descriptions are drafted from the business's own material and are meant to
- * be corrected rather than trusted as finished marketing copy.
+ * STATUS IS PART OF THE COPY. Only Oil Field Supply is trading today; The
+ * BGE is not selling yet and its button collects interest rather than
+ * asking for a quote nobody can fill. A lane that looks the same whether
+ * or not it has customers is a lane that misleads.
  */
 
 export type Lane = {
@@ -20,30 +22,37 @@ export type Lane = {
   cta?: string;
   /** The lane the landing page leads with. Exactly one should carry it:
    *  it takes the gold border in the platform grid. It marks what the
-   *  business is actually trading today, not a favourite, so it moves
+   *  business is actually trading today, not a favorite, so it moves
    *  when the answer to that changes. */
   primary?: boolean;
 };
 
-/* Ordered as the landing page presents them — the supply lane first,
-   because that is the one with customers. */
+/* Ordered as the landing page presents them — the live lane first. */
 export const LANES: Lane[] = [
+  {
+    name: "Oil Field Supply",
+    description:
+      "Biochar and absorbent materials for oil field operations, delivered with documentation on every load.",
+    href: "/oil-field",
+    status: "Live",
+    cta: "Request a briefing",
+    primary: true,
+  },
   {
     name: "The BGE",
     description:
-      "The Black Glove Experience. Wholesale supply for nurseries, landscapers, farms and garden centers — on schedule, on spec, with documentation on every run.",
+      "The Black Glove Experience. Wholesale supersacks for nurseries, landscapers, farms and garden centers — on schedule, on spec, with documentation on every run.",
     href: "/bge",
-    status: "Live",
-    cta: "Start a conversation",
-    primary: true,
+    status: "Coming soon",
+    cta: "Join the early list",
   },
   {
     name: "The Viridian",
     description:
-      "Charged biochar and liquid nutrient, brought together at home. The direct-to-consumer line, opening in Dallas–Fort Worth.",
+      "Charged biochar and liquid nutrient, brought together at home. The direct-to-consumer line, launching December 12 in Dallas–Fort Worth.",
     href: "/products",
-    status: "December",
-    cta: "See The Viridian",
+    status: "Dec 12",
+    cta: "Join the waitlist",
     image: {
       desktop: "/viridian/closed.jpg",
       mobile: "/viridian/closed-mobile.jpg",
@@ -56,6 +65,7 @@ export const LANES: Lane[] = [
       "The app behind both lanes: a garden companion for the home, and an account portal with batch-level traceability for the trade.",
     href: "/canopy",
     status: "In build",
+    cta: "Open Canopy",
   },
   {
     // Deliberately claims nothing. No entity, no legal form, no partners,

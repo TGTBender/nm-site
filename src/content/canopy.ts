@@ -59,7 +59,7 @@ export const CANOPY_TRADE: Feature[] = [
   {
     name: "Account terms in the open",
     description:
-      "Programme tier, locked rate and price-lock date on the dashboard rather than buried in a contract.",
+      "Program tier, locked rate and price-lock date on the dashboard rather than buried in a contract.",
   },
 ];
 

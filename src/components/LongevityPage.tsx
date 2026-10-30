@@ -9,6 +9,8 @@ import {
   LONGEVITY_TITLE_IMAGE,
   type Card,
 } from "@/content/longevity";
+import { InquiryForm } from "@/components/InquiryForm";
+import { INVOLVEMENT, longevitySchema } from "@/lib/inquiry-schema";
 import { EASE } from "@/lib/motion";
 
 /**
@@ -222,6 +224,87 @@ export function LongevityPage() {
           </div>
         </section>
       ))}
+
+      {/* ── Get involved ───────────────────────────────────────────
+          Interest only. It asks how someone wants to be involved and
+          nothing else — no donation ask, no volunteer commitment, and no
+          claim about what the project is yet. See content/longevity.ts. */}
+      <section
+        id="involved"
+        className="px-6 py-28 sm:px-10 sm:py-36"
+        style={{ backgroundColor: "var(--ink)" }}
+      >
+        <div className="mx-auto grid w-full max-w-[1240px] grid-cols-1 gap-14 md:grid-cols-12 md:gap-12">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="md:col-span-5"
+          >
+            <div className="md:sticky md:top-28">
+              <h2
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(2rem, 4.2vw, 3.5rem)",
+                  fontWeight: 700,
+                  lineHeight: 1.08,
+                  letterSpacing: "-0.025em",
+                  color: "var(--creme)",
+                }}
+              >
+                Get involved.
+              </h2>
+              <p
+                style={{
+                  marginTop: "1.25rem",
+                  fontSize: "15px",
+                  lineHeight: 1.75,
+                  fontWeight: 300,
+                  color: "var(--on-dark)",
+                  maxWidth: "36ch",
+                }}
+              >
+                It is early. Tell us how you would want to be part of it and
+                we will come back to you when there is something to join.
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
+            className="md:col-span-7"
+          >
+            <InquiryForm
+              schema={longevitySchema.omit({ kind: true })}
+              kind="longevity"
+              fields={[
+                { name: "name", label: "Name" },
+                { name: "email", label: "Email", type: "email" },
+                {
+                  name: "involvement",
+                  label: "How would you like to be involved?",
+                  type: "select",
+                  options: INVOLVEMENT,
+                  wide: true,
+                },
+                {
+                  name: "message",
+                  label: "Message",
+                  type: "textarea",
+                  optional: true,
+                },
+              ]}
+              submitLabel="Count Me In"
+              privacyNote="We will contact you about The Longevity Project."
+              successMessage="We have your details. We will be in touch when there is something to join."
+            />
+          </motion.div>
+        </div>
+      </section>
 
       {/* ── Closing card ───────────────────────────────────────────
           Cut to black. The disclosure runs here because this is the one

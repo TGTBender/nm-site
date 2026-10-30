@@ -15,6 +15,11 @@
  *    the object; it does not present them as photographs of shipping stock.
  */
 
+/** Runs under the page title. The date is firm, so the page states it
+ *  rather than implying a vague window. */
+export const VIRIDIAN_STATUS =
+  "Launching December 12, 2026. Dallas–Fort Worth first.";
+
 export type ViridianSection = {
   eyebrow: string;
   headline: string;
@@ -50,7 +55,7 @@ export const VIRIDIAN_HOW: ViridianSection = {
 
 export const VIRIDIAN_LAUNCH: ViridianSection = {
   eyebrow: "The Viridian",
-  headline: "Arriving this December.",
+  headline: "Launching December 12.",
   subline: "Dallas–Fort Worth first.",
   cta: { label: "Be first in line", href: "#waitlist" },
   image: {

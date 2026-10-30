@@ -6,7 +6,7 @@
  *
  * WHAT THIS PAGE DOES NOT SAY, and why:
  *  - It does not describe the project as a non-profit, or name any entity.
- *    The legal form is not settled and the organisation is not formed yet;
+ *    The legal form is not settled and the organization is not formed yet;
  *    on founder instruction the page makes no entity claim at all.
  *  - No volunteer recruitment, no donation ask, no sign-up. A public page
  *    soliciting either could engage charitable-solicitation rules before

@@ -2,7 +2,7 @@
  * The world background engine.
  *
  * Ported from the NM Background Study (Pulse, 2026-10-28) world.js. The
- * colour maths is kept exactly as written — OKLab interpolation so midpoints
+ * color maths is kept exactly as written — OKLab interpolation so midpoints
  * stay saturated instead of going muddy, and smootherstep easing so a
  * transition has zero slope at both ends and shows no edge.
  *
@@ -110,7 +110,7 @@ export function buildWorld() {
   const tops = secs.map((s) => s.getBoundingClientRect().top + window.scrollY);
   const names = secs.map((s) => (s.dataset.bg || "black") as BgName);
 
-  // 1) colour field
+  // 1) color field
   const stops: string[] = [COL[names[0]] + " 0px"];
   for (let i = 1; i < secs.length; i++) {
     const T = zoneFor(names[i - 1], names[i]);

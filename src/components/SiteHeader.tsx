@@ -10,7 +10,7 @@ import { Menu, X } from "lucide-react";
  * The site-wide header.
  *
  * Lifted out of the home page when the site went from one page to several.
- * It owns the scroll state and the reveal-on-scroll-up behaviour, so every
+ * It owns the scroll state and the reveal-on-scroll-up behavior, so every
  * route gets them without repeating the logic.
  *
  * Navigation is route-aware: page links are constant, while in-page anchors
@@ -22,6 +22,7 @@ type NavItem = { name: string; href: string };
 
 const PAGES: NavItem[] = [
   { name: "The Viridian", href: "/products" },
+  { name: "Oil Field", href: "/oil-field" },
   { name: "The BGE", href: "/bge" },
   { name: "Canopy", href: "/canopy" },
   { name: "Longevity", href: "/longevity" },
@@ -33,6 +34,7 @@ const ANCHORS: Record<string, NavItem[]> = {
     { name: "Why biochar", href: "#why" },
     { name: "How it works", href: "#how" },
   ],
+  "/oil-field": [{ name: "How it works", href: "#briefing" }],
 };
 
 /**
@@ -42,7 +44,10 @@ const ANCHORS: Record<string, NavItem[]> = {
  */
 const CTA: Record<string, NavItem | undefined> = {
   "/products": { name: "Join the waitlist", href: "#waitlist" },
-  "/bge": { name: "Get a Quote", href: "#contact" },
+  // The BGE is not selling yet, so its button collects interest rather
+  // than asking for a quote it cannot fill.
+  "/bge": { name: "Join the early list", href: "#contact" },
+  "/oil-field": { name: "Request a briefing", href: "#briefing" },
 };
 
 /* The region claim was pulled at the founder's direction while the
@@ -50,7 +55,7 @@ const CTA: Record<string, NavItem | undefined> = {
    there is a territory to name again. The descriptor now says what the
    business does rather than where, which is also the landing page's
    headline. */
-const DESCRIPTOR = "Biochar, built to a standard";
+const DESCRIPTOR = "Bringing biochar from niche to normal";
 
 export function SiteHeader() {
   const pathname = usePathname();

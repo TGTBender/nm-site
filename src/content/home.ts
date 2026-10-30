@@ -6,7 +6,7 @@
  *
  *  1. NOTHING IS INVENTED. Any figure not traceable to a source document
  *     is `null` and renders as a visible pending state.
- *  2. STATUS IS DATA, not decoration. Every lane, market and programme
+ *  2. STATUS IS DATA, not decoration. Every lane, market and program
  *     carries an explicit status, and the page renders that status rather
  *     than implying readiness through layout.
  *  3. THE EVIDENCE LABELS BELOW ARE THE SITE'S OWN STANDARD. Verified /
@@ -16,44 +16,64 @@
 
 /* ── Operating status ────────────────────────────────────────── */
 
-export type State = "active" | "progress" | "planning" | "development";
+export type State =
+  | "active"
+  | "soon"
+  | "launching"
+  | "development"
+  | "planning";
 
 export const STATE_LABEL: Record<State, string> = {
   active: "Active",
-  progress: "In progress",
-  planning: "In planning",
+  soon: "Coming soon",
+  launching: "Launching Dec 12",
   development: "In development",
+  planning: "In planning",
 };
+
+/** Only "active" takes the solid gold. "Launching Dec 12" is dated and
+ *  close, but it is not running yet, so it has to read as upcoming
+ *  rather than live. */
+export const SOLID_STATES: ReadonlySet<State> = new Set<State>(["active"]);
 
 export type StatusRow = { name: string; state: State };
 
 export const OPERATING_STATUS: StatusRow[] = [
   { name: "Sourcing & delivery service", state: "active" },
+  { name: "Oil field supply", state: "active" },
   { name: "Producer lab documentation", state: "active" },
-  { name: "Processing facility", state: "planning" },
-  { name: "The Viridian", state: "active" },
+  { name: "The BGE (wholesale)", state: "soon" },
+  { name: "The Viridian", state: "launching" },
   { name: "Canopy app", state: "development" },
   { name: "The Longevity Project", state: "development" },
+  { name: "Processing facility", state: "planning" },
 ];
 
 /* ── Evidence ──────────────────────────────────────────────────
- * SOURCE: "NM Bagasse Biochar — IBI Certification Lab Data (2026-09-20)"
- * in the vault — 12 IBI-certified batches, April 2023 to May 2024,
- * analysed by an independent laboratory.
+ * SOURCE: the bagasse laboratory data held in the vault — twelve batches,
+ * April 2023 to May 2024, analyzed by an independent laboratory.
  *
- * Every figure below is transcribed from that document. Three rules were
- * applied in deciding what to publish:
+ * Every figure below is transcribed from that document. Four rules govern
+ * what may appear here:
  *
+ *  - IT IS THE PRODUCER'S DATA, NOT OURS. This is laboratory data supplied
+ *    by the producer whose bagasse biochar the business currently works
+ *    with. It is not Nature's Mastermind's own measurement and it covers
+ *    historical batches. ATTRIBUTION_NOTE says so and runs under the
+ *    table; it is not optional, because without it every figure here reads
+ *    as a measurement this business took.
+ *  - THREE PHRASES ARE BANNED SITEWIDE, per the update brief: the one
+ *    asserting IBI certification, and the two that attach a possessive to
+ *    the bagasse material or to the twelve batches. The first asserts a
+ *    certification nobody has confirmed exists; the other two claim the
+ *    producer's work as this business's own. Where the IBI reference is
+ *    needed, the wording is "analyzed against IBI parameters".
  *  - ONLY EXACT FIGURES. The design mockup proposed "1–2 orders of
- *    magnitude below reference metal limits" as a headline stat. It is
- *    broadly true against the upper bound of IBI's max-level ranges and
- *    much weaker against the lower bound (zinc is ~2.4x, not 100x), so a
- *    reader could check it and find it overstated. It is replaced by the
- *    worst-case H:C ratio, which is exact and says the same thing about
- *    process control.
- *  - SCOPE IS PART OF THE CLAIM. This data covers bagasse feedstock only.
- *    SCOPE_NOTE says so, and must run wherever these figures run — other
- *    feedstocks certify as partners come on.
+ *    magnitude below reference metal limits" as a headline stat. It holds
+ *    against the upper bound of IBI's max-level ranges and not the lower
+ *    (zinc is ~2.4x, not 100x), so a reader could check it and find it
+ *    overstated. The worst-case H:C ratio says the same thing about
+ *    process control and is exact.
  *  - NO SUPPLY-CHAIN DETAIL. The founder stripped company-identifying
  *    information before this reached the vault. Methods and standards are
  *    cited because they are the source of each figure; the laboratory and
@@ -65,11 +85,12 @@ export type Stat = { value: string | null; caption: string };
 export const EVIDENCE_STATS: Stat[] = [
   {
     value: "12",
-    caption: "IBI-certified production batches, April 2023 to May 2024",
+    caption:
+      "Production batches, April 2023 to May 2024, analyzed by an independent laboratory",
   },
   {
     value: "ND",
-    caption: "Mercury — not detected in any of the twelve batches",
+    caption: "Mercury, not detected in any of the twelve batches",
   },
   {
     value: "0.61",
@@ -112,10 +133,10 @@ export const EVIDENCE_ROWS: EvidenceRow[] = [
   { parameter: "pH", result: "7.59 – 9.27", reference: "Rayment & Higginson" },
 ];
 
-/** Runs directly under the evidence table. Not optional — see rule 2 of
+/** Runs directly under the evidence table. Not optional — see rule 1 of
  *  the source note above. */
-export const SCOPE_NOTE =
-  "These results are for our bagasse biochar, across twelve independently certified production batches. Every other feedstock we take on gets its own certification before it appears here. ND means not detected, below the laboratory reporting limit.";
+export const ATTRIBUTION_NOTE =
+  "This is laboratory data supplied by the producer of the bagasse biochar Nature's Mastermind currently works with. It is the producer's data, not Nature's Mastermind's own measurements, and it covers historical batches from 2023 and 2024. Deliveries from Nature's Mastermind carry their own batch documentation. Data from any other producer appears here only once we hold it. ND means not detected, below the laboratory reporting limit.";
 
 /** Shown wherever a figure is still `null`. */
 export const PENDING_NOTE =
@@ -143,14 +164,27 @@ export const MODEL_STEPS = [
 ];
 
 /* ── Markets ───────────────────────────────────────────────────
-   Four lanes are trading, one is in R&D, four are under evaluation.
-   The section headline counts `active` entries, so it cannot drift out
-   of step with this list. */
+   Two markets are trading, one is in development, one is in R&D and five
+   are under evaluation. The section headline counts `active` entries, so
+   it cannot drift out of step with the grid beneath it.
 
-export type MarketState = "active" | "rnd" | "evaluation";
+   Carbon markets is "in development" and its copy carries no credit,
+   offset or durable-removal language. Selling a carbon benefit is a
+   regulated claim with its own methodology and verification behind it;
+   supplying documented material to that market is not the same thing,
+   and only the second is true today. */
+
+export type MarketState =
+  | "active"
+  | "soon"
+  | "development"
+  | "rnd"
+  | "evaluation";
 
 export const MARKET_LABEL: Record<MarketState, string> = {
   active: "Active",
+  soon: "Coming soon",
+  development: "In development",
   rnd: "R&D",
   evaluation: "Under evaluation",
 };
@@ -161,7 +195,22 @@ export const MARKETS: Market[] = [
   {
     name: "Soil & horticulture",
     note: "Nurseries, landscapers, growers and garden centers.",
+    state: "soon",
+  },
+  {
+    name: "Soil remediation",
+    note: "Biochar supply for contaminated and worked ground.",
     state: "active",
+  },
+  {
+    name: "Industrial absorbents",
+    note: "Absorbent materials for containment and spill response, supplied through partner manufacturers.",
+    state: "active",
+  },
+  {
+    name: "Carbon markets",
+    note: "Documented material for carbon markets.",
+    state: "development",
   },
   { name: "Water filtration", note: "Under evaluation.", state: "evaluation" },
   { name: "Air & odor control", note: "Under evaluation.", state: "evaluation" },
@@ -171,22 +220,7 @@ export const MARKETS: Market[] = [
     note: "In research and development.",
     state: "rnd",
   },
-  {
-    name: "Soil remediation",
-    note: "Contaminated and worked ground.",
-    state: "active",
-  },
-  {
-    name: "Industrial absorbents",
-    note: "Containment and spill response.",
-    state: "active",
-  },
   { name: "Aquaculture", note: "Under evaluation.", state: "evaluation" },
-  {
-    name: "Carbon markets",
-    note: "Durable carbon removal, on documented material.",
-    state: "active",
-  },
 ];
 
 /* ── Standard of evidence ────────────────────────────────────── */
@@ -200,7 +234,7 @@ export const EVIDENCE_LABELS = [
   {
     tag: "Reasoned",
     title: "A conclusion, marked as one.",
-    text: "Drawn from verified data and labelled as reasoning rather than as a measurement.",
+    text: "Drawn from verified data and labeled as reasoning rather than as a measurement.",
   },
   {
     tag: "Unknown",
@@ -223,7 +257,7 @@ export const WAYS_IN = [
       "We confirm the delivery lane and build a cadence around it.",
       "Documentation arrives with the material.",
     ],
-    cta: { label: "Request a briefing", href: "/bge" },
+    cta: { label: "Request a briefing", href: "/oil-field" },
   },
   {
     title: "Partner with us",
@@ -233,7 +267,7 @@ export const WAYS_IN = [
       "Laboratories to certify feedstocks we have not run yet.",
       "Operators with ground to prove the material on.",
     ],
-    cta: { label: "Start a conversation", href: "/bge" },
+    cta: { label: "Start a conversation", href: "/oil-field" },
   },
   {
     title: "Work for us",

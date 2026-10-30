@@ -30,7 +30,8 @@ import {
   MODEL_STEPS,
   OPERATING_STATUS,
   PENDING_NOTE,
-  SCOPE_NOTE,
+  ATTRIBUTION_NOTE,
+  SOLID_STATES,
   STATE_LABEL,
   WAYS_IN,
   type State,
@@ -90,7 +91,9 @@ const LIVE_COUNT = MARKETS.filter((m) => m.state === "active").length;
 const LIVE_HEADLINE =
   LIVE_COUNT === 1
     ? "One is live."
-    : `${COUNT_WORD[LIVE_COUNT] ?? LIVE_COUNT} are live.`;
+    : COUNT_WORD[LIVE_COUNT]
+      ? COUNT_WORD[LIVE_COUNT] + " are live."
+      : LIVE_COUNT + " are live.";
 
 const eyebrow = {
   fontSize: "10px",
@@ -113,14 +116,14 @@ function Label({ num, text, tone }: { num: string; text: string; tone?: string }
       {...reveal()}
       style={{ ...eyebrow, color: tone ?? "var(--gold-muted)", marginBottom: "2rem" }}
     >
-      {num} <span style={{ opacity: 0.45 }}>/</span> {text}
+      {num} <span style={{ opacity: 0.7 }}>/</span> {text}
     </motion.p>
   );
 }
 
 /** Status pill. `active` is the only one that gets the solid gold. */
 function Badge({ state }: { state: State }) {
-  const solid = state === "active";
+  const solid = SOLID_STATES.has(state);
   return (
     <span
       style={{
@@ -157,7 +160,10 @@ export function LandingPage() {
               style={{ ...eyebrow, color: "var(--gold)", marginBottom: "2rem" }}
             >
               Nature&apos;s Mastermind
-              <span style={{ opacity: 0.45 }}>
+              {/* Was this same gold at 0.45 opacity, which measured
+                  about 2.6:1 on the black ground. The muted gold at full
+                  strength reads as secondary without going under AA. */}
+              <span style={{ color: "var(--gold-muted)" }}>
                 {" "}
                 · A subsidiary of The Greenest Thumb
               </span>
@@ -202,11 +208,11 @@ export function LandingPage() {
               transition={{ duration: 0.7, ease: EASE, delay: 0.34 }}
               className="mt-10 flex flex-wrap items-center gap-4"
             >
-              {/* .nm-cta and .nm-quiet carry only hover/focus behaviour —
+              {/* .nm-cta and .nm-quiet carry only hover/focus behavior —
                   appearance is the caller's, as everywhere else on the
                   site. Solid gold leads; the outline follows. */}
               <Link
-                href="/bge"
+                href="/oil-field"
                 className="nm-cta inline-flex items-center gap-2"
                 style={{
                   ...eyebrow,
@@ -438,7 +444,7 @@ export function LandingPage() {
               fontSize: "12px",
               lineHeight: 1.7,
               fontWeight: 300,
-              color: "var(--on-dark-faint)",
+              color: "var(--on-dark-muted)",
               maxWidth: "58ch",
             }}
           >
@@ -447,7 +453,7 @@ export function LandingPage() {
                 has been misled by omission. */}
             {EVIDENCE_ROWS.some((r) => r.result === null)
               ? PENDING_NOTE
-              : SCOPE_NOTE}
+              : ATTRIBUTION_NOTE}
           </motion.p>
         </div>
       </section>
@@ -623,12 +629,13 @@ export function LandingPage() {
                           fontSize: "9px",
                           whiteSpace: "nowrap",
                           color: "var(--on-dark-muted)",
-                          padding: m.state === "rnd" ? "0.3rem 0.55rem" : 0,
+                          padding:
+                            m.state === "evaluation" ? 0 : "0.3rem 0.55rem",
                           borderRadius: "2px",
                           border:
-                            m.state === "rnd"
-                              ? "1px solid rgba(245,239,230,0.22)"
-                              : "none",
+                            m.state === "evaluation"
+                              ? "none"
+                              : "1px solid rgba(245,239,230,0.22)",
                         }}
                       >
                         {MARKET_LABEL[m.state]}
@@ -682,7 +689,7 @@ export function LandingPage() {
               color: "var(--creme)",
             }}
           >
-            Four lanes.{" "}
+            {COUNT_WORD[LANES.length] ?? LANES.length} lanes.{" "}
             <span style={{ color: "var(--gold)" }}>One standard.</span>
           </motion.h2>
 
@@ -978,7 +985,7 @@ export function LandingPage() {
             </p>
             <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
               <Link
-                href="/bge"
+                href="/oil-field"
                 className="inline-flex items-center gap-2"
                 style={{
                   ...eyebrow,

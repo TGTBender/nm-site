@@ -33,17 +33,10 @@ const eyebrow = {
 const SAMPLE_BATCH = {
   id: "NM-BC-20260612-A",
   physical: [
-    { label: "pH", value: "8.1" },
+    { label: "pH", value: "8.4" },
     { label: "EC", value: "0.17 dS/m" },
     { label: "Organic carbon", value: "61%" },
-    { label: "H/C ratio", value: "0.44" },
-  ],
-  nutrients: [
-    { label: "Nitrogen (N)", value: "0.8%" },
-    { label: "Phosphorus (P)", value: "0.3%" },
-    { label: "Potassium (K)", value: "1.9%" },
-    { label: "Calcium (Ca)", value: "2.4%" },
-    { label: "Magnesium (Mg)", value: "0.6%" },
+    { label: "H/C ratio", value: "0.50" },
   ],
 };
 
@@ -95,7 +88,7 @@ export function CanopyPage() {
           the padding is set to keep content clear of the 360px zone.
 
           The run ends on black because the footer is black — a different
-          ground here would put a colour transition inside 157px of
+          ground here would put a color transition inside 157px of
           footer and bleed it through the underglow. */}
       <section
         className="sec flex min-h-[86vh] items-center px-6 pb-48 pt-40 sm:px-10"
@@ -171,8 +164,8 @@ export function CanopyPage() {
                   maxWidth: "40ch",
                 }}
               >
-                A card sits under the work mat in every Viridian box. This is
-                what is behind it.
+                Every Viridian box connects to Canopy. This is what is
+                behind it.
               </p>
 
               <p
@@ -252,7 +245,10 @@ export function CanopyPage() {
                   fontWeight: 600,
                   textTransform: "uppercase",
                   letterSpacing: "0.08em",
-                  color: "var(--gold)",
+                  // Inside the app panel, so the ground here is Canopy's
+                  // near-white surface, not the section's. The brand gold
+                  // is tuned for dark and measures 2.6:1 on it.
+                  color: "var(--gold-on-light)",
                   marginBottom: "0.35rem",
                 }}
               >
@@ -290,23 +286,6 @@ export function CanopyPage() {
                   ))}
                 </div>
 
-                <h5
-                  className="mb-3 mt-6"
-                  style={{
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em",
-                    color: "var(--canopy-ink)",
-                  }}
-                >
-                  Nutrient profile
-                </h5>
-                <div className="grid gap-3 grid-cols-2 sm:grid-cols-5">
-                  {SAMPLE_BATCH.nutrients.map((s) => (
-                    <CanopyStatTile key={s.label} {...s} />
-                  ))}
-                </div>
               </CanopyCard>
 
               {/* Inside the frame on purpose, so it survives a screenshot. */}
@@ -318,8 +297,8 @@ export function CanopyPage() {
                   color: "var(--canopy-muted)",
                 }}
               >
-                Interface preview. Figures shown are sample values from the app
-                in development, not a certified result.
+                Interface preview. Sample values within the range of
+                producer-supplied laboratory data; not a certified result.
               </p>
             </CanopyScreen>
           </motion.div>

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ── Brand palette ─────────────────────────────────────────────
-   Nature's Mastermind · Biochar, built to a standard             */
+   Nature's Mastermind · Bringing biochar from niche to normal    */
 :root {
   --creme: #f5efe6;
   --creme-dark: #ddd0bc;
@@ -73,7 +73,7 @@
 }
 
 /* Every nav item on this one-page site is an in-page anchor, so smooth
-   scrolling is the intended behaviour. Next 16 no longer overrides this
+   scrolling is the intended behavior. Next 16 no longer overrides this
    during navigation unless <html data-scroll-behavior="smooth"> is set,
    which the root layout does. */
 html {
@@ -96,7 +96,7 @@ body {
    One easing curve, used everywhere. easeOutQuart moves fast then
    settles slowly, which is what separates motion that feels
    authored from motion that feels like a default. Every transition
-   below animates only opacity / transform / colour — never a layout
+   below animates only opacity / transform / color — never a layout
    property — so none of them can trigger reflow.                 */
 :root {
   --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -189,7 +189,7 @@ body {
   border-bottom: 1px solid var(--hairline);
 }
 
-/* Landing-page lane rows. Only the colour shifts — the row is large, and
+/* Landing-page lane rows. Only the color shifts — the row is large, and
    moving it on hover would make the whole list feel unstable. */
 .nm-lane {
   transition: background-color 0.4s var(--ease-out-quart);
@@ -200,7 +200,7 @@ body {
 }
 
 /* Footer social marks. Muted creme at rest, brand gold on hover — the same
-   colour logic as the rest of the site rather than a platform-coloured set. */
+   color logic as the rest of the site rather than a platform-colored set. */
 .nm-social {
   display: inline-flex;
   color: rgba(245, 239, 230, 0.44);
@@ -227,7 +227,7 @@ body {
 }
 
 /* ── The world background ──────────────────────────────────────
-   From the NM Background Study (Pulse, 2026-10-28). One continuous colour
+   From the NM Background Study (Pulse, 2026-10-28). One continuous color
    field and one continuous contour field spanning the whole document;
    sections are transparent and world.ts paints the page from each
    section's data-bg.
@@ -246,6 +246,13 @@ body {
   --nm-green: #0b5c45;
   --nm-gold: #c9a227;
   --nm-cream: #efe6d2;
+
+  /* The brand gold is tuned for dark grounds. On any light surface it has
+     to go deeper to clear 4.5:1 — that means the cream world ground, and
+     also the Canopy app panels, which are near-white and sit inside dark
+     sections. Declared here rather than inside the cream block so a light
+     panel anywhere on the site can reach it. */
+  --gold-on-light: #7a5c12;
 }
 
 /* #world is absolutely positioned and sized to the document. Without a
@@ -409,7 +416,7 @@ body {
 }
 
 /* The underglow: a band of light along the whole bottom edge, fading
-   upward. Full width on purpose — an earlier pass used a narrow centred
+   upward. Full width on purpose — an earlier pass used a narrow centered
    shaft, which is a different thing entirely.
 
    Built from a uniform linear ramp so the light reaches the left and right
@@ -528,7 +535,7 @@ body {
  * clears.
  *
  * The flat base under it sets a floor, so no part of a scene is ever
- * fully unscrimmed. That matters on phones, where the copy is centred
+ * fully unscrimmed. That matters on phones, where the copy is centered
  * vertically rather than pinned to the lit edge and so cannot rely on
  * the direction of the gradient at all. These are atmospheric frames
  * rather than product shots, so a little less of the picture is a fair
@@ -575,10 +582,9 @@ body {
   color: var(--nm-black);
   --hairline: var(--hairline-ink);
   --ink-soft: rgba(28, 24, 16, 0.72);
-  --ink-faint: rgba(28, 24, 16, 0.52);
-  /* The brand gold is tuned for dark grounds; on cream it needs to go
-     deeper to clear 4.5:1 against #EFE6D2. */
-  --gold-on-light: #7a5c12;
+  /* 0.52 measured 3.4:1 on cream. The privacy page is the one place
+     this rung carries text people have to read. */
+  --ink-faint: rgba(28, 24, 16, 0.68);
 }
 
 /* ── Text on dark grounds ──────────────────────────────────────
@@ -594,7 +600,9 @@ body {
   --on-dark-strong: rgba(245, 239, 230, 0.95);
   --on-dark: rgba(245, 239, 230, 0.82);
   --on-dark-muted: rgba(245, 239, 230, 0.66);
-  --on-dark-faint: rgba(245, 239, 230, 0.5);
+  /* 0.5 measured 4.0:1 on the deep ground — fine on black, under AA
+     on deep, and the evidence attribution runs on deep. */
+  --on-dark-faint: rgba(245, 239, 230, 0.62);
 }
 
 /* ── The Canopy invitation ─────────────────────────────────────
@@ -649,7 +657,7 @@ body {
     inset: 15px;
   }
 }
-/* Short centred rules either side of the wordmark. */
+/* Short centered rules either side of the wordmark. */
 .nm-invitation-rule {
   height: 1px;
   width: 3.5rem;

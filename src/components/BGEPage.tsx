@@ -1,38 +1,18 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { MapPin, CheckCircle2, Clock } from "lucide-react";
+import { MapPin } from "lucide-react";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
-import { contactSchema, type ContactInput } from "@/lib/contact-schema";
-import { checkZip, type ZipCheck } from "@/lib/delivery-area";
+import { InquiryForm } from "@/components/InquiryForm";
+import { bgeSchema } from "@/lib/inquiry-schema";
 import { EASE, reveal } from "@/lib/motion";
+import { ctaStyle, eyebrowStyle } from "@/lib/form-styles";
 
 /* Facts stated elsewhere on this page, surfaced as a scannable grid.
    Nothing here asserts anything the copy does not already claim. */
 const SPECS = [
-  { value: "200 lb", label: "Drums" },
   { value: "1,000 lb", label: "Supersacks" },
   { value: "1 day", label: "Quote response" },
   { value: "Every run", label: "Documented" },
@@ -48,86 +28,11 @@ const STEPS = [
 ];
 
 export function BGEPage() {
-  const { toast } = useToast();
-  const [zipInput, setZipInput] = useState("");
-  const [zipResult, setZipResult] = useState<ZipCheck | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const form = useForm<ContactInput>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: { name: "", email: "", location: "", message: "", zip: "" },
-  });
-
-  async function onSubmit(values: ContactInput) {
-    setIsSubmitting(true);
-    try {
-      // The zip the visitor checked above is the most qualifying detail
-      // on the page, so it rides along with the submission.
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, zip: zipInput || undefined }),
-      });
-      if (!res.ok) throw new Error("Server error");
-      toast({
-        title: "Request sent!",
-        description: "We'll be in touch within 1 business day.",
-      });
-      form.reset();
-      setZipInput("");
-      setZipResult(null);
-    } catch {
-      toast({
-        title: "Something went wrong.",
-        description: "Please try again or email us at nm@thegreenestthumb.org",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
-  const inputStyle: CSSProperties = {
-    backgroundColor: "rgba(255,255,255,0.05)",
-    border: "1px solid rgba(255,255,255,0.12)",
-    color: "var(--creme)",
-    height: "46px",
-    borderRadius: "0.5rem",
-    fontSize: "14px",
-  };
-
-  const labelStyle: CSSProperties = {
-    color: "rgba(245,239,230,0.45)",
-    fontSize: "11px",
-    letterSpacing: "0.1em",
-    textTransform: "uppercase",
-    fontWeight: 600,
-  };
-
-  const ctaStyle: CSSProperties = {
-    display: "inline-block",
-    backgroundColor: "var(--gold)",
-    color: "#1a1a18",
-    fontWeight: 700,
-    fontSize: "15px",
-    padding: "17px 44px",
-    borderRadius: "9999px",
-    textDecoration: "none",
-    letterSpacing: "0.02em",
-  };
-
-  const eyebrowStyle: CSSProperties = {
-    fontSize: "11px",
-    letterSpacing: "0.2em",
-    textTransform: "uppercase",
-    fontWeight: 600,
-  };
-
   return (
     <>
 
       {/* ── Section 1: Hero ──────────────────────────────────────── */}
-      {/* Content sits low-left rather than dead-centre. Centred stacks
+      {/* Content sits low-left rather than dead-center. Centered stacks
           are the strongest "template" tell there is; anchoring the type
           to one edge is most of what reads as editorial. */}
       <section
@@ -199,6 +104,27 @@ export function BGEPage() {
             Wholesale Supply · Biochar Distribution
           </motion.p>
 
+          {/* The lane is not selling yet. The tag says so beside the
+              eyebrow, and the banner below the hero repeats it where
+              someone skimming will actually land. */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.05 }}
+            style={{
+              ...eyebrowStyle,
+              fontSize: "9px",
+              display: "inline-block",
+              color: "var(--gold-muted)",
+              border: "1px solid rgba(212,168,90,0.4)",
+              padding: "0.35rem 0.6rem",
+              borderRadius: "2px",
+              marginBottom: "1.75rem",
+            }}
+          >
+            Coming soon
+          </motion.p>
+
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -218,7 +144,7 @@ export function BGEPage() {
           </motion.h1>
 
           {/* Sub-copy and CTA share a baseline row on wide screens —
-              asymmetry the centred layout could not express. */}
+              asymmetry the centered layout could not express. */}
           <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-16">
             <motion.p
               initial={{ opacity: 0, y: 16 }}
@@ -244,10 +170,43 @@ export function BGEPage() {
               className="shrink-0"
             >
               <a href="#contact" className="nm-cta" style={ctaStyle}>
-                Request a Quote
+                Join the early list
               </a>
             </motion.div>
           </div>
+
+          {/* Launch banner, plus the cross-link for anyone who needs
+              material now rather than at launch. */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.48 }}
+            className="mt-14 flex flex-col gap-3 border-t pt-8 sm:flex-row sm:items-center sm:justify-between sm:gap-8"
+            style={{ borderColor: "var(--hairline)" }}
+          >
+            <p
+              style={{
+                fontSize: "15px",
+                lineHeight: 1.7,
+                fontWeight: 300,
+                color: "var(--on-dark)",
+              }}
+            >
+              Launching soon. Join the early list and we will tell you when
+              supply opens.
+            </p>
+            <p style={{ fontSize: "13px", color: "var(--on-dark-muted)" }}>
+              Supplying oil field operations now?{" "}
+              <Link
+                href="/oil-field"
+                className="nm-link"
+                style={{ color: "var(--gold)", fontWeight: 600 }}
+              >
+                See Oil Field Supply
+              </Link>
+              .
+            </p>
+          </motion.div>
         </div>
       </section>
 
@@ -287,8 +246,8 @@ export function BGEPage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              Biochar doesn&apos;t wear off. One application changes your soil for
-              decades.
+              Biochar is built to last. Stable carbon, documented batch by
+              batch.
             </motion.h2>
 
             <motion.div
@@ -555,21 +514,24 @@ export function BGEPage() {
 
             <motion.div {...reveal(0.3)} style={{ marginTop: "3rem" }}>
               <a href="#contact" className="nm-cta" style={ctaStyle}>
-                Request a Quote
+                Join the early list
               </a>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ── Contact ──────────────────────────────────────────────── */}
+      {/* ── Early list ───────────────────────────────────────────
+          The lane is not selling yet, so this collects interest rather
+          than taking a quote request it cannot answer. The delivery-area
+          checker went with it: a lane with no launch date cannot tell
+          anyone whether they are inside it. */}
       <section
         id="contact"
         className="px-6 py-28 sm:px-10 sm:py-40"
         style={{ backgroundColor: "var(--ink-deep)" }}
       >
         <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-14 md:grid-cols-12 md:gap-12">
-          {/* Pitch rail on the left, form on the right. */}
           <motion.div {...reveal()} className="md:col-span-5">
             <div className="md:sticky md:top-28">
               <p
@@ -592,293 +554,57 @@ export function BGEPage() {
                   marginBottom: "1.25rem",
                 }}
               >
-                Request a quote.
+                Join the early list.
               </h2>
               <p
                 style={{
                   fontSize: "15px",
-                  lineHeight: "1.7",
-                  color: "rgba(245,239,230,0.42)",
+                  lineHeight: 1.7,
+                  color: "var(--on-dark)",
                   fontWeight: 300,
                   maxWidth: "34ch",
                 }}
               >
-                Tell us what you run and we&apos;ll come back within one business
-                day with formats, cadence and a delivery lane.
+                Tell us what you run. We will come back when supply opens
+                with formats, cadence and a delivery lane.
+              </p>
+              <p
+                style={{
+                  marginTop: "1.5rem",
+                  fontSize: "13px",
+                  lineHeight: 1.7,
+                  color: "var(--on-dark-muted)",
+                  maxWidth: "34ch",
+                }}
+              >
+                Delivery availability will be confirmed at launch.
               </p>
             </div>
           </motion.div>
 
-          <div className="md:col-span-7">
-            {/* Zip checker */}
-            <motion.div {...reveal(0.08)} style={{ marginBottom: "2.25rem" }}>
-              <label
-                htmlFor="zip-check"
-                style={{
-                  display: "block",
-                  fontSize: "11px",
-                  fontWeight: 600,
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  color: "rgba(245,239,230,0.30)",
-                  marginBottom: "0.75rem",
-                }}
-              >
-                Check delivery availability
-              </label>
-              <div style={{ display: "flex", gap: "0.5rem" }}>
-                <input
-                  id="zip-check"
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={5}
-                  placeholder="Your zip code"
-                  value={zipInput}
-                  onChange={(e) => {
-                    setZipInput(e.target.value.replace(/\D/g, "").slice(0, 5));
-                    setZipResult(null);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      setZipResult(checkZip(zipInput));
-                    }
-                  }}
-                  style={{ ...inputStyle, flex: 1, padding: "0 1rem" }}
-                />
-                <button
-                  type="button"
-                  onClick={() => setZipResult(checkZip(zipInput))}
-                  className="nm-quiet"
-                  style={{
-                    height: "46px",
-                    padding: "0 1.25rem",
-                    borderRadius: "0.5rem",
-                    backgroundColor: "rgba(255,255,255,0.07)",
-                    color: "rgba(245,239,230,0.60)",
-                    fontSize: "13px",
-                    fontWeight: 600,
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    cursor: "pointer",
-                  }}
-                >
-                  Check
-                </button>
-              </div>
-              <div aria-live="polite">
-                {zipResult === "in" && (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                      marginTop: "0.75rem",
-                    }}
-                  >
-                    <CheckCircle2
-                      style={{
-                        width: 13,
-                        height: 13,
-                        color: "var(--gold)",
-                        flexShrink: 0,
-                      }}
-                    />
-                    <p style={{ fontSize: "13px", color: "rgba(245,239,230,0.55)" }}>
-                      You&apos;re in our delivery lane.
-                    </p>
-                  </div>
-                )}
-                {zipResult === "out" && (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                      marginTop: "0.75rem",
-                    }}
-                  >
-                    <Clock
-                      style={{
-                        width: 13,
-                        height: 13,
-                        color: "var(--gold-muted)",
-                        flexShrink: 0,
-                      }}
-                    />
-                    <p style={{ fontSize: "13px", color: "rgba(245,239,230,0.40)" }}>
-                      Outside our current lane — we&apos;re expanding. Fill out the
-                      form anyway.
-                    </p>
-                  </div>
-                )}
-                {zipResult === "invalid" && (
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      color: "#c97c3a",
-                      marginTop: "0.6rem",
-                    }}
-                  >
-                    Please enter a valid 5-digit zip code.
-                  </p>
-                )}
-              </div>
-            </motion.div>
-
-            {/* Form */}
-            <motion.div {...reveal(0.14)}>
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1.125rem",
-                  }}
-                >
-                  {/* Stacks on phones — at 375px a fixed 1fr 1fr left each
-                      input ~149px wide, too tight to type an email into. */}
-                  <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel style={labelStyle}>Name</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Your name"
-                              {...field}
-                              style={inputStyle}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel style={labelStyle}>Email</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="email"
-                              placeholder="you@company.com"
-                              {...field}
-                              style={inputStyle}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-                    <FormField
-                      control={form.control}
-                      name="location"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel style={labelStyle}>Location</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="City, State"
-                              {...field}
-                              style={inputStyle}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="format"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel style={labelStyle}>Format</FormLabel>
-                          {/* `?? ""` keeps this controlled after form.reset().
-                              With a bare undefined, Radix falls back to
-                              uncontrolled and keeps rendering the previous
-                              label, so a cleared form still showed a format. */}
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value ?? ""}
-                          >
-                            <FormControl>
-                              <SelectTrigger style={inputStyle}>
-                                <SelectValue placeholder="Select" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="drums">200 lb Drums</SelectItem>
-                              <SelectItem value="supersacks">
-                                1,000 lb Supersacks
-                              </SelectItem>
-                              <SelectItem value="unsure">Not Sure Yet</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <FormField
-                    control={form.control}
-                    name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel style={labelStyle}>Message (optional)</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Tell us about your operation..."
-                            {...field}
-                            style={{
-                              backgroundColor: "rgba(255,255,255,0.05)",
-                              border: "1px solid rgba(255,255,255,0.12)",
-                              color: "var(--creme)",
-                              minHeight: "100px",
-                              resize: "none",
-                              borderRadius: "0.5rem",
-                              fontSize: "14px",
-                            }}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="nm-cta"
-                    style={{
-                      width: "100%",
-                      height: "52px",
-                      backgroundColor: "var(--gold)",
-                      color: "#1a1a18",
-                      fontWeight: 700,
-                      fontSize: "15px",
-                      borderRadius: "9999px",
-                      border: "none",
-                      cursor: isSubmitting ? "not-allowed" : "pointer",
-                      letterSpacing: "0.025em",
-                      marginTop: "0.5rem",
-                    }}
-                  >
-                    {isSubmitting ? "Sending…" : "Send My Request"}
-                  </button>
-                </form>
-              </Form>
-            </motion.div>
-          </div>
+          <motion.div {...reveal(0.1)} className="md:col-span-7">
+            <InquiryForm
+              schema={bgeSchema.omit({ kind: true })}
+              kind="bge"
+              fields={[
+                { name: "name", label: "Name" },
+                { name: "email", label: "Email", type: "email" },
+                { name: "location", label: "Location", wide: true },
+                {
+                  name: "message",
+                  label: "Message",
+                  type: "textarea",
+                  optional: true,
+                },
+              ]}
+              submitLabel="Join the List"
+              privacyNote="We use what you send only to tell you when supply opens and to answer your message."
+              successMessage="You are on the early list. We will tell you when supply opens."
+            />
+          </motion.div>
         </div>
       </section>
+
 
     </>
   );

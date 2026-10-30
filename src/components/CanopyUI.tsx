@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
  * on the marketing site.
  *
  * Ported from natures-mastermind/src/components — Card, StatTile and
- * DeliveryTracker — keeping the same geometry, borders, weights and colours.
+ * DeliveryTracker — keeping the same geometry, borders, weights and colors.
  * They are recreated rather than imported because the app is a separate
  * codebase and a build-time dependency between the two would be worse than a
  * small amount of duplication.
@@ -177,7 +177,7 @@ export function CanopyDeliveryTracker({
 /**
  * The frame the app sits in. A light panel on the dark page, lifted off the
  * ground so it reads as a screen rather than a section with a different
- * background colour.
+ * background color.
  */
 export function CanopyScreen({ children }: { children: ReactNode }) {
   return (

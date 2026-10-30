@@ -2,6 +2,7 @@
 
 import { useState, type CSSProperties } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +21,7 @@ import { useToast } from "@/hooks/use-toast";
 import { waitlistSchema, type WaitlistInput } from "@/lib/waitlist-schema";
 import {
   VIRIDIAN_INTRO,
+  VIRIDIAN_STATUS,
   VIRIDIAN_HOW,
   VIRIDIAN_LAUNCH,
   type ViridianSection,
@@ -111,13 +113,30 @@ function Scene({
             {headline}
           </Heading>
 
+          {/* The launch date, under the page title. Only on the primary
+              heading — repeating it beside every section headline would
+              read as a countdown rather than a fact. */}
+          {primary && (
+            <motion.p
+              {...reveal(0.09)}
+              style={{
+                ...eyebrowStyle,
+                fontSize: "10px",
+                color: "var(--gold-muted)",
+                marginBottom: "1.25rem",
+              }}
+            >
+              {VIRIDIAN_STATUS}
+            </motion.p>
+          )}
+
           <motion.p
             {...reveal(0.12)}
             style={{
               fontSize: "1.0625rem",
               lineHeight: 1.7,
               fontWeight: 300,
-              color: "rgba(245,239,230,0.62)",
+              color: "var(--on-dark)",
               maxWidth: "32ch",
             }}
           >
@@ -352,6 +371,23 @@ function WaitlistForm() {
         >
           {isSubmitting ? "Adding you…" : "Join the waitlist"}
         </button>
+
+        <p
+          style={{
+            marginTop: "1.25rem",
+            fontSize: "12px",
+            lineHeight: 1.7,
+            fontWeight: 300,
+            color: "var(--on-dark-muted)",
+          }}
+        >
+          We will email you about The Viridian launch. You can unsubscribe at
+          any time.{" "}
+          <Link href="/privacy" className="nm-link" style={{ color: "var(--gold)" }}>
+            See our Privacy Notice
+          </Link>
+          .
+        </p>
       </form>
     </Form>
   );

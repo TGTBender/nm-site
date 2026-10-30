@@ -14,11 +14,11 @@ import { ViridianPage } from "@/components/ViridianPage";
 export const metadata: Metadata = {
   title: "The Viridian",
   description:
-    "Charged biochar and liquid nutrient, brought together at home. The Viridian arrives this December, Dallas–Fort Worth first.",
+    "Charged biochar and liquid nutrient, brought together at home. The Viridian launches December 12, 2026, Dallas–Fort Worth first.",
   openGraph: {
     title: "The Viridian · Nature's Mastermind",
     description:
-      "Charged biochar and liquid nutrient, brought together at home. Arriving this December, Dallas–Fort Worth first.",
+      "Charged biochar and liquid nutrient, brought together at home. Launching December 12, Dallas–Fort Worth first.",
     images: [{ url: "/viridian/hero.jpg", width: 2400, height: 850 }],
   },
   twitter: {

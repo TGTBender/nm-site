@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SOCIALS } from "@/content/social";
 import { SOCIAL_ICONS } from "@/components/SocialIcons";
+import { CONTACT } from "@/content/home";
 
 /**
  * Site-wide footer, lit from below.
@@ -58,8 +59,43 @@ export function SiteFooter() {
             <p style={{ fontSize: "11px", color: "var(--on-dark-muted)" }}>
               A subsidiary of The Greenest Thumb Inc.
             </p>
+            <p
+              style={{
+                marginTop: "0.35rem",
+                fontSize: "11px",
+                color: "var(--gold-muted)",
+              }}
+            >
+              Bringing biochar from niche to normal.
+            </p>
           </div>
         </div>
+
+        {/* Contact and the Privacy Notice, required on every page. */}
+        <nav
+          aria-label="Footer"
+          className="flex flex-wrap items-center gap-x-6 gap-y-2"
+        >
+          <a
+            href={`tel:+1${CONTACT.phone.replace(/\D/g, "")}`}
+            style={{ fontSize: "11px", color: "var(--on-dark)" }}
+          >
+            {CONTACT.phone}
+          </a>
+          <a
+            href={`mailto:${CONTACT.email}`}
+            style={{ fontSize: "11px", color: "var(--on-dark)" }}
+          >
+            {CONTACT.email}
+          </a>
+          <Link
+            href="/privacy"
+            className="nm-link"
+            style={{ fontSize: "11px", color: "var(--gold-muted)" }}
+          >
+            Privacy Notice
+          </Link>
+        </nav>
 
         {/* Right side: social marks over the copyright. A platform with a
             URL renders as a link; one without renders as a plain mark, so

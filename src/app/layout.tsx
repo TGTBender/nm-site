@@ -34,11 +34,11 @@ const SITE_URL = "https://naturesmastermind.com";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Nature's Mastermind — Biochar, built to a standard",
+    default: "Nature's Mastermind — Bringing biochar from niche to normal",
     template: "%s · Nature's Mastermind",
   },
   description:
-    "We source, document and deliver biochar and the inputs that go with it — on schedule, on spec, with documentation on every run.",
+    "Bringing biochar from niche to normal. We source, document and deliver biochar and the inputs that go with it — on schedule, on spec, with documentation on every run.",
   keywords: [
     "biochar",
     "biochar supplier",
@@ -52,13 +52,13 @@ export const metadata: Metadata = {
     siteName: "Nature's Mastermind",
     title: "A biochar supply lane that actually shows up.",
     description:
-      "We source, document and deliver biochar and the inputs that go with it — on schedule, on spec.",
+      "Bringing biochar from niche to normal. We source, document and deliver biochar and the inputs that go with it.",
   },
   twitter: {
     card: "summary_large_image",
     title: "A biochar supply lane that actually shows up.",
     description:
-      "Biochar, sourced and documented — on schedule, on spec.",
+      "Bringing biochar from niche to normal.",
   },
   robots: { index: true, follow: true },
 };
