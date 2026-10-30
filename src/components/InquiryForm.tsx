@@ -58,6 +58,7 @@ export function InquiryForm<T extends FieldValues>({
   } = useForm<T>({ resolver: zodResolver(schema) });
 
   const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
+  const [errorText, setErrorText] = useState<string | null>(null);
 
   async function onSubmit(values: T) {
     setStatus("idle");
@@ -67,10 +68,19 @@ export function InquiryForm<T extends FieldValues>({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...values, kind }),
       });
-      if (!res.ok) throw new Error(String(res.status));
+      // The server says what went wrong when it can; a misconfigured mail
+      // path in particular needs to reach the sender rather than hide
+      // behind a generic retry message.
+      const payload = await res.json().catch(() => null);
+      if (!res.ok) {
+        setErrorText(payload?.error ?? null);
+        setStatus("error");
+        return;
+      }
       setStatus("sent");
       reset();
     } catch {
+      setErrorText(null);
       setStatus("error");
     }
   }
@@ -224,8 +234,8 @@ export function InquiryForm<T extends FieldValues>({
       <div aria-live="polite">
         {status === "error" && (
           <p style={{ marginTop: "1rem", fontSize: "13px", color: "#e09a5a" }}>
-            That did not go through. Please try again, or email
-            nm@thegreenestthumb.org.
+            {errorText ??
+              "That did not go through. Please try again, or email nm@thegreenestthumb.org."}
           </p>
         )}
       </div>

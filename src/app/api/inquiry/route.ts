@@ -1,6 +1,12 @@
 import { inquirySchema, describeInquiry } from "@/lib/inquiry-schema";
 import { isRateLimited, clientIp } from "@/lib/rate-limit";
-import { resend, MAIL_FROM, MAIL_TO } from "@/lib/mail";
+import {
+  resend,
+  MAIL_FROM,
+  MAIL_TO,
+  MAIL_REQUIRED,
+  mailMisconfigured,
+} from "@/lib/mail";
 
 /**
  * One endpoint for the oil field briefing, The BGE early list and the
@@ -49,9 +55,13 @@ export async function POST(request: Request) {
   const { subject, body } = describeInquiry(data);
 
   if (!resend) {
-    // Local development without an API key: log instead of sending so the
-    // forms stay exercisable end to end without credentials.
-    console.info("[inquiry] submission (no RESEND_API_KEY — dev mode)", {
+    // Deployed with no credentials is an outage, not a dev convenience:
+    // say so rather than reporting a success nobody received.
+    if (MAIL_REQUIRED) return mailMisconfigured("inquiry");
+
+    // Local development: log instead of sending so the forms stay
+    // exercisable end to end without credentials.
+    console.info("[inquiry] submission (no RESEND_API_KEY — local)", {
       kind: data.kind,
       subject,
     });

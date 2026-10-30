@@ -1,6 +1,12 @@
 import { waitlistSchema } from "@/lib/waitlist-schema";
 import { isRateLimited, clientIp } from "@/lib/rate-limit";
-import { resend, MAIL_FROM, MAIL_TO } from "@/lib/mail";
+import {
+  resend,
+  MAIL_FROM,
+  MAIL_TO,
+  MAIL_REQUIRED,
+  mailMisconfigured,
+} from "@/lib/mail";
 import { buildConfirmation } from "@/lib/waitlist-confirmation";
 
 /**
@@ -54,7 +60,8 @@ Zip:   ${zip || "(not provided)"}
   `.trim();
 
   if (!resend) {
-    console.info("[waitlist] signup (no RESEND_API_KEY — dev mode)", {
+    if (MAIL_REQUIRED) return mailMisconfigured("waitlist");
+    console.info("[waitlist] signup (no RESEND_API_KEY — local)", {
       email,
       name,
       zip,
