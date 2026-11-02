@@ -141,9 +141,9 @@ export function OilFieldPage() {
               maxWidth: "54ch",
             }}
           >
-            We supply biochar and absorbent materials from producers who
-            document what they make. You get the material, the logistics and
-            the paperwork.
+            We source the biochar and absorbents, handle the freight, and send
+            the batch records with the load — so the paperwork arrives when the
+            material does.
           </motion.p>
 
           <motion.div
