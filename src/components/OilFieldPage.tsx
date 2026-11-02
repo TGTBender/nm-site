@@ -141,10 +141,9 @@ export function OilFieldPage() {
               maxWidth: "54ch",
             }}
           >
-            We source biochar and absorbent materials from documented producers
-            and deliver them to operators and to land-treatment and
-            produced-water companies. You get the material, the logistics and
-            the paperwork.
+            Biochar and absorbents from documented producers — for operators,
+            land-treatment and produced-water companies. You get the material,
+            the logistics and the paperwork.
           </motion.p>
 
           <motion.div
