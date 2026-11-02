@@ -40,7 +40,10 @@ export type StatusRow = { name: string; state: State };
 
 export const OPERATING_STATUS: StatusRow[] = [
   { name: "Sourcing & delivery service", state: "active" },
-  { name: "Oil field supply", state: "active" },
+  // Reads as in development while its page is down. The lane is
+  // real, but a row saying Active invites an enquiry with nowhere to
+  // make it; see the hidden lane in content/lanes.ts.
+  { name: "Oil field supply", state: "development" },
   { name: "Producer lab documentation", state: "active" },
   { name: "The BGE (wholesale)", state: "soon" },
   { name: "The Viridian", state: "launching" },
