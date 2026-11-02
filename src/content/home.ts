@@ -257,7 +257,7 @@ export const WAYS_IN = [
       "We confirm the delivery lane and build a cadence around it.",
       "Documentation arrives with the material.",
     ],
-    cta: { label: "Request a briefing", href: "/oil-field" },
+    cta: { label: "Join the early list", href: "/bge" },
   },
   {
     title: "Partner with us",
@@ -267,7 +267,7 @@ export const WAYS_IN = [
       "Laboratories to certify feedstocks we have not run yet.",
       "Operators with ground to prove the material on.",
     ],
-    cta: { label: "Start a conversation", href: "/oil-field" },
+    cta: { label: "Start a conversation", href: "/bge" },
   },
   {
     title: "Work for us",

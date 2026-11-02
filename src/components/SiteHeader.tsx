@@ -22,7 +22,6 @@ type NavItem = { name: string; href: string };
 
 const PAGES: NavItem[] = [
   { name: "The Viridian", href: "/products" },
-  { name: "Oil Field", href: "/oil-field" },
   { name: "The BGE", href: "/bge" },
   { name: "Canopy", href: "/canopy" },
   { name: "Longevity", href: "/longevity" },
@@ -34,7 +33,6 @@ const ANCHORS: Record<string, NavItem[]> = {
     { name: "Why biochar", href: "#why" },
     { name: "How it works", href: "#how" },
   ],
-  "/oil-field": [{ name: "How it works", href: "#briefing" }],
 };
 
 /**
@@ -47,7 +45,6 @@ const CTA: Record<string, NavItem | undefined> = {
   // The BGE is not selling yet, so its button collects interest rather
   // than asking for a quote it cannot fill.
   "/bge": { name: "Join the early list", href: "#contact" },
-  "/oil-field": { name: "Request a briefing", href: "#briefing" },
 };
 
 /* The region claim was pulled at the founder's direction while the

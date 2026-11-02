@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 
@@ -194,17 +193,6 @@ export function BGEPage() {
             >
               Launching soon. Join the early list and we&apos;ll let you know
               the moment supply opens.
-            </p>
-            <p style={{ fontSize: "13px", color: "var(--on-dark-muted)" }}>
-              Supplying oil field operations now?{" "}
-              <Link
-                href="/oil-field"
-                className="nm-link"
-                style={{ color: "var(--gold)", fontWeight: 600 }}
-              >
-                See Oil Field Supply
-              </Link>
-              .
             </p>
           </motion.div>
         </div>

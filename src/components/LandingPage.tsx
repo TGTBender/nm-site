@@ -20,6 +20,11 @@ import {
 } from "lucide-react";
 
 import { LANES } from "@/content/lanes";
+
+/* A hidden lane keeps its copy in content/lanes.ts but does not appear
+   on the site. The headline counts this filtered list, so taking a lane
+   down cannot leave the count claiming one more than the grid shows. */
+const VISIBLE_LANES = LANES.filter((l) => !l.hidden);
 import {
   CONTACT,
   EVIDENCE_LABELS,
@@ -212,7 +217,7 @@ export function LandingPage() {
                   appearance is the caller's, as everywhere else on the
                   site. Solid gold leads; the outline follows. */}
               <Link
-                href="/oil-field"
+                href="/bge"
                 className="nm-cta inline-flex items-center gap-2"
                 style={{
                   ...eyebrow,
@@ -223,7 +228,7 @@ export function LandingPage() {
                   textDecoration: "none",
                 }}
               >
-                Request a briefing
+                Join the early list
                 <ArrowRight aria-hidden style={{ width: 14, height: 14 }} />
               </Link>
               <Link
@@ -691,12 +696,12 @@ export function LandingPage() {
               color: "var(--creme)",
             }}
           >
-            {COUNT_WORD[LANES.length] ?? LANES.length} lanes.{" "}
+            {COUNT_WORD[VISIBLE_LANES.length] ?? VISIBLE_LANES.length} lanes.{" "}
             <span style={{ color: "var(--gold)" }}>One standard.</span>
           </motion.h2>
 
           <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {LANES.map((lane, i) => {
+            {VISIBLE_LANES.map((lane, i) => {
               const body = (
                 <>
                   {/* The slot renders even when empty, so every heading in
@@ -1004,7 +1009,7 @@ export function LandingPage() {
             </p>
             <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
               <Link
-                href="/oil-field"
+                href="/bge"
                 className="inline-flex items-center gap-2"
                 style={{
                   ...eyebrow,

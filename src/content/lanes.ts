@@ -5,10 +5,15 @@
  * text rather than a dead link, and adding the route later is a one-line
  * change here.
  *
- * STATUS IS PART OF THE COPY. Only Oil Field Supply is trading today; The
- * BGE is not selling yet and its button collects interest rather than
- * asking for a quote nobody can fill. A lane that looks the same whether
- * or not it has customers is a lane that misleads.
+ * `hidden` takes a lane off the site without taking it out of the file.
+ * Oil Field Supply is hidden while the lane waits on a few more pieces;
+ * its page redirects to the landing page in next.config.ts. Restoring it
+ * is deleting the flag and that redirect.
+ *
+ * STATUS IS PART OF THE COPY. The BGE is not selling yet, so its button
+ * collects interest rather than asking for a quote nobody can fill. A
+ * lane that looks the same whether or not it has customers is a lane
+ * that misleads.
  */
 
 export type Lane = {
@@ -25,6 +30,8 @@ export type Lane = {
    *  business is actually trading today, not a favorite, so it moves
    *  when the answer to that changes. */
   primary?: boolean;
+  /** Off the site, still in the file. */
+  hidden?: boolean;
 };
 
 /* Ordered as the landing page presents them — the live lane first. */
@@ -36,7 +43,7 @@ export const LANES: Lane[] = [
     href: "/oil-field",
     status: "Live",
     cta: "Request a briefing",
-    primary: true,
+    hidden: true,
   },
   {
     name: "The BGE",
@@ -45,6 +52,7 @@ export const LANES: Lane[] = [
     href: "/bge",
     status: "Coming soon",
     cta: "Join the early list",
+    primary: true,
   },
   {
     name: "The Viridian",
