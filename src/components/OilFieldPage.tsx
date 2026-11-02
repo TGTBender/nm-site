@@ -42,24 +42,30 @@ export function OilFieldPage() {
         className="relative flex min-h-[90dvh] flex-col justify-end overflow-hidden px-6 pb-24 pt-40 sm:px-10"
         style={{ backgroundColor: "var(--ink)" }}
       >
+        {/* The alt describes an operator, not this business, and names no
+            outcome. The page's whole boundary is that the material and the
+            paperwork are ours while the treatment program and its results
+            belong to the customer — the picture has to sit inside that
+            same line, so it says what is happening and nothing about what
+            it achieves. */}
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
           <Image
-            src="/bge/load.jpg"
-            alt="A flatbed load of Nature's Mastermind bulk bags strapped to pallets."
+            src="/oil-field/spread.jpg"
+            alt="An operator spreading biochar by hand from a sack across a wet pad at dusk, with drums bunded behind them."
             fill
             priority
             sizes="100vw"
             className="hidden object-cover md:block"
-            style={{ objectPosition: "center 42%" }}
+            style={{ objectPosition: "center 48%" }}
           />
           <Image
-            src="/bge/load-mobile.jpg"
-            alt="A flatbed load of Nature's Mastermind bulk bags strapped to pallets."
+            src="/oil-field/spread-mobile.jpg"
+            alt="An operator spreading biochar by hand from a sack across a wet pad at dusk, with drums bunded behind them."
             fill
             priority
             sizes="100vw"
             className="object-cover md:hidden"
-            style={{ objectPosition: "center 45%" }}
+            style={{ objectPosition: "center 50%" }}
           />
         </div>
         <div
