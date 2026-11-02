@@ -298,8 +298,8 @@ export function LongevityPage() {
                 },
               ]}
               submitLabel="Count Me In"
-              privacyNote="We will contact you about The Longevity Project."
-              successMessage="We have your details. We will be in touch when there is something to join."
+              privacyNote="We&apos;ll only use this to contact you about The Longevity Project."
+              successMessage="Thank you — we have your details, and we&apos;ll be in touch as soon as there is something to join."
             />
           </motion.div>
         </div>

@@ -192,8 +192,8 @@ export function BGEPage() {
                 color: "var(--on-dark)",
               }}
             >
-              Launching soon. Join the early list and we will tell you when
-              supply opens.
+              Launching soon. Join the early list and we&apos;ll let you know
+              the moment supply opens.
             </p>
             <p style={{ fontSize: "13px", color: "var(--on-dark-muted)" }}>
               Supplying oil field operations now?{" "}
@@ -565,8 +565,9 @@ export function BGEPage() {
                   maxWidth: "34ch",
                 }}
               >
-                Tell us what you run. We will come back when supply opens
-                with formats, cadence and a delivery lane.
+                Tell us a little about what you run. When supply opens we&apos;ll
+                come back to you with formats, cadence and a delivery lane that
+                suits you.
               </p>
               <p
                 style={{
@@ -577,7 +578,7 @@ export function BGEPage() {
                   maxWidth: "34ch",
                 }}
               >
-                Delivery availability will be confirmed at launch.
+                We&apos;ll confirm delivery availability for your area at launch.
               </p>
             </div>
           </motion.div>
@@ -598,8 +599,8 @@ export function BGEPage() {
                 },
               ]}
               submitLabel="Join the List"
-              privacyNote="We use what you send only to tell you when supply opens and to answer your message."
-              successMessage="You are on the early list. We will tell you when supply opens."
+              privacyNote="We&apos;ll only use what you send to let you know when supply opens and to answer your message."
+              successMessage="You are on the early list. We&apos;ll be in touch the moment supply opens."
             />
           </motion.div>
         </div>

@@ -19,8 +19,17 @@
  *    both have to change.
  */
 
-/** Rendered where the mailing address belongs, until there is one. */
-export const MAILING_ADDRESS: string | null = null;
+/**
+ * The postal address, required by CAN-SPAM in commercial email and named
+ * in the privacy notice.
+ *
+ * Supplied by the founder 2026-11-02 as an interim while there is no
+ * office. Setting it here does two things at once: the privacy notice
+ * stops saying an address is coming, and the Viridian waitlist
+ * confirmation email becomes sendable — it was gated on exactly this.
+ */
+export const MAILING_ADDRESS: string | null =
+  "1203 Cove St, Bossier City, LA 71112";
 
 export const PRIVACY_UPDATED = "October 30, 2026";
 
@@ -36,7 +45,7 @@ export const PRIVACY_SECTIONS: PrivacySection[] = [
   {
     heading: "What we collect",
     paragraphs: [
-      "What you type into our forms: name, email, phone, company, location or ZIP, site location, estimated volume, timeline, the kind of involvement you choose, and your message.",
+      "What you type into our forms: name, email, phone, company, location or ZIP, site location, estimated volume, the kind of involvement you choose, and your message.",
       "We also collect the basic technical data your browser sends when you visit — IP address, browser type and the pages you open. This site runs no analytics package, no tag manager and no advertising trackers, and it sets no cookies of its own. That technical data exists only as standard server logs kept by our hosting provider.",
     ],
   },

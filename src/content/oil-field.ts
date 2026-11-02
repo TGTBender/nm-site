@@ -14,30 +14,30 @@
 export const SUPPLY = [
   {
     title: "Biochar",
-    text: "Raw, uncharged biochar, delivered by bulk truck.",
+    text: "Raw, uncharged biochar, delivered to your site by bulk truck.",
   },
   {
     title: "Absorbent materials",
-    text: "For containment and spill response, supplied through partner manufacturers.",
+    text: "Absorbents for containment and spill response, sourced for you through our partner manufacturers.",
   },
   {
     title: "Documentation",
-    text: "The batch record and delivery paperwork travel with every load.",
+    text: "The batch record and delivery paperwork travel with every load, so you never have to ask for them.",
   },
 ];
 
 export const STEPS = [
-  { num: "01", text: "Tell us the site, the volume and the timeline." },
+  { num: "01", text: "Tell us about your site and what you are working with." },
   {
     num: "02",
-    text: "We confirm the delivery lane and send a volume-based quote within 48 hours.",
+    text: "We confirm your delivery lane and get a quote back to you within 48 hours.",
   },
   {
     num: "03",
-    text: "Material arrives by bulk truck with weigh tickets and batch documentation.",
+    text: "Your material arrives by bulk truck, with weigh tickets and batch documentation in hand.",
   },
 ];
 
 /** Runs as its own block. Not a footnote — it is the page's boundary. */
 export const SCOPE =
-  "We supply material, logistics and documentation. We do not handle oil-soaked material and we are not a cleanup contractor. Your treatment program, and its results, stay with you. For any specific use, we tell you what is documented and what is not.";
+  "We are glad to supply the material, the logistics and the documentation behind them. What we do not do is handle oil-soaked material, and we are not a cleanup contractor — your treatment program, and its results, stay with you. For any specific uses, please inquire below.";

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 import { SCOPE, STEPS, SUPPLY } from "@/content/oil-field";
 import { InquiryForm, type Field } from "@/components/InquiryForm";
-import { oilFieldSchema, TIMELINE } from "@/lib/inquiry-schema";
+import { oilFieldSchema } from "@/lib/inquiry-schema";
 import { ctaStyle, eyebrowStyle } from "@/lib/form-styles";
 import { EASE, reveal } from "@/lib/motion";
 
@@ -30,12 +30,14 @@ const FIELDS: Field[] = [
   { name: "site", label: "Site location", wide: true },
   { name: "volume", label: "Estimated volume (tons)" },
   {
-    name: "timeline",
-    label: "Timeline",
-    type: "select",
-    options: TIMELINE,
+    name: "message",
+    label: "Message",
+    type: "textarea",
+    optional: true,
+    // Carries the prompt the timeline field used to ask for, so the
+    // question is still put without a box that has to be filled in.
+    placeholder: "What you need, when you need it.",
   },
-  { name: "message", label: "Message", type: "textarea", optional: true },
 ];
 
 export function OilFieldPage() {
@@ -326,8 +328,7 @@ export function OilFieldPage() {
                   maxWidth: "40ch",
                 }}
               >
-                Tell us the site, the volume and the timeline. We come back
-                within 48 hours with what we can supply and what we can document.
+                Tell us what you need, and we&apos;ll be in touch shortly.
               </p>
             </div>
           </motion.div>
@@ -338,8 +339,8 @@ export function OilFieldPage() {
               kind="oil-field"
               fields={FIELDS}
               submitLabel="Send My Request"
-              privacyNote="We use what you send only to respond to your request."
-              successMessage="We will come back within 48 hours with what we can supply and what we can document."
+              privacyNote="We&apos;ll only use what you send to get back to you."
+              successMessage="Thanks — we&apos;ll be in touch shortly with what we can supply and what we can document for you."
             />
           </motion.div>
         </div>
