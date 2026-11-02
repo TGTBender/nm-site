@@ -277,7 +277,13 @@ export const WAYS_IN = [
       "We would rather hear what you have done than what you have studied.",
       "Write to us before a role is posted.",
     ],
-    cta: { label: "Get in touch", href: "/bge#contact" },
+    // NOT the BGE early list: that form signs people up for wholesale
+    // supply news, which is not what someone asking about work wants,
+    // and it would put them on the wrong list.
+    cta: {
+      label: "Get in touch",
+      href: "mailto:nm@thegreenestthumb.org?subject=Work%20with%20Nature%27s%20Mastermind",
+    },
   },
   {
     title: "Work toward the mission",

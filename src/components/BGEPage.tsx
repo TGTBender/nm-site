@@ -14,7 +14,7 @@ import { ctaStyle, eyebrowStyle } from "@/lib/form-styles";
    Nothing here asserts anything the copy does not already claim. */
 const SPECS = [
   { value: "1,000 lb", label: "Supersacks" },
-  { value: "1 day", label: "Quote response" },
+  { value: "48 hours", label: "Quote response" },
   { value: "Every run", label: "Documented" },
 ];
 

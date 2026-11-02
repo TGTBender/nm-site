@@ -57,6 +57,23 @@ const CTA: Record<string, NavItem | undefined> = {
    headline. */
 const DESCRIPTOR = "Bringing biochar from niche to normal";
 
+/**
+ * Routes that paint a light ground.
+ *
+ * The header is transparent until you scroll, so on these pages its creme
+ * wordmark, gold descriptor, nav links and menu icon all sat on cream —
+ * the menu icon was reported as too faint, but the whole header had the
+ * same fault and the wordmark beside it was no better.
+ *
+ * Only the unscrolled state is affected: once the bar paints itself dark
+ * the creme ink is correct again, so the ink has to follow the bar rather
+ * than the route alone.
+ */
+const LIGHT_ROUTES = new Set(["/privacy"]);
+
+/** Dark teal-green: 9.7:1 on the cream ground, and on-brand. */
+const INK_ON_LIGHT = "#223B37";
+
 export function SiteHeader() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -93,6 +110,16 @@ export function SiteHeader() {
   // An open menu must never ride away with the header.
   const hideHeader = headerHidden && !mobileMenuOpen;
 
+  // The bar is painted when scrolled, and also whenever the mobile menu is
+  // open — an open menu over a transparent bar left the close button on
+  // bare cream, which is the same bug in the state people reach by trying
+  // to fix the first one.
+  const painted = isScrolled || mobileMenuOpen;
+  const onLight = LIGHT_ROUTES.has(pathname) && !painted;
+  const ink = onLight ? INK_ON_LIGHT : "var(--creme)";
+  const inkMuted = onLight ? "var(--gold-on-light)" : "var(--gold-muted)";
+  const inkLink = onLight ? INK_ON_LIGHT : undefined;
+
   const anchors = ANCHORS[pathname] ?? [];
   const cta = CTA[pathname];
   const pages = PAGES.filter((p) => p.href !== pathname);
@@ -120,10 +147,10 @@ export function SiteHeader() {
         // Low alpha on purpose. The world background now paints the ground,
         // and a near-opaque bar in the old ink sat on top of it as a separate
         // slab. At this weight the contour field reads through the blur.
-        backgroundColor: isScrolled ? "rgba(11,13,12,0.62)" : "transparent",
-        backdropFilter: isScrolled ? "blur(18px) saturate(140%)" : "none",
-        WebkitBackdropFilter: isScrolled ? "blur(18px) saturate(140%)" : "none",
-        borderBottom: isScrolled
+        backgroundColor: painted ? "rgba(11,13,12,0.62)" : "transparent",
+        backdropFilter: painted ? "blur(18px) saturate(140%)" : "none",
+        WebkitBackdropFilter: painted ? "blur(18px) saturate(140%)" : "none",
+        borderBottom: painted
           ? "1px solid rgba(255,255,255,0.07)"
           : "1px solid transparent",
         transform: hideHeader ? "translateY(-100%)" : "translateY(0)",
@@ -157,7 +184,9 @@ export function SiteHeader() {
               height: 32,
               borderRadius: "9999px",
               objectFit: "cover",
-              border: "1.5px solid rgba(255,255,255,0.15)",
+              border: onLight
+                ? "1.5px solid rgba(34,59,55,0.25)"
+                : "1.5px solid rgba(255,255,255,0.15)",
               flexShrink: 0,
             }}
           />
@@ -166,7 +195,7 @@ export function SiteHeader() {
               style={{
                 fontSize: "13px",
                 fontWeight: 600,
-                color: "var(--creme)",
+                color: ink,
                 lineHeight: 1.2,
               }}
             >
@@ -177,7 +206,7 @@ export function SiteHeader() {
                 fontSize: "var(--text-micro)",
                 fontWeight: 500,
                 letterSpacing: "0.14em",
-                color: "var(--gold-muted)",
+                color: inkMuted,
                 textTransform: "uppercase",
               }}
             >
@@ -193,7 +222,7 @@ export function SiteHeader() {
                 key={link.name}
                 href={link.href}
                 className="nm-link"
-                style={{ fontSize: "13px", fontWeight: 500 }}
+                style={{ fontSize: "13px", fontWeight: 500, color: inkLink }}
               >
                 {link.name}
               </a>
@@ -202,7 +231,7 @@ export function SiteHeader() {
                 key={link.name}
                 href={link.href}
                 className="nm-link"
-                style={{ fontSize: "13px", fontWeight: 500 }}
+                style={{ fontSize: "13px", fontWeight: 500, color: inkLink }}
               >
                 {link.name}
               </Link>
@@ -236,7 +265,7 @@ export function SiteHeader() {
             background: "none",
             border: "none",
             cursor: "pointer",
-            color: "var(--creme)",
+            color: ink,
             padding: 4,
           }}
         >

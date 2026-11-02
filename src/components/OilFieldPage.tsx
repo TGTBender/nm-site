@@ -316,8 +316,7 @@ export function OilFieldPage() {
                 }}
               >
                 Tell us the site, the volume and the timeline. We come back
-                within one business day with what we can supply and what we can
-                document.
+                within 48 hours with what we can supply and what we can document.
               </p>
             </div>
           </motion.div>
@@ -329,7 +328,7 @@ export function OilFieldPage() {
               fields={FIELDS}
               submitLabel="Send My Request"
               privacyNote="We use what you send only to respond to your request."
-              successMessage="We will come back within one business day with what we can supply and what we can document."
+              successMessage="We will come back within 48 hours with what we can supply and what we can document."
             />
           </motion.div>
         </div>

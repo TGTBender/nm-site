@@ -30,7 +30,7 @@ export const STEPS = [
   { num: "01", text: "Tell us the site, the volume and the timeline." },
   {
     num: "02",
-    text: "We confirm the delivery lane and send a volume-based quote within one business day.",
+    text: "We confirm the delivery lane and send a volume-based quote within 48 hours.",
   },
   {
     num: "03",

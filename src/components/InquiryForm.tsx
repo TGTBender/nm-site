@@ -194,15 +194,19 @@ export function InquiryForm<T extends FieldValues>({
         })}
       </div>
 
-      {/* Honeypot. Hidden from sight and from the tab order; a real person
-          never reaches it, and the handler answers a filled one exactly as
-          it answers a success. */}
-      <div aria-hidden style={{ position: "absolute", left: "-9999px" }}>
+      {/* Honeypot — a spam trap, never a field for a visitor.
+          Off-screen rather than opacity:0, out of the tab order, hidden
+          from assistive tech on both the wrapper and the input, never
+          required, and judged on the server: /api/inquiry answers a
+          filled one byte-identically to a success, so a bot learns
+          nothing from the response and no mail is sent. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px" }}>
         <label htmlFor={`${kind}-website`}>Website</label>
         <input
           id={`${kind}-website`}
           type="text"
           tabIndex={-1}
+          aria-hidden="true"
           autoComplete="off"
           {...register("website" as Path<T>)}
         />

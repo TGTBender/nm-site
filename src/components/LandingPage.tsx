@@ -931,18 +931,35 @@ export function LandingPage() {
                   ))}
                 </ul>
 
-                <Link
-                  href={w.cta.href}
-                  className="nm-link mt-8 inline-flex items-center gap-2"
-                  style={{
-                    fontSize: "12px",
-                    fontWeight: 700,
-                    color: "var(--gold)",
-                  }}
-                >
-                  {w.cta.label}
-                  <ArrowRight aria-hidden style={{ width: 14, height: 14 }} />
-                </Link>
+                {/* A mailto is not an in-app route, so it gets a plain
+                    anchor rather than next/link. */}
+                {w.cta.href.startsWith("/") ? (
+                  <Link
+                    href={w.cta.href}
+                    className="nm-link mt-8 inline-flex items-center gap-2"
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 700,
+                      color: "var(--gold)",
+                    }}
+                  >
+                    {w.cta.label}
+                    <ArrowRight aria-hidden style={{ width: 14, height: 14 }} />
+                  </Link>
+                ) : (
+                  <a
+                    href={w.cta.href}
+                    className="nm-link mt-8 inline-flex items-center gap-2"
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 700,
+                      color: "var(--gold)",
+                    }}
+                  >
+                    {w.cta.label}
+                    <ArrowRight aria-hidden style={{ width: 14, height: 14 }} />
+                  </a>
+                )}
               </motion.div>
             ))}
           </div>

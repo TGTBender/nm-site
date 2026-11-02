@@ -333,10 +333,11 @@ function WaitlistForm() {
           />
         </div>
 
-        {/* Honeypot. Hidden from sight and from assistive tech, and skipped
-            in the tab order — a real visitor never reaches it, while naive
-            bots fill every field they find. */}
-        <div aria-hidden="true" className="hidden">
+        {/* Honeypot — a spam trap, never a field for a visitor. Positioned
+            off-screen rather than display:none, which more bots skip, and
+            skipped in the tab order. /api/waitlist answers a filled one
+            exactly as it answers a success. */}
+        <div aria-hidden="true" style={{ position: "absolute", left: "-9999px" }}>
           <FormField
             control={form.control}
             name="company"
@@ -344,7 +345,12 @@ function WaitlistForm() {
               <FormItem>
                 <FormLabel>Company</FormLabel>
                 <FormControl>
-                  <Input tabIndex={-1} autoComplete="off" {...field} />
+                  <Input
+                    tabIndex={-1}
+                    aria-hidden="true"
+                    autoComplete="off"
+                    {...field}
+                  />
                 </FormControl>
               </FormItem>
             )}
