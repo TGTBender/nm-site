@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 import { SCOPE, STEPS, SUPPLY } from "@/content/oil-field";
 import { InquiryForm, type Field } from "@/components/InquiryForm";
-import { oilFieldSchema } from "@/lib/inquiry-schema";
+import { oilFieldSchema, TIMELINE } from "@/lib/inquiry-schema";
 import { ctaStyle, eyebrowStyle } from "@/lib/form-styles";
 import { EASE, reveal } from "@/lib/motion";
 
@@ -29,7 +29,12 @@ const FIELDS: Field[] = [
   { name: "phone", label: "Phone", type: "tel", optional: true },
   { name: "site", label: "Site location", wide: true },
   { name: "volume", label: "Estimated volume (tons)" },
-  { name: "timeline", label: "Timeline" },
+  {
+    name: "timeline",
+    label: "Timeline",
+    type: "select",
+    options: TIMELINE,
+  },
   { name: "message", label: "Message", type: "textarea", optional: true },
 ];
 

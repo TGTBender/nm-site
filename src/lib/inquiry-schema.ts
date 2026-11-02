@@ -28,6 +28,24 @@ const name = z.string().min(2, "Name is required").max(100);
 const email = z.string().email("Enter a valid email address").max(200);
 const message = z.string().max(4000).optional().or(z.literal(""));
 
+/**
+ * Timeline buckets for the oil field briefing.
+ *
+ * Free text here produced answers that could not be compared, let alone
+ * scheduled against — "soon", "next spring" and "within twenty years"
+ * all arriving in the same field. These are ranges an operator can
+ * actually pick from, and the last one lets a long-horizon enquiry say
+ * so without inventing a date.
+ */
+export const TIMELINE = [
+  "Immediate — within 2 weeks",
+  "Within 1 month",
+  "1–3 months",
+  "3–6 months",
+  "6–12 months",
+  "Planning ahead — no date yet",
+] as const;
+
 export const INVOLVEMENT = [
   "Volunteer",
   "Educator",
@@ -44,7 +62,9 @@ export const oilFieldSchema = z.object({
   phone: z.string().max(40).optional().or(z.literal("")),
   site: z.string().min(2, "Site location is required").max(200),
   volume: z.string().min(1, "Estimated volume is required").max(80),
-  timeline: z.string().min(1, "Timeline is required").max(160),
+  timeline: z.enum(TIMELINE, {
+    errorMap: () => ({ message: "Choose a timeline" }),
+  }),
   message,
   website: honeypot,
 });
