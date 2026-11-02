@@ -20,6 +20,16 @@ import { Resend } from "resend";
  * NOTE: sending also requires the FROM domain to be DNS-verified in Resend.
  * Without that a valid key still produces rejected sends, which surface as
  * an error from the send call rather than here.
+ *
+ * WHY THE APEX AND NOT nm. — the subdomain holds a CNAME to Vercel, which
+ * is what serves the website. A name carrying a CNAME should hold nothing
+ * else, and records placed under it are occluded: some resolvers return
+ * them and some refuse to, so Resend could not validate a domain whose
+ * records resolved perfectly well from elsewhere. The apex has no CNAME.
+ *
+ * MAIL_TO is unrelated and stays on the apex mailbox: inbound mail is
+ * governed by the apex MX, which points at ProtonMail and is untouched
+ * by any of this.
  */
 export const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
@@ -30,7 +40,7 @@ export const MAIL_REQUIRED = Boolean(process.env.VERCEL_ENV);
 
 export const MAIL_CONFIGURED = resend !== null;
 
-export const MAIL_FROM = "Nature's Mastermind <hello@nm.thegreenestthumb.org>";
+export const MAIL_FROM = "Nature's Mastermind <hello@thegreenestthumb.org>";
 export const MAIL_TO = "nm@thegreenestthumb.org";
 
 /** The response for a deployed environment with no mail credentials. */
