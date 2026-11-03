@@ -20,11 +20,20 @@ export function CanopyCard({
   title,
   children,
   className = "",
+  level = 4,
 }: {
   title?: string;
   children: ReactNode;
   className?: string;
+  /**
+   * Heading level for the card title. The card is used at two depths —
+   * once inside a section that already has an h3, once directly under
+   * an h2 — and a fixed h4 skipped a level in the second case. The
+   * caller knows its own depth; the card should not guess it.
+   */
+  level?: 3 | 4;
 }) {
+  const Heading = (level === 3 ? "h3" : "h4") as "h3" | "h4";
   return (
     <div
       className={`rounded-md p-5 ${className}`}
@@ -35,7 +44,7 @@ export function CanopyCard({
       }}
     >
       {title && (
-        <h4
+        <Heading
           className="mb-2"
           style={{
             fontSize: "12px",
@@ -46,7 +55,7 @@ export function CanopyCard({
           }}
         >
           {title}
-        </h4>
+        </Heading>
       )}
       {children}
     </div>

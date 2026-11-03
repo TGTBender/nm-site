@@ -11,7 +11,7 @@ import { LongevityPage } from "@/components/LongevityPage";
 export const metadata: Metadata = {
   title: "The Longevity Project",
   description:
-    "Gardens, teaching, and ground to prove the material in. Something we are building alongside the business.",
+    "Gardens, teaching, and ground to prove the material in. A project we can be proud of, details coming soon.",
   openGraph: {
     title: "The Longevity Project · Nature's Mastermind",
     description:

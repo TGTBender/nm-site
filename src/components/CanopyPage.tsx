@@ -350,7 +350,7 @@ export function CanopyPage() {
 
           <motion.div {...reveal(0.1)} className="md:col-span-7">
             <CanopyScreen>
-              <CanopyCard title="Next delivery">
+              <CanopyCard title="Next delivery" level={3}>
                 <div className="mb-6 grid gap-3 grid-cols-2 sm:grid-cols-3">
                   <CanopyStatTile label="Window" value="8–12" caption="Morning" />
                   <CanopyStatTile label="Units" value="2" caption="Supersacks" />
