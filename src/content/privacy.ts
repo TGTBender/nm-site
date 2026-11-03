@@ -4,10 +4,7 @@
  * DRAFT. The brief states plainly that a lawyer should review this before
  * anyone relies on it, and that stands — nothing here has been reviewed.
  *
- * TWO FACTS ARE THE OWNER'S TO CONFIRM, and both are marked below:
- *  - MAILING_ADDRESS. Still outstanding. It is also required by CAN-SPAM in
- *    any commercial email, so the Viridian waitlist confirmation cannot ship
- *    without it either.
+ * ONE FACT IS STILL THE OWNER'S TO CONFIRM:
  *  - The provider list. Written from what the repository actually uses
  *    rather than from a template: Vercel hosts the site and its logs, and
  *    Resend sends the mail. There is nothing else. The site has no
@@ -20,13 +17,17 @@
  */
 
 /**
- * The postal address, required by CAN-SPAM in commercial email and named
- * in the privacy notice.
+ * The postal address, as named in the privacy notice.
  *
  * Supplied by the founder 2026-11-02 as an interim while there is no
- * office. Setting it here does two things at once: the privacy notice
- * stops saying an address is coming, and the Viridian waitlist
- * confirmation email becomes sendable — it was gated on exactly this.
+ * office — it is a home address, so it is deliberately used in ONE place.
+ *
+ * NOT IN EMAIL. On founder instruction the waitlist confirmation carries
+ * no postal address: that message is transactional and does not need one.
+ * The December launch announcement is commercial and will, but it is
+ * being written as part of the response templates elsewhere rather than
+ * here. If anything in this repo ever sends commercial mail, it needs an
+ * address and an opt-out — see lib/waitlist-confirmation.ts.
  */
 export const MAILING_ADDRESS: string | null =
   "1203 Cove St, Bossier City, LA 71112";

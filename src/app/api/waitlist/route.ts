@@ -87,27 +87,22 @@ Zip:   ${zip || "(not provided)"}
     return Response.json({ error: "Failed to record signup." }, { status: 502 });
   }
 
-  // Confirmation to the subscriber. Returns null until a mailing address
-  // exists, because a commercial email without one is not compliant — see
-  // lib/waitlist-confirmation.ts.
+  // Confirmation to the subscriber. Transactional — it confirms a signup
+  // they just asked for and sells nothing — so it carries no postal
+  // address; see lib/waitlist-confirmation.ts for why the December launch
+  // announcement will need one.
   const confirmation = buildConfirmation(email);
-  if (confirmation) {
-    try {
-      await resend.emails.send({
-        from: MAIL_FROM,
-        to: email,
-        subject: confirmation.subject,
-        text: confirmation.text,
-      });
-    } catch (err) {
-      // The signup itself already succeeded; a failed confirmation must
-      // not turn that into an error for the person who just signed up.
-      console.error("[waitlist] confirmation send failed", err);
-    }
-  } else {
-    console.warn(
-      "[waitlist] no confirmation sent: MAILING_ADDRESS is not set",
-    );
+  try {
+    await resend.emails.send({
+      from: MAIL_FROM,
+      to: email,
+      subject: confirmation.subject,
+      text: confirmation.text,
+    });
+  } catch (err) {
+    // The signup itself already succeeded; a failed confirmation must not
+    // turn that into an error for the person who just signed up.
+    console.error("[waitlist] confirmation send failed", err);
   }
 
   console.info("[waitlist] signup recorded", { email, zip });
