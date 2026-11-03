@@ -87,16 +87,16 @@ Zip:   ${zip || "(not provided)"}
     return Response.json({ error: "Failed to record signup." }, { status: 502 });
   }
 
-  // Confirmation to the subscriber. Transactional — it confirms a signup
-  // they just asked for and sells nothing — so it carries no postal
-  // address; see lib/waitlist-confirmation.ts for why the December launch
-  // announcement will need one.
+  // Confirmation to the subscriber. HTML with a text alternative, so a
+  // client that strips HTML still gets the message; the postal address
+  // rides in the footer of both.
   const confirmation = buildConfirmation(email);
   try {
     await resend.emails.send({
       from: MAIL_FROM,
       to: email,
       subject: confirmation.subject,
+      html: confirmation.html,
       text: confirmation.text,
     });
   } catch (err) {
