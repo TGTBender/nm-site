@@ -40,6 +40,14 @@ export type ComparisonRow = {
   note?: string;
   /** One cell per column, in column order. */
   cells: Cell[];
+  /**
+   * Where the row's claims come from. Not rendered yet, but recorded as
+   * the research happens rather than reconstructed later — this table
+   * sits directly beneath an evidence table that cites its methods, and
+   * the first buyer to ask where a number came from will ask about this
+   * one too. See docs/comparison-data-spec.md.
+   */
+  source?: string;
 };
 
 export const COMPARISON_COLUMNS: ComparisonColumn[] = [
