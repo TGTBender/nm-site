@@ -226,26 +226,6 @@ export const MARKETS: Market[] = [
   { name: "Aquaculture", note: "Under evaluation.", state: "evaluation" },
 ];
 
-/* ── Standard of evidence ────────────────────────────────────── */
-
-export const EVIDENCE_LABELS = [
-  {
-    tag: "Verified",
-    title: "Sourced and citable.",
-    text: "A figure from our own lab work or a named published source, shown with that source attached.",
-  },
-  {
-    tag: "Reasoned",
-    title: "A conclusion, marked as one.",
-    text: "Drawn from verified data and labeled as reasoning rather than as a measurement.",
-  },
-  {
-    tag: "Unknown",
-    title: "A gap, stated plainly.",
-    text: "Where research does not produce an answer, we say so instead of filling the space.",
-  },
-];
-
 /* ── Ways in ───────────────────────────────────────────────────
    No recruitment language under "work for us", and nothing under the
    mission column that asks for money or volunteers — The Longevity

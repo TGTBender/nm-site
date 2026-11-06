@@ -27,7 +27,6 @@ import { LANES } from "@/content/lanes";
 const VISIBLE_LANES = LANES.filter((l) => !l.hidden);
 import {
   CONTACT,
-  EVIDENCE_LABELS,
   EVIDENCE_ROWS,
   EVIDENCE_STATS,
   MARKET_LABEL,
@@ -115,11 +114,11 @@ const display = {
 } as const;
 
 /** Section label: "01 / Evidence". */
-function Label({ num, text, tone }: { num: string; text: string; tone?: string }) {
+function Label({ num, text }: { num: string; text: string }) {
   return (
     <motion.p
       {...reveal()}
-      style={{ ...eyebrow, color: tone ?? "var(--gold-muted)", marginBottom: "2rem" }}
+      style={{ ...eyebrow, color: "var(--ground-accent-muted)", marginBottom: "2rem" }}
     >
       {num} <span style={{ opacity: 0.7 }}>/</span> {text}
     </motion.p>
@@ -137,9 +136,13 @@ function Badge({ state }: { state: State }) {
         whiteSpace: "nowrap",
         padding: "0.3rem 0.55rem",
         borderRadius: "2px",
-        color: solid ? "var(--nm-black)" : "var(--gold-muted)",
+        // Solid sits on gold and stays dark; the outline sits on the
+        // section ground and follows it.
+        color: solid ? "var(--nm-black)" : "var(--ground-accent-muted)",
         backgroundColor: solid ? "var(--gold)" : "transparent",
-        border: solid ? "1px solid var(--gold)" : "1px solid rgba(212,168,90,0.34)",
+        border: solid
+          ? "1px solid var(--gold)"
+          : "1px solid var(--hairline)",
       }}
     >
       {STATE_LABEL[state]}
@@ -152,7 +155,7 @@ export function LandingPage() {
     <>
       {/* ── Hero ───────────────────────────────────────────────── */}
       <section
-        className="sec px-6 pb-44 pt-36 sm:px-10"
+        className="sec px-6 pb-72 pt-36 sm:px-10"
         data-bg="black"
         id="top"
       >
@@ -162,13 +165,13 @@ export function LandingPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE }}
-              style={{ ...eyebrow, color: "var(--gold)", marginBottom: "2rem" }}
+              style={{ ...eyebrow, color: "var(--ground-accent)", marginBottom: "2rem" }}
             >
               Nature&apos;s Mastermind
               {/* Was this same gold at 0.45 opacity, which measured
                   about 2.6:1 on the black ground. The muted gold at full
                   strength reads as secondary without going under AA. */}
-              <span style={{ color: "var(--gold-muted)" }}>
+              <span style={{ color: "var(--ground-accent-muted)" }}>
                 {" "}
                 · A subsidiary of The Greenest Thumb
               </span>
@@ -182,11 +185,11 @@ export function LandingPage() {
               style={{
                 ...display,
                 fontSize: "clamp(2.75rem, 6.6vw, 5.75rem)",
-                color: "var(--creme)",
+                color: "var(--text-strong)",
               }}
             >
               Biochar, built to a{" "}
-              <span style={{ color: "var(--gold)" }}>standard.</span>
+              <span style={{ color: "var(--ground-accent)" }}>standard.</span>
             </motion.h1>
 
             <motion.p
@@ -198,7 +201,7 @@ export function LandingPage() {
                 fontSize: "1.0625rem",
                 lineHeight: 1.75,
                 fontWeight: 300,
-                color: "var(--on-dark)",
+                color: "var(--text-body)",
                 maxWidth: "48ch",
               }}
             >
@@ -222,6 +225,7 @@ export function LandingPage() {
                 style={{
                   ...eyebrow,
                   backgroundColor: "var(--gold)",
+                  // On gold, not on the section ground: stays dark.
                   color: "var(--nm-black)",
                   padding: "0.95rem 1.5rem",
                   borderRadius: "2px",
@@ -236,7 +240,7 @@ export function LandingPage() {
                 className="nm-quiet inline-flex items-center"
                 style={{
                   ...eyebrow,
-                  color: "var(--on-dark)",
+                  color: "var(--text-body)",
                   border: "1px solid rgba(245,239,230,0.2)",
                   padding: "0.95rem 1.5rem",
                   borderRadius: "2px",
@@ -268,7 +272,7 @@ export function LandingPage() {
               <p
                 style={{
                   ...eyebrow,
-                  color: "var(--gold)",
+                  color: "var(--ground-accent)",
                   paddingBottom: "1.1rem",
                   marginBottom: "0.4rem",
                   borderBottom: "1px solid rgba(212,168,90,0.18)",
@@ -284,14 +288,14 @@ export function LandingPage() {
                     className="flex items-center justify-between gap-4"
                     style={{
                       padding: "0.85rem 0",
-                      borderBottom: "1px solid rgba(245,239,230,0.07)",
+                      borderBottom: "1px solid var(--hairline)",
                     }}
                   >
                     <span
                       style={{
                         fontSize: "0.875rem",
                         fontWeight: 300,
-                        color: "var(--on-dark)",
+                        color: "var(--text-body)",
                       }}
                     >
                       {row.name}
@@ -322,7 +326,7 @@ export function LandingPage() {
                     width: 14,
                     height: 14,
                     color:
-                      m.state === "active" ? "var(--gold)" : "var(--on-dark-muted)",
+                      m.state === "active" ? "var(--gold)" : "var(--text-muted)",
                   }}
                 />
                 <span
@@ -332,7 +336,7 @@ export function LandingPage() {
                     color:
                       m.state === "active"
                         ? "var(--gold-muted)"
-                        : "var(--on-dark-muted)",
+                        : "var(--text-muted)",
                   }}
                 >
                   {m.name}
@@ -344,9 +348,13 @@ export function LandingPage() {
       </section>
 
       {/* ── 01 Evidence ────────────────────────────────────────── */}
+      {/* Cream. The evidence table is the densest thing on the site and
+          the most likely to be read closely — a spec sheet reads better
+          on paper-coloured ground than on ink. Padding is 288px because
+          a cream transition zone is 560px and content must clear half. */}
       <section
-        className="sec px-6 py-56 sm:px-10"
-        data-bg="deep"
+        className="sec px-6 py-72 sm:px-10"
+        data-bg="cream"
         id="evidence"
       >
         <div className="mx-auto w-full max-w-[1240px]">
@@ -358,11 +366,11 @@ export function LandingPage() {
             style={{
               ...display,
               fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
-              color: "var(--creme)",
+              color: "var(--text-strong)",
             }}
           >
             Every claim has a source.{" "}
-            <span style={{ color: "var(--gold)" }}>Here is the data.</span>
+            <span style={{ color: "var(--ground-accent)" }}>Here is the data.</span>
           </motion.h2>
 
           <div className="mt-20 grid grid-cols-1 gap-12 sm:grid-cols-3">
@@ -372,7 +380,7 @@ export function LandingPage() {
                   style={{
                     ...display,
                     fontSize: "clamp(2.75rem, 6vw, 4.5rem)",
-                    color: s.value ? "var(--gold)" : "rgba(212,168,90,0.3)",
+                    color: s.value ? "var(--ground-accent)" : "var(--text-muted)",
                   }}
                 >
                   {s.value ?? "—"}
@@ -383,7 +391,7 @@ export function LandingPage() {
                     fontSize: "0.875rem",
                     lineHeight: 1.7,
                     fontWeight: 300,
-                    color: "var(--on-dark-muted)",
+                    color: "var(--text-muted)",
                     maxWidth: "26ch",
                   }}
                 >
@@ -404,7 +412,7 @@ export function LandingPage() {
                         ...eyebrow,
                         fontSize: "var(--text-micro)",
                         textAlign: "left",
-                        color: "var(--gold-muted)",
+                        color: "var(--ground-accent-muted)",
                         padding: "0 1rem 0.9rem 0",
                         borderBottom: "1px solid rgba(212,168,90,0.22)",
                       }}
@@ -424,13 +432,13 @@ export function LandingPage() {
                           fontSize: "0.875rem",
                           fontWeight: 300,
                           padding: "1.05rem 1rem 1.05rem 0",
-                          borderBottom: "1px solid rgba(245,239,230,0.08)",
+                          borderBottom: "1px solid var(--hairline)",
                           color:
                             cell === null
-                              ? "var(--on-dark-faint)"
+                              ? "var(--text-muted)"
                               : c === 0
-                                ? "var(--on-dark-strong)"
-                                : "var(--on-dark)",
+                                ? "var(--text-strong)"
+                                : "var(--text-body)",
                         }}
                       >
                         {cell ?? "Pending"}
@@ -451,7 +459,7 @@ export function LandingPage() {
               fontWeight: 300,
               // Legal attribution, and the smallest text anyone actually has to
               // read on the page. It takes the body rung, not a muted one.
-              color: "var(--on-dark)",
+              color: "var(--text-body)",
               maxWidth: "58ch",
             }}
           >
@@ -466,9 +474,9 @@ export function LandingPage() {
       </section>
 
       {/* ── 02 Operating model ─────────────────────────────────── */}
-      <section className="sec px-6 py-72 sm:px-10" data-bg="cream" id="model">
+      <section className="sec px-6 py-72 sm:px-10" data-bg="green" id="model">
         <div className="mx-auto w-full max-w-[1240px]">
-          <Label num="02" text="Operating model" tone="var(--gold-on-light)" />
+          <Label num="02" text="Operating model" />
 
           <motion.h2
             {...reveal(0.05)}
@@ -476,11 +484,11 @@ export function LandingPage() {
             style={{
               ...display,
               fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
-              color: "var(--nm-black)",
+              color: "var(--text-strong)",
             }}
           >
             Source. Ship. Show.{" "}
-            <span style={{ color: "var(--gold-on-light)" }}>Measure.</span>
+            <span style={{ color: "var(--ground-accent)" }}>Measure.</span>
           </motion.h2>
 
           <div className="mt-20 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -488,7 +496,7 @@ export function LandingPage() {
               const Icon = MODEL_ICONS[i];
               return (
                 <motion.div key={step.title} {...reveal(0.06 + i * 0.05)}>
-                  <p style={{ ...eyebrow, fontSize: "var(--text-micro)", color: "var(--gold-on-light)" }}>
+                  <p style={{ ...eyebrow, fontSize: "var(--text-micro)", color: "var(--ground-accent)" }}>
                     {String(i + 1).padStart(2, "0")}
                   </p>
                   <Icon
@@ -497,7 +505,7 @@ export function LandingPage() {
                       width: 22,
                       height: 22,
                       margin: "1.5rem 0 1.25rem",
-                      color: "var(--gold-on-light)",
+                      color: "var(--ground-accent)",
                     }}
                   />
                   <h3
@@ -505,7 +513,7 @@ export function LandingPage() {
                       fontFamily: "var(--font-display)",
                       fontSize: "1.25rem",
                       fontWeight: 700,
-                      color: "var(--nm-black)",
+                      color: "var(--text-strong)",
                     }}
                   >
                     {step.title}
@@ -516,7 +524,7 @@ export function LandingPage() {
                       fontSize: "0.9375rem",
                       lineHeight: 1.75,
                       fontWeight: 300,
-                      color: "var(--ink-soft)",
+                      color: "var(--text-body)",
                     }}
                   >
                     {step.text}
@@ -535,7 +543,7 @@ export function LandingPage() {
               style={{
                 ...display,
                 fontSize: "clamp(1.5rem, 3vw, 2.25rem)",
-                color: "var(--nm-black)",
+                color: "var(--text-strong)",
               }}
             >
               Each delivery is documented.
@@ -546,7 +554,7 @@ export function LandingPage() {
                 fontSize: "1rem",
                 lineHeight: 1.8,
                 fontWeight: 300,
-                color: "var(--ink-soft)",
+                color: "var(--text-body)",
                 maxWidth: "52ch",
               }}
             >
@@ -560,7 +568,7 @@ export function LandingPage() {
 
       {/* ── 03 Markets ─────────────────────────────────────────── */}
       <section
-        className="sec px-6 pb-56 pt-72 sm:px-10"
+        className="sec px-6 pb-72 pt-48 sm:px-10"
         data-bg="black"
         id="markets"
       >
@@ -573,11 +581,11 @@ export function LandingPage() {
             style={{
               ...display,
               fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
-              color: "var(--creme)",
+              color: "var(--text-strong)",
             }}
           >
             {COUNT_WORD[MARKETS.length] ?? MARKETS.length} markets.{" "}
-            <span style={{ color: "var(--gold)" }}>{LIVE_HEADLINE}</span>
+            <span style={{ color: "var(--ground-accent)" }}>{LIVE_HEADLINE}</span>
           </motion.h2>
 
           <motion.p
@@ -587,7 +595,7 @@ export function LandingPage() {
               fontSize: "1rem",
               lineHeight: 1.8,
               fontWeight: 300,
-              color: "var(--on-dark)",
+              color: "var(--text-body)",
               maxWidth: "46ch",
             }}
           >
@@ -607,7 +615,7 @@ export function LandingPage() {
                     padding: "1.75rem",
                     backgroundColor:
                       m.state === "active"
-                        ? "rgba(201,145,42,0.05)"
+                        ? "var(--panel-accent)"
                         : "transparent",
                   }}
                 >
@@ -620,7 +628,7 @@ export function LandingPage() {
                         color:
                           m.state === "active"
                             ? "var(--gold)"
-                            : "var(--on-dark-muted)",
+                            : "var(--text-muted)",
                       }}
                     />
                     {m.state === "active" ? (
@@ -635,14 +643,14 @@ export function LandingPage() {
                           ...eyebrow,
                           fontSize: "var(--text-micro)",
                           whiteSpace: "nowrap",
-                          color: "var(--on-dark-muted)",
+                          color: "var(--text-muted)",
                           padding:
                             m.state === "evaluation" ? 0 : "0.3rem 0.55rem",
                           borderRadius: "2px",
                           border:
                             m.state === "evaluation"
                               ? "none"
-                              : "1px solid rgba(245,239,230,0.22)",
+                              : "1px solid var(--hairline)",
                         }}
                       >
                         {MARKET_LABEL[m.state]}
@@ -656,10 +664,7 @@ export function LandingPage() {
                       fontFamily: "var(--font-display)",
                       fontSize: "1.125rem",
                       fontWeight: 700,
-                      color:
-                        m.state === "active"
-                          ? "var(--creme)"
-                          : "var(--on-dark-strong)",
+                      color: "var(--text-strong)",
                     }}
                   >
                     {m.name}
@@ -670,7 +675,7 @@ export function LandingPage() {
                       fontSize: "0.8125rem",
                       lineHeight: 1.7,
                       fontWeight: 300,
-                      color: "var(--on-dark-muted)",
+                      color: "var(--text-muted)",
                     }}
                   >
                     {m.note}
@@ -683,7 +688,8 @@ export function LandingPage() {
       </section>
 
       {/* ── 04 Platform ────────────────────────────────────────── */}
-      <section className="sec px-6 py-56 sm:px-10" data-bg="green" id="platform">
+            {/* Cream. The lanes are the other thing a client is here for. */}
+      <section className="sec px-6 py-72 sm:px-10" data-bg="cream" id="platform">
         <div className="mx-auto w-full max-w-[1240px]">
           <Label num="04" text="Platform" />
 
@@ -693,11 +699,11 @@ export function LandingPage() {
             style={{
               ...display,
               fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
-              color: "var(--creme)",
+              color: "var(--text-strong)",
             }}
           >
             {COUNT_WORD[VISIBLE_LANES.length] ?? VISIBLE_LANES.length} lanes.{" "}
-            <span style={{ color: "var(--gold)" }}>One standard.</span>
+            <span style={{ color: "var(--ground-accent)" }}>One standard.</span>
           </motion.h2>
 
           <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -710,7 +716,7 @@ export function LandingPage() {
                       reads as four unrelated cards. */}
                   <p
                     aria-hidden={!lane.status}
-                    style={{ ...eyebrow, fontSize: "var(--text-micro)", color: "var(--gold-muted)" }}
+                    style={{ ...eyebrow, fontSize: "var(--text-micro)", color: "var(--ground-accent-muted)" }}
                   >
                     {lane.status ?? " "}
                   </p>
@@ -721,7 +727,7 @@ export function LandingPage() {
                       fontSize: "1.375rem",
                       fontWeight: 700,
                       lineHeight: 1.2,
-                      color: "var(--creme)",
+                      color: "var(--text-strong)",
                     }}
                   >
                     {lane.name}
@@ -732,7 +738,7 @@ export function LandingPage() {
                       fontSize: "0.875rem",
                       lineHeight: 1.75,
                       fontWeight: 300,
-                      color: "var(--on-dark)",
+                      color: "var(--text-body)",
                     }}
                   >
                     {lane.description}
@@ -743,7 +749,7 @@ export function LandingPage() {
                       style={{
                         fontSize: "12px",
                         fontWeight: 700,
-                        color: "var(--gold)",
+                        color: "var(--ground-accent)",
                       }}
                     >
                       {lane.cta ?? "Open " + lane.name}
@@ -758,11 +764,11 @@ export function LandingPage() {
                   className="flex h-full flex-col"
                   style={{
                     border: lane.primary
-                      ? "1px solid rgba(201,145,42,0.45)"
+                      ? "1px solid var(--panel-accent-border)"
                       : "1px solid var(--hairline)",
                     backgroundColor: lane.primary
-                      ? "rgba(201,145,42,0.07)"
-                      : "rgba(11,13,12,0.22)",
+                      ? "var(--panel-accent)"
+                      : "var(--panel)",
                     padding: "1.75rem",
                     borderRadius: "3px",
                   }}
@@ -791,104 +797,21 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── 05 Standard of evidence ────────────────────────────── */}
-      <section className="sec px-6 py-72 sm:px-10" data-bg="cream" id="standard">
-        <div className="mx-auto w-full max-w-[1240px]">
-          <Label num="05" text="Standard of evidence" tone="var(--gold-on-light)" />
-
-          <motion.h2
-            {...reveal(0.05)}
-            className="max-w-[16ch]"
-            style={{
-              ...display,
-              fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
-              color: "var(--nm-black)",
-            }}
-          >
-            How we label{" "}
-            <span style={{ color: "var(--gold-on-light)" }}>what we know.</span>
-          </motion.h2>
-
-          <motion.p
-            {...reveal(0.08)}
-            style={{
-              marginTop: "1.5rem",
-              fontSize: "1rem",
-              lineHeight: 1.8,
-              fontWeight: 300,
-              color: "var(--ink-soft)",
-              maxWidth: "48ch",
-            }}
-          >
-            Every claim in our research, and on this site, is one of three
-            things.
-          </motion.p>
-
-          <div className="mt-16 grid grid-cols-1 gap-px md:grid-cols-3">
-            {EVIDENCE_LABELS.map((e, i) => (
-              <motion.div
-                key={e.tag}
-                {...reveal(0.06 + i * 0.06)}
-                style={{
-                  border: "1px solid var(--hairline)",
-                  padding: "1.75rem",
-                }}
-              >
-                <span
-                  style={{
-                    ...eyebrow,
-                    fontSize: "var(--text-micro)",
-                    color: "var(--gold-on-light)",
-                    border: "1px solid rgba(122,92,18,0.3)",
-                    padding: "0.3rem 0.55rem",
-                    borderRadius: "2px",
-                  }}
-                >
-                  {e.tag}
-                </span>
-                <h3
-                  style={{
-                    marginTop: "2.25rem",
-                    fontFamily: "var(--font-display)",
-                    fontSize: "1.25rem",
-                    fontWeight: 700,
-                    color: "var(--nm-black)",
-                  }}
-                >
-                  {e.title}
-                </h3>
-                <p
-                  style={{
-                    marginTop: "0.85rem",
-                    fontSize: "0.9375rem",
-                    lineHeight: 1.75,
-                    fontWeight: 300,
-                    color: "var(--ink-soft)",
-                  }}
-                >
-                  {e.text}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 06 Ways in ───────────────────────────────────── */}
+      {/* ── 05 Ways in ───────────────────────────────────────── */}
       <section className="sec px-6 pb-56 pt-72 sm:px-10" data-bg="black" id="mission">
         <div className="mx-auto w-full max-w-[1240px]">
-          <Label num="06" text="Ways in" />
+          <Label num="05" text="Ways in" />
 
           <motion.h2
             {...reveal(0.05)}
             style={{
               ...display,
               fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
-              color: "var(--creme)",
+              color: "var(--text-strong)",
             }}
           >
             {COUNT_WORD[WAYS_IN.length] ?? WAYS_IN.length} ways{" "}
-            <span style={{ color: "var(--gold)" }}>in.</span>
+            <span style={{ color: "var(--ground-accent)" }}>in.</span>
           </motion.h2>
 
           <div className="mt-16 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
@@ -899,7 +822,7 @@ export function LandingPage() {
                     fontFamily: "var(--font-display)",
                     fontSize: "1.375rem",
                     fontWeight: 700,
-                    color: "var(--creme)",
+                    color: "var(--text-strong)",
                   }}
                 >
                   {w.title}
@@ -909,7 +832,7 @@ export function LandingPage() {
                     marginTop: "0.6rem",
                     fontSize: "0.8125rem",
                     fontWeight: 300,
-                    color: "var(--gold-muted)",
+                    color: "var(--ground-accent-muted)",
                   }}
                 >
                   {w.text}
@@ -928,7 +851,7 @@ export function LandingPage() {
                         fontSize: "0.875rem",
                         lineHeight: 1.7,
                         fontWeight: 300,
-                        color: "var(--on-dark)",
+                        color: "var(--text-body)",
                       }}
                     >
                       {p}
@@ -945,7 +868,7 @@ export function LandingPage() {
                     style={{
                       fontSize: "12px",
                       fontWeight: 700,
-                      color: "var(--gold)",
+                      color: "var(--ground-accent)",
                     }}
                   >
                     {w.cta.label}
@@ -958,7 +881,7 @@ export function LandingPage() {
                     style={{
                       fontSize: "12px",
                       fontWeight: 700,
-                      color: "var(--gold)",
+                      color: "var(--ground-accent)",
                     }}
                   >
                     {w.cta.label}

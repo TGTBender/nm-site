@@ -49,7 +49,7 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
+  --color-accent: var(--ground-accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
@@ -591,6 +591,41 @@ body {
   /* 0.52 measured 3.4:1 on cream. The privacy page is the one place
      this rung carries text people have to read. */
   --ink-faint: rgba(28, 24, 16, 0.68);
+
+  /* The ground-aware ramp, inverted. See the note on :root below. */
+  --text-strong: var(--nm-black);
+  --text-body: var(--ink-soft);
+  --text-muted: var(--ink-faint);
+  --ground-accent: var(--gold-on-light);
+  --ground-accent-muted: var(--gold-on-light);
+  --panel: rgba(28, 24, 16, 0.035);
+  --panel-accent: rgba(122, 92, 18, 0.06);
+  --panel-accent-border: rgba(122, 92, 18, 0.3);
+}
+
+/* ── The ground-aware text ramp ────────────────────────────────
+   Sections used to hardcode creme and gold, which meant moving one to
+   the cream ground was a rewrite rather than a attribute change — and
+   the landing page is reorganised often enough that this mattered.
+
+   NOTE the name: shadcn/ui already owns --accent for component hover
+   states, and an earlier pass here called this one --accent too, which
+   silently repainted every Select and Input hover gold. These are
+   prefixed so the two cannot collide again.
+
+   These resolve against whatever ground the section declares, so a
+   section is themed by its data-bg and nothing else. Anything still
+   naming --creme or --gold directly is pinned to a dark ground on
+   purpose, or has not been converted yet. */
+:root {
+  --text-strong: var(--creme);
+  --text-body: var(--on-dark);
+  --text-muted: var(--on-dark-muted);
+  --ground-accent: var(--gold);
+  --ground-accent-muted: var(--gold-muted);
+  --panel: rgba(11, 13, 12, 0.22);
+  --panel-accent: rgba(201, 145, 42, 0.07);
+  --panel-accent-border: rgba(201, 145, 42, 0.45);
 }
 
 /* ── Text on dark grounds ──────────────────────────────────────
@@ -691,6 +726,17 @@ body {
   --gold-muted: #eccf88;
   --on-dark-muted: rgba(245, 239, 230, 0.84);
   --on-dark-faint: rgba(245, 239, 230, 0.7);
+
+  /* These repeat the two values above rather than aliasing them, and
+     they have to. A custom property whose value contains var() is
+     substituted where it is DECLARED, not where it is used — so
+     `--ground-accent: var(--gold)` written once on :root captures the ROOT
+     gold and inherits that literal downward, and this block's --gold
+     override never reaches it. Measured: --gold here resolved to
+     #e8c87a while --ground-accent stayed #c9912a, which is 2.88:1 on green.
+     Any ground that moves --gold has to move --ground-accent with it. */
+  --ground-accent: #e8c87a;
+  --ground-accent-muted: #eccf88;
 }
 
 
