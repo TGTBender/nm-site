@@ -19,6 +19,12 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import {
+  COMPARISON_COLUMNS,
+  COMPARISON_NOTE,
+  COMPARISON_ROWS,
+  hasComparisonData,
+} from "@/content/comparison";
 import { LANES } from "@/content/lanes";
 
 /* A hidden lane keeps its copy in content/lanes.ts but does not appear
@@ -473,10 +479,172 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── 02 Operating model ─────────────────────────────────── */}
+
+      {/* ── 02 Comparison ──────────────────────────────────────────
+          Shares the cream ground with the evidence table above and
+          declares no transition between them, so the two read as one
+          chapter: here is our data, here is how the material compares.
+
+          Renders only when there is data. An empty comparison table is
+          worse than no comparison table, and leaving it to a reviewer
+          to notice is how a page of dashes reaches a customer. */}
+      {hasComparisonData && (
+        <section
+          className="sec px-6 pb-72 sm:px-10"
+          data-bg="cream"
+          id="comparison"
+        >
+          <div className="mx-auto w-full max-w-[1240px]">
+            <Label num="02" text="Comparison" />
+
+            <motion.h2
+              {...reveal(0.05)}
+              className="max-w-[18ch]"
+              style={{
+                ...display,
+                fontSize: "clamp(2rem, 4.8vw, 3.75rem)",
+                color: "var(--text-strong)",
+              }}
+            >
+              What else goes in the ground,{" "}
+              <span style={{ color: "var(--ground-accent)" }}>
+                and how it differs.
+              </span>
+            </motion.h2>
+
+            {/* minWidth plus overflow-x: a comparison table cannot usefully
+                reflow on a phone, so it scrolls sideways instead of
+                crushing five columns into 390px. */}
+            <motion.div {...reveal(0.1)} className="mt-16 overflow-x-auto">
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  minWidth: "640px",
+                }}
+              >
+                <thead>
+                  <tr>
+                    <th
+                      scope="col"
+                      style={{
+                        ...eyebrow,
+                        fontSize: "var(--text-micro)",
+                        textAlign: "left",
+                        color: "var(--ground-accent-muted)",
+                        padding: "0 1rem 0.9rem 0",
+                        borderBottom: "1px solid var(--hairline)",
+                        width: "28%",
+                      }}
+                    >
+                      Property
+                    </th>
+                    {COMPARISON_COLUMNS.map((col) => (
+                      <th
+                        key={col.name}
+                        scope="col"
+                        style={{
+                          ...eyebrow,
+                          fontSize: "var(--text-micro)",
+                          textAlign: "left",
+                          color: col.ours
+                            ? "var(--ground-accent)"
+                            : "var(--text-muted)",
+                          padding: "0 1rem 0.9rem 1rem",
+                          borderBottom: col.ours
+                            ? "2px solid var(--panel-accent-border)"
+                            : "1px solid var(--hairline)",
+                          backgroundColor: col.ours
+                            ? "var(--panel-accent)"
+                            : undefined,
+                        }}
+                      >
+                        {col.name}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {COMPARISON_ROWS.map((row) => (
+                    <tr key={row.attribute}>
+                      <th
+                        scope="row"
+                        style={{
+                          textAlign: "left",
+                          fontWeight: 600,
+                          fontSize: "0.875rem",
+                          padding: "1.05rem 1rem 1.05rem 0",
+                          borderBottom: "1px solid var(--hairline)",
+                          color: "var(--text-strong)",
+                          verticalAlign: "top",
+                        }}
+                      >
+                        {row.attribute}
+                        {row.note && (
+                          <span
+                            style={{
+                              display: "block",
+                              marginTop: "0.3rem",
+                              fontSize: "12px",
+                              fontWeight: 300,
+                              lineHeight: 1.5,
+                              color: "var(--text-muted)",
+                            }}
+                          >
+                            {row.note}
+                          </span>
+                        )}
+                      </th>
+                      {COMPARISON_COLUMNS.map((col, c) => (
+                        <td
+                          key={col.name}
+                          style={{
+                            fontSize: "0.875rem",
+                            fontWeight: col.ours ? 600 : 300,
+                            padding: "1.05rem 1rem",
+                            borderBottom: "1px solid var(--hairline)",
+                            verticalAlign: "top",
+                            backgroundColor: col.ours
+                              ? "var(--panel-accent)"
+                              : undefined,
+                            color:
+                              row.cells[c] == null
+                                ? "var(--text-muted)"
+                                : col.ours
+                                  ? "var(--text-strong)"
+                                  : "var(--text-body)",
+                          }}
+                        >
+                          {row.cells[c] ?? "—"}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </motion.div>
+
+            <motion.p
+              {...reveal(0.12)}
+              style={{
+                marginTop: "2rem",
+                fontSize: "12px",
+                lineHeight: 1.7,
+                fontWeight: 300,
+                color: "var(--text-body)",
+                maxWidth: "62ch",
+              }}
+            >
+              {COMPARISON_NOTE}
+            </motion.p>
+          </div>
+        </section>
+      )}
+
+      {/* ── 03 Operating model ─────────────────────────────────── */}
       <section className="sec px-6 py-72 sm:px-10" data-bg="green" id="model">
         <div className="mx-auto w-full max-w-[1240px]">
-          <Label num="02" text="Operating model" />
+          <Label num="03" text="Operating model" />
 
           <motion.h2
             {...reveal(0.05)}
@@ -566,14 +734,14 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── 03 Markets ─────────────────────────────────────────── */}
+      {/* ── 04 Markets ─────────────────────────────────────────── */}
       <section
         className="sec px-6 pb-72 pt-48 sm:px-10"
         data-bg="black"
         id="markets"
       >
         <div className="mx-auto w-full max-w-[1240px]">
-          <Label num="03" text="Markets" />
+          <Label num="04" text="Markets" />
 
           <motion.h2
             {...reveal(0.05)}
@@ -687,11 +855,11 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── 04 Platform ────────────────────────────────────────── */}
+      {/* ── 05 Platform ────────────────────────────────────────── */}
             {/* Cream. The lanes are the other thing a client is here for. */}
       <section className="sec px-6 py-72 sm:px-10" data-bg="cream" id="platform">
         <div className="mx-auto w-full max-w-[1240px]">
-          <Label num="04" text="Platform" />
+          <Label num="05" text="Platform" />
 
           <motion.h2
             {...reveal(0.05)}
@@ -797,10 +965,10 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── 05 Ways in ───────────────────────────────────────── */}
+      {/* ── 06 Ways in ───────────────────────────────────────── */}
       <section className="sec px-6 pb-56 pt-72 sm:px-10" data-bg="black" id="mission">
         <div className="mx-auto w-full max-w-[1240px]">
-          <Label num="05" text="Ways in" />
+          <Label num="06" text="Ways in" />
 
           <motion.h2
             {...reveal(0.05)}
