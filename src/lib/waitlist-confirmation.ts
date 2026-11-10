@@ -29,7 +29,7 @@ const COMPANY = "Nature's Mastermind, a subsidiary of The Greenest Thumb, Inc.";
 
 const BODY = [
   "Thank you for joining the waitlist for The Viridian.",
-  "The Viridian launches December 12, 2026, in Dallas–Fort Worth first. We will email you when it opens, and not for anything else.",
+  "The Viridian launches in Dallas–Fort Worth first. We will email you when it opens, and not for anything else.",
 ];
 
 const FONT =

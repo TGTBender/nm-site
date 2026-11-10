@@ -18,7 +18,7 @@ const SPECS = [
 ];
 
 const STEPS = [
-  { num: "01", text: "Tell us about your operation — format, volume, and season." },
+  { num: "01", text: "Tell us about your operation and what you need." },
   { num: "02", text: "We confirm your delivery lane and build your cadence." },
   {
     num: "03",
@@ -251,9 +251,9 @@ export function BGEPage() {
               }}
             >
               <p>
-                It retains moisture, reduces fertilizer dependency, and builds
-                living structure into soil that plants return to season after
-                season. For nurseries, farms, landscapers, and garden centers —
+                It holds moisture, it builds structure, and it stays in the
+                ground season after season. For nurseries, farms, landscapers
+                and garden centers —
                 it&apos;s not a trendy amendment. It&apos;s a long-term investment
                 in the ground.
               </p>
@@ -262,7 +262,7 @@ export function BGEPage() {
                 reliable, documented biochar has been nearly impossible to source.
                 Shipments that don&apos;t show. Specs that
                 don&apos;t match. No paperwork for the customers who ask questions.
-                We built Nature&apos;s Mastermind to close that gap — for good.
+                We built Nature&apos;s Mastermind to close that gap.
               </p>
             </motion.div>
 
@@ -414,7 +414,7 @@ export function BGEPage() {
               }}
             >
               Every bag carries its own batch card and a code that returns
-              the record for what is inside it. You should not have to ring
+              the record for what is inside it. You should not have to call
               anyone to find out what you were sent.
             </p>
           </motion.div>

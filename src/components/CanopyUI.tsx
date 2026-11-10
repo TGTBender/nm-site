@@ -119,7 +119,7 @@ export function CanopyStatTile({
 
 const STAGES = [
   { key: "prepared", label: "Prepared" },
-  { key: "in_route", label: "In Route" },
+  { key: "in_route", label: "En Route" },
   { key: "delivered", label: "Delivered" },
 ] as const;
 

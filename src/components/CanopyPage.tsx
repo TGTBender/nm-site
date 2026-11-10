@@ -167,7 +167,7 @@ export function CanopyPage() {
                   maxWidth: "40ch",
                 }}
               >
-                Every Viridian box connects to Canopy. This is what is
+                Every Viridian box will connect to Canopy. This is what is
                 behind it.
               </p>
 
@@ -198,7 +198,7 @@ export function CanopyPage() {
           >
             One app, two sides. A garden companion at home, and an account
             portal for the trade — where a delivery can be traced back to the
-            lab panel it was certified against.
+            laboratory panel for its batch.
           </motion.p>
         </div>
       </section>
@@ -234,9 +234,9 @@ export function CanopyPage() {
                 color: "var(--on-dark-muted)",
               }}
             >
-              Scan the batch ID off a delivery and the certified panel opens.
-              The same numbers a brand-conscious grower can show their own
-              customers.
+              Scan the batch ID off a delivery and the laboratory panel for
+              that batch will open. The same numbers a brand-conscious grower
+              can show their own customers.
             </p>
           </motion.div>
 
@@ -301,7 +301,7 @@ export function CanopyPage() {
                 }}
               >
                 Interface preview. Sample values within the range of
-                producer-supplied laboratory data; not a certified result.
+                producer-supplied laboratory data; not a result for a real batch.
               </p>
             </CanopyScreen>
           </motion.div>
@@ -490,7 +490,7 @@ export function CanopyPage() {
             }}
           >
             Canopy is still being built. It arrives alongside the first
-            deliveries, consumer side first.
+            deliveries, consumer-side first.
           </motion.p>
         </div>
       </section>

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { CanopyPage } from "@/components/CanopyPage";
 
 /**
- * Canopy — the app behind both lanes.
+ * Canopy — the app behind the supply lanes.
  *
  * A server component so the route can export metadata; the page body is
  * client-side and lives in components/CanopyPage.

@@ -35,7 +35,7 @@ export type Card = {
 
 export const LONGEVITY_CARDS: Card[] = [
   {
-    line: "Gardens above the ground, below it, and on the roof.",
+    line: "Raised beds, in-ground plots, and a planted roof.",
     note: "Built for the places that have space and the places that don't.",
     image: {
       desktop: "/longevity/campus.jpg",

@@ -15,10 +15,11 @@
  *    the object; it does not present them as photographs of shipping stock.
  */
 
-/** Runs under the page title. The date is firm, so the page states it
- *  rather than implying a vague window. */
+/** Runs under the page title. NO LAUNCH DATE: the founder pulled the
+ *  December date on 2026-11-10 because the work behind it is not finished.
+ *  State the region and the waitlist, not a day, until a date is firm. */
 export const VIRIDIAN_STATUS =
-  "Launching December 12, 2026. Dallas–Fort Worth first.";
+  "Launching soon. Dallas–Fort Worth first.";
 
 export type ViridianSection = {
   eyebrow: string;
@@ -44,8 +45,8 @@ export const VIRIDIAN_INTRO: ViridianSection = {
 export const VIRIDIAN_HOW: ViridianSection = {
   eyebrow: "The Viridian",
   headline: "So thirsty it defies logic.",
-  subline: "Dock it. Lock it. Watch the liquid disappear.",
-  body: "Two tubes meet with a magnetic click. One twist and the biochar draws the liquid nutrient in on its own: no pump, no mess, no guesswork.",
+  subline: "Dock it. Lock it. The biochar does the rest.",
+  body: "Two tubes meet with a magnetic click. Lock them together and the biochar draws the liquid nutrient in on its own.",
   image: {
     desktop: "/viridian/dock.jpg",
     mobile: "/viridian/dock-mobile.jpg",
@@ -55,8 +56,8 @@ export const VIRIDIAN_HOW: ViridianSection = {
 
 export const VIRIDIAN_LAUNCH: ViridianSection = {
   eyebrow: "The Viridian",
-  headline: "Launching December 12.",
-  subline: "Dallas–Fort Worth first.",
+  headline: "First release, Dallas–Fort Worth.",
+  subline: "The waitlist is open.",
   cta: { label: "Be first in line", href: "#waitlist" },
   image: {
     desktop: "/viridian/closed.jpg",

@@ -8,17 +8,18 @@ import { ViridianPage } from "@/components/ViridianPage";
  * A server component so the route can export metadata; the scenes and the
  * waitlist form are client-side and live in ViridianPage.
  *
- * Deliberately no price and no purchase path. The December Dallas–Fort Worth
- * release is a pilot, and the page's job is to collect a waitlist.
+ * Deliberately no price, no purchase path and no launch date. The first
+ * Dallas–Fort Worth release is a pilot, and the page's job is to collect a
+ * waitlist.
  */
 export const metadata: Metadata = {
   title: "The Viridian",
   description:
-    "Charged biochar and liquid nutrient, brought together at home. The Viridian launches December 12, 2026, Dallas–Fort Worth first.",
+    "Charged biochar and liquid nutrient, brought together at home. The Viridian launches in Dallas–Fort Worth first.",
   openGraph: {
     title: "The Viridian · Nature's Mastermind",
     description:
-      "Charged biochar and liquid nutrient, brought together at home. Launching December 12, Dallas–Fort Worth first.",
+      "Charged biochar and liquid nutrient, brought together at home. Launching in Dallas–Fort Worth first.",
     images: [{ url: "/viridian/hero.jpg", width: 2400, height: 850 }],
   },
   twitter: {

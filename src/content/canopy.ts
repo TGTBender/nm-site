@@ -42,19 +42,19 @@ export const CANOPY_HOME: Feature[] = [
 
 export const CANOPY_TRADE: Feature[] = [
   {
-    name: "Reorder in one step",
+    name: "Reorder in one confirmation",
     description:
-      "The standing order already knows the product, the quantity and the locked rate. Confirm and submit.",
+      "The standing order already knows the product, the quantity and the locked rate. Confirm it and it is placed.",
   },
   {
     name: "Delivery in plain language",
     description:
-      "Prepared, In Route, Delivered — the same three words you would use yourself, not carrier status codes.",
+      "Prepared, En Route, Delivered — the same three words you would use yourself, not carrier status codes.",
   },
   {
     name: "Batch lookup",
     description:
-      "Scan the batch ID off the delivery sticker and the certified lab panel opens. No document request, no waiting.",
+      "Scan the batch ID off the delivery sticker and the laboratory panel for that batch opens. No document request, no waiting.",
   },
   {
     name: "Account terms in the open",
@@ -63,14 +63,16 @@ export const CANOPY_TRADE: Feature[] = [
   },
 ];
 
-/** The two commitments stated on the trade dashboard itself. */
+/** The two things the trade dashboard is built to put in front of you.
+ *  NOT guarantees: Canopy is unbuilt and the lane has not delivered yet,
+ *  so these describe what the screen reports, not a promise about it. */
 export const CANOPY_GUARANTEES: Feature[] = [
   {
     name: "Cadence",
-    description: "The delivery lands when the schedule says it will.",
+    description: "Whether the delivery is running to the schedule you agreed.",
   },
   {
     name: "Spec Match",
-    description: "What arrives matches what the lab certified.",
+    description: "How what arrived compares to the specification it was bought against.",
   },
 ];

@@ -57,9 +57,9 @@ export const LANES: Lane[] = [
   {
     name: "The Viridian",
     description:
-      "Charged biochar and liquid nutrient, brought together at home. The direct-to-consumer line, launching December 12 in Dallas–Fort Worth.",
+      "Charged biochar and liquid nutrient, brought together at home. The direct-to-consumer line, launching in Dallas–Fort Worth first.",
     href: "/products",
-    status: "Dec 12",
+    status: "Coming soon",
     cta: "Join the waitlist",
     image: {
       desktop: "/viridian/closed.jpg",
@@ -70,7 +70,7 @@ export const LANES: Lane[] = [
   {
     name: "Canopy",
     description:
-      "The app behind both lanes: a garden companion for the home, and an account portal with batch-level traceability for the trade.",
+      "The app behind the supply lanes: a garden companion for the home, and an account portal with batch-level traceability for the trade.",
     href: "/canopy",
     status: "In build",
     cta: "Open Canopy",
@@ -81,7 +81,7 @@ export const LANES: Lane[] = [
     // the same reason. See content/longevity.ts.
     name: "The Longevity Project",
     description:
-      "Gardens, teaching, and ground to prove the material in. Something we are building alongside the business.",
+      "Gardens, teaching, and ground to prove the material in. A project we can be proud of, details coming soon.",
     href: "/longevity",
     status: "A first look",
     cta: "See what we are building",

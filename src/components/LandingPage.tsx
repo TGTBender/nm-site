@@ -119,8 +119,30 @@ const display = {
   lineHeight: 1.04,
 } as const;
 
+/** The visible sections, in order. Numbers are derived from this rather
+ *  than written on each section, so the comparison panel can appear later
+ *  without renumbering the rest by hand. A typed "02" on a hidden section
+ *  is what left the published sequence reading 01, 03, 04, 05, 06. */
+type SectionKey =
+  | "evidence"
+  | "comparison"
+  | "model"
+  | "markets"
+  | "platform"
+  | "ways-in";
+
+const SECTION_ORDER: SectionKey[] = [
+  "evidence",
+  ...(hasComparisonData ? (["comparison"] as SectionKey[]) : []),
+  "model",
+  "markets",
+  "platform",
+  "ways-in",
+];
+
 /** Section label: "01 / Evidence". */
-function Label({ num, text }: { num: string; text: string }) {
+function Label({ section, text }: { section: SectionKey; text: string }) {
+  const num = String(SECTION_ORDER.indexOf(section) + 1).padStart(2, "0");
   return (
     <motion.p
       {...reveal()}
@@ -364,7 +386,7 @@ export function LandingPage() {
         id="evidence"
       >
         <div className="mx-auto w-full max-w-[1240px]">
-          <Label num="01" text="Evidence" />
+          <Label section="evidence" text="Evidence" />
 
           <motion.h2
             {...reveal(0.05)}
@@ -495,7 +517,7 @@ export function LandingPage() {
           id="comparison"
         >
           <div className="mx-auto w-full max-w-[1240px]">
-            <Label num="02" text="Comparison" />
+            <Label section="comparison" text="Comparison" />
 
             <motion.h2
               {...reveal(0.05)}
@@ -644,7 +666,7 @@ export function LandingPage() {
       {/* ── 03 Operating model ─────────────────────────────────── */}
       <section className="sec px-6 py-72 sm:px-10" data-bg="green" id="model">
         <div className="mx-auto w-full max-w-[1240px]">
-          <Label num="03" text="Operating model" />
+          <Label section="model" text="Operating model" />
 
           <motion.h2
             {...reveal(0.05)}
@@ -726,9 +748,9 @@ export function LandingPage() {
                 maxWidth: "52ch",
               }}
             >
-              A record that what you were sent is what was specified — the
-              batch it came from, and what is known about it. It travels with
-              the material rather than waiting to be asked for.
+              Every delivery carries a record of what was specified, the batch
+              it came from, and what is known about it. It travels with the
+              material rather than waiting to be asked for.
             </p>
           </motion.div>
         </div>
@@ -741,7 +763,7 @@ export function LandingPage() {
         id="markets"
       >
         <div className="mx-auto w-full max-w-[1240px]">
-          <Label num="04" text="Markets" />
+          <Label section="markets" text="Markets" />
 
           <motion.h2
             {...reveal(0.05)}
@@ -767,8 +789,8 @@ export function LandingPage() {
               maxWidth: "46ch",
             }}
           >
-            We publish what we can prove. Everything else, we label as what it
-            is — under evaluation.
+            We publish what we can prove, and we label everything else with
+            exactly where it stands.
           </motion.p>
 
           <div className="mt-16 grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-3">
@@ -859,7 +881,7 @@ export function LandingPage() {
             {/* Cream. The lanes are the other thing a client is here for. */}
       <section className="sec px-6 py-72 sm:px-10" data-bg="cream" id="platform">
         <div className="mx-auto w-full max-w-[1240px]">
-          <Label num="05" text="Platform" />
+          <Label section="platform" text="Platform" />
 
           <motion.h2
             {...reveal(0.05)}
@@ -968,7 +990,7 @@ export function LandingPage() {
       {/* ── 06 Ways in ───────────────────────────────────────── */}
       <section className="sec px-6 pb-56 pt-72 sm:px-10" data-bg="black" id="mission">
         <div className="mx-auto w-full max-w-[1240px]">
-          <Label num="06" text="Ways in" />
+          <Label section="ways-in" text="Ways in" />
 
           <motion.h2
             {...reveal(0.05)}
@@ -1095,8 +1117,8 @@ export function LandingPage() {
                 marginBottom: "1.75rem",
               }}
             >
-              Tell us the format, the volume and the season. We will come back
-              with what we can supply and what we can document.
+              Tell us what you need. We will come back with what we can
+              supply and what we can document.
             </p>
             <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
               <Link

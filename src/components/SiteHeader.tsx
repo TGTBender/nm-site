@@ -30,7 +30,7 @@ const PAGES: NavItem[] = [
 /** Anchors that only make sense while that route is on screen. */
 const ANCHORS: Record<string, NavItem[]> = {
   "/bge": [
-    { name: "Why biochar", href: "#why" },
+    { name: "Why it matters", href: "#why" },
     { name: "How it works", href: "#how" },
   ],
 };

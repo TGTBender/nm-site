@@ -19,21 +19,18 @@
 export type State =
   | "active"
   | "soon"
-  | "launching"
   | "development"
   | "planning";
 
 export const STATE_LABEL: Record<State, string> = {
   active: "Active",
   soon: "Coming soon",
-  launching: "Launching Dec 12",
   development: "In development",
   planning: "In planning",
 };
 
-/** Only "active" takes the solid gold. "Launching Dec 12" is dated and
- *  close, but it is not running yet, so it has to read as upcoming
- *  rather than live. */
+/** Only "active" takes the solid gold. Everything else is upcoming,
+ *  however close, and has to read that way rather than as live. */
 export const SOLID_STATES: ReadonlySet<State> = new Set<State>(["active"]);
 
 export type StatusRow = { name: string; state: State };
@@ -46,7 +43,7 @@ export const OPERATING_STATUS: StatusRow[] = [
   { name: "Oil field supply", state: "development" },
   { name: "Producer lab documentation", state: "active" },
   { name: "The BGE (wholesale)", state: "soon" },
-  { name: "The Viridian", state: "launching" },
+  { name: "The Viridian", state: "soon" },
   { name: "Canopy app", state: "development" },
   { name: "The Longevity Project", state: "development" },
   { name: "Processing facility", state: "planning" },
@@ -150,7 +147,7 @@ export const PENDING_NOTE =
 export const MODEL_STEPS = [
   {
     title: "Source",
-    text: "Material is bought against a specification, from producers who can document what they made.",
+    text: "Material is bought against a written specification, not against a description of it.",
   },
   {
     title: "Ship",
@@ -236,7 +233,7 @@ export const WAYS_IN = [
     title: "Work with us",
     text: "For operations buying material.",
     points: [
-      "Tell us the format, volume and season you work in.",
+      "Tell us what you need and when you need it.",
       "We confirm the delivery lane and build a cadence around it.",
       "Documentation arrives with the material.",
     ],
@@ -246,8 +243,8 @@ export const WAYS_IN = [
     title: "Partner with us",
     text: "For producers, labs and ground.",
     points: [
-      "Producers who can document what they make.",
-      "Laboratories to certify feedstocks we have not run yet.",
+      "Producers who can hold a specification run after run.",
+      "Laboratories to test feedstocks we have not run yet.",
       "Operators with ground to prove the material on.",
     ],
     cta: { label: "Start a conversation", href: "/bge" },
@@ -272,7 +269,7 @@ export const WAYS_IN = [
     title: "Work toward the mission",
     text: "For the longer project.",
     points: [
-      "Gardens above the ground, below it, and on the roof.",
+      "Raised beds, in-ground plots, and a planted roof.",
       "A classroom with dirt on the floor.",
       "Ground that proves the material.",
     ],
