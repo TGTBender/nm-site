@@ -34,14 +34,15 @@ export type Lane = {
   hidden?: boolean;
 };
 
-/* Ordered as the landing page presents them — the live lane first. */
+/* Ordered as the landing page presents them. The oil field lane leads the
+   file but is hidden, so the first lane a visitor sees is The BGE. */
 export const LANES: Lane[] = [
   {
     name: "Oil Field Supply",
     description:
       "Biochar and absorbent materials for oil field operations, delivered with documentation on every load.",
     href: "/oil-field",
-    status: "Live",
+    status: "In development",
     cta: "Request a briefing",
     hidden: true,
   },
