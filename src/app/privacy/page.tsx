@@ -5,20 +5,40 @@ import {
   PRIVACY_SECTIONS,
   PRIVACY_UPDATED,
 } from "@/content/privacy";
+import { OG_IMAGE } from "@/lib/og";
 
 export const metadata: Metadata = {
   title: "Privacy Notice",
   description:
     "How Nature's Mastermind handles the information you send through this site. Bringing biochar from niche to normal.",
+  // Declared rather than inherited. With no openGraph of its own this page
+  // took the root's, which used to be the BGE page's headline — so the
+  // privacy notice shared as "A biochar supply lane that actually shows up."
+  alternates: { canonical: "/privacy" },
+  openGraph: {
+    url: "/privacy",
+    images: [OG_IMAGE],
+    title: "Privacy Notice · Nature's Mastermind",
+    description:
+      "How Nature's Mastermind handles the information you send through this site.",
+  },
 };
 
 /**
  * The Privacy Notice.
  *
- * Deliberately NOT a `.sec` on the world: a cream world ground would put a
- * color transition inside the 157px footer below it. The page paints its
- * own light ground instead, the world stays off for this route, and the
- * footer keeps its black.
+ * THE ONE PAGE THAT STAYS OFF THE WORLD, and it was tried both ways on
+ * 2026-11-16. The engine centres a ground transition on the boundary
+ * between two `.sec` elements, so half of it always lands BELOW that
+ * boundary. Every other page ends on a black section, so the cream-to-black
+ * zone finishes before the footer and the footer reads solid black. This
+ * page ends on its own cream body, so the 560px zone had nowhere to go but
+ * through the 300px footer: contrast still passed (5.9-10.8:1) but the
+ * footer rendered as a muddy olive gradient with contour lines through it,
+ * and no amount of bottom padding moves a transition that is anchored to
+ * the footer top. Adding a black section purely to absorb it would be 560px
+ * of empty band. So the page paints its own ground, the world stays off for
+ * this route, and the footer keeps its black.
  *
  * Long prose on a dark ground is the wrong trade for a document people
  * actually have to read, which is why this is the one page set on cream.

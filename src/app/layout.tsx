@@ -6,6 +6,7 @@ import { Providers } from "./providers";
 import { SiteHeader } from "@/components/SiteHeader";
 import { WorldBackground } from "@/components/WorldBackground";
 import { SiteFooter } from "@/components/SiteFooter";
+import { OG_IMAGE, SITE_URL } from "@/lib/og";
 
 /**
  * next/font self-hosts these, so no request ever goes to Google and
@@ -29,8 +30,6 @@ const inter = Inter({
   display: "swap",
 });
 
-const SITE_URL = "https://naturesmastermind.com";
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -46,19 +45,25 @@ export const metadata: Metadata = {
     "nursery supply",
     "landscaping supply",
   ],
+  // The site-wide fallback, used by any route that does not declare its
+  // own. It was the BGE page's headline until 2026-11-16, which made the
+  // whole site share under one lane's slogan — and /privacy, the only
+  // route with no openGraph of its own, inherited it verbatim.
   openGraph: {
     type: "website",
     url: SITE_URL,
     siteName: "Nature's Mastermind",
-    title: "A biochar supply lane that actually shows up.",
+    title: "Nature's Mastermind — Bringing biochar from niche to normal",
     description:
       "Bringing biochar from niche to normal. We source, document and deliver biochar and the inputs that go with it.",
+    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: "A biochar supply lane that actually shows up.",
+    title: "Nature's Mastermind — Bringing biochar from niche to normal",
     description:
       "Bringing biochar from niche to normal.",
+    images: [OG_IMAGE.url],
   },
   robots: { index: true, follow: true },
 };

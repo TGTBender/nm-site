@@ -16,7 +16,9 @@ export const metadata: Metadata = {
   title: "The Viridian",
   description:
     "Charged biochar and liquid nutrient, brought together at home. The Viridian launches in Dallas–Fort Worth first.",
+  alternates: { canonical: "/products" },
   openGraph: {
+    url: "/products",
     title: "The Viridian · Nature's Mastermind",
     description:
       "Charged biochar and liquid nutrient, brought together at home. Launching in Dallas–Fort Worth first.",

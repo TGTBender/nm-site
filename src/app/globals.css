@@ -109,7 +109,10 @@ body {
    assigning .style.opacity from an event handler.                */
 
 .nm-link {
-  color: rgba(245, 239, 230, 0.55);
+  /* 0.72, not 0.55. These sit on the header's translucent scrim, so their
+     real ground changes with the section behind it; at 0.55 they measured
+     2.87:1 over a cream section against a 4.5 floor. */
+  color: rgba(245, 239, 230, 0.72);
   text-decoration: none;
   transition: color 0.35s var(--ease-out-quart);
 }

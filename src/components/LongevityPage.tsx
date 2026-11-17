@@ -229,8 +229,8 @@ export function LongevityPage() {
           the page lands on something of its own before it asks the
           visitor for anything. */}
       <section
-        className="flex min-h-[52vh] items-center px-6 sm:px-10"
-        style={{ backgroundColor: "var(--ink-deep)" }}
+        className="sec flex min-h-[52vh] items-center px-6 py-48 sm:px-10"
+        data-bg="black"
       >
         <div className="mx-auto w-full max-w-[1240px]">
           <motion.p
@@ -257,8 +257,8 @@ export function LongevityPage() {
           claim about what the project is yet. See content/longevity.ts. */}
       <section
         id="involved"
-        className="px-6 py-28 sm:px-10 sm:py-36"
-        style={{ backgroundColor: "var(--ink)" }}
+        className="sec px-6 py-48 sm:px-10"
+        data-bg="black"
       >
         <div className="mx-auto grid w-full max-w-[1240px] grid-cols-1 gap-14 md:grid-cols-12 md:gap-12">
           <motion.div
@@ -338,8 +338,8 @@ export function LongevityPage() {
           shares a card with "More soon.", which now sits before the form
           rather than after it. */}
       <section
-        className="px-6 py-20 sm:px-10"
-        style={{ backgroundColor: "var(--ink-deep)" }}
+        className="sec px-6 py-20 sm:px-10"
+        data-bg="black"
       >
         <div className="mx-auto w-full max-w-[1240px]">
           <motion.p

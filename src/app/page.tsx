@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { LandingPage } from "@/components/LandingPage";
+import { OG_IMAGE } from "@/lib/og";
 
 /**
  * The landing page.
@@ -17,7 +18,10 @@ export const metadata: Metadata = {
   },
   description:
     "Bringing biochar from niche to normal, on a global scale. Soil remediation, food production, material enhancement and more — if biochar can do it, we will source it and provide it.",
+  alternates: { canonical: "/" },
   openGraph: {
+    url: "/",
+    images: [OG_IMAGE],
     title: "Nature's Mastermind",
     description:
       "Bringing biochar from niche to normal, on a global scale.",

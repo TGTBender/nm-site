@@ -204,18 +204,14 @@ export function BGEPage() {
           announcing itself while the body scrolls. */}
       <section
         id="why"
-        className="px-6 py-28 sm:px-10 sm:py-40"
-        style={{
-          backgroundColor: "var(--off-white)",
-          // Rules on this section sit on a light ground.
-          ["--hairline" as string]: "var(--hairline-ink)",
-        }}
+        className="sec px-6 py-72 sm:px-10"
+        data-bg="cream"
       >
         <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-10 md:grid-cols-12 md:gap-12">
           <motion.div {...reveal()} className="md:col-span-3">
             <p
               className="md:sticky md:top-28"
-              style={{ ...eyebrowStyle, color: "var(--gold)" }}
+              style={{ ...eyebrowStyle, color: "var(--ground-accent)" }}
             >
               Why it matters
             </p>
@@ -294,7 +290,7 @@ export function BGEPage() {
                       letterSpacing: "0.12em",
                       textTransform: "uppercase",
                       fontWeight: 600,
-                      color: "rgba(59,37,16,0.42)",
+                      color: "var(--text-muted)",
                     }}
                   >
                     {s.label}
@@ -354,8 +350,8 @@ export function BGEPage() {
           card and the code on the bag are the mechanism behind "with
           documentation on every run" in the lane copy. */}
       <section
-        className="relative overflow-hidden px-6 py-28 sm:px-10 sm:py-36"
-        style={{ backgroundColor: "var(--ink)" }}
+        className="sec relative overflow-hidden px-6 py-72 sm:px-10"
+        data-bg="black"
       >
         <div className="mx-auto grid max-w-[1240px] grid-cols-1 items-center gap-14 md:grid-cols-2 md:gap-16">
           <motion.div
@@ -424,8 +420,8 @@ export function BGEPage() {
       {/* ── Section 3: How to get it ─────────────────────────────── */}
       <section
         id="how"
-        className="px-6 py-28 sm:px-10 sm:py-40"
-        style={{ backgroundColor: "var(--ink)" }}
+        className="sec px-6 py-56 sm:px-10"
+        data-bg="black"
       >
         <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-10 md:grid-cols-12 md:gap-12">
           <motion.div {...reveal()} className="md:col-span-3">
@@ -516,8 +512,8 @@ export function BGEPage() {
           anyone whether they are inside it. */}
       <section
         id="contact"
-        className="px-6 py-28 sm:px-10 sm:py-40"
-        style={{ backgroundColor: "var(--ink-deep)" }}
+        className="sec px-6 py-56 sm:px-10"
+        data-bg="black"
       >
         <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-14 md:grid-cols-12 md:gap-12">
           <motion.div {...reveal()} className="md:col-span-5">

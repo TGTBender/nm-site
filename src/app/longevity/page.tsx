@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { LongevityPage } from "@/components/LongevityPage";
+import { OG_IMAGE } from "@/lib/og";
 
 /**
  * The Longevity Project — a teaser.
@@ -12,7 +13,10 @@ export const metadata: Metadata = {
   title: "The Longevity Project",
   description:
     "Gardens, teaching, and ground to prove the material in. A project we can be proud of, details coming soon.",
+  alternates: { canonical: "/longevity" },
   openGraph: {
+    url: "/longevity",
+    images: [OG_IMAGE],
     title: "The Longevity Project · Nature's Mastermind",
     description:
       "Gardens, teaching, and ground to prove the material in. More soon.",

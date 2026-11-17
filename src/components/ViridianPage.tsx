@@ -408,8 +408,8 @@ export function ViridianPage() {
 
       <section
         id="waitlist"
-        className="px-6 py-28 sm:px-10 sm:py-36"
-        style={{ backgroundColor: "var(--ink)" }}
+        className="sec px-6 py-56 sm:px-10"
+        data-bg="black"
       >
         <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-14 md:grid-cols-12 md:gap-12">
           <motion.div {...reveal()} className="md:col-span-5">

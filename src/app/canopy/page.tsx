@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { CanopyPage } from "@/components/CanopyPage";
+import { OG_IMAGE } from "@/lib/og";
 
 /**
  * Canopy — the app behind the supply lanes.
@@ -16,7 +17,10 @@ export const metadata: Metadata = {
   title: "Canopy",
   description:
     "One app, two sides. A garden companion at home, and an account portal for the trade — where a delivery traces back to the lab panel it was certified against.",
+  alternates: { canonical: "/canopy" },
   openGraph: {
+    url: "/canopy",
+    images: [OG_IMAGE],
     title: "Canopy · Nature's Mastermind",
     description:
       "A garden companion at home, an account portal for the trade. In build.",

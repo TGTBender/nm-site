@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { BGEPage } from "@/components/BGEPage";
+import { OG_IMAGE } from "@/lib/og";
 
 /**
  * The BGE — The Black Glove Experience.
@@ -16,7 +17,10 @@ export const metadata: Metadata = {
   title: "The BGE",
   description:
     "The Black Glove Experience — wholesale biochar supply for nurseries, landscapers, farms and garden centers, on schedule, on spec, with documentation on every run.",
+  alternates: { canonical: "/bge" },
   openGraph: {
+    url: "/bge",
+    images: [OG_IMAGE],
     title: "The BGE · Nature's Mastermind",
     description:
       "The Black Glove Experience — wholesale biochar supply, on schedule, on spec.",

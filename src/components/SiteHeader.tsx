@@ -144,7 +144,10 @@ export function SiteHeader() {
         // Low alpha on purpose. The world background now paints the ground,
         // and a near-opaque bar in the old ink sat on top of it as a separate
         // slab. At this weight the contour field reads through the blur.
-        backgroundColor: painted ? "rgba(11,13,12,0.62)" : "transparent",
+        // 0.82, not 0.62: the bar IS the ground for its own text, and over
+        // a cream section a thinner scrim let the tagline drop to 3.53:1 and
+        // the nav links to 2.87:1. See globals.css .nm-link.
+        backgroundColor: painted ? "rgba(11,13,12,0.82)" : "transparent",
         backdropFilter: painted ? "blur(18px) saturate(140%)" : "none",
         WebkitBackdropFilter: painted ? "blur(18px) saturate(140%)" : "none",
         borderBottom: painted
