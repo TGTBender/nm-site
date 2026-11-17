@@ -210,7 +210,7 @@ function WaitlistForm() {
 
   const form = useForm<WaitlistInput>({
     resolver: zodResolver(waitlistSchema),
-    defaultValues: { email: "", name: "", zip: "", company: "" },
+    defaultValues: { email: "", name: "", zip: "", website: "" },
   });
 
   async function onSubmit(values: WaitlistInput) {
@@ -340,10 +340,10 @@ function WaitlistForm() {
         <div aria-hidden="true" style={{ position: "absolute", left: "-9999px" }}>
           <FormField
             control={form.control}
-            name="company"
+            name="website"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Company</FormLabel>
+                <FormLabel>Website</FormLabel>
                 <FormControl>
                   <Input
                     tabIndex={-1}

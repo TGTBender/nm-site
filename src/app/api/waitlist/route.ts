@@ -42,11 +42,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const { email, name, zip, company } = parsed.data;
+  const { email, name, zip, website } = parsed.data;
 
   // Honeypot tripped. Answer exactly as success would so a bot learns
   // nothing from the response, but send nothing.
-  if (company) {
+  if (website) {
     console.info("[waitlist] honeypot tripped", { email });
     return Response.json({ ok: true, delivered: false });
   }

@@ -16,13 +16,19 @@ export const waitlistSchema = z.object({
   /**
    * Honeypot. Real people leave it empty; naive bots fill every field.
    *
+   * NAMED `website`, matching the other three forms. It was `company`
+   * until 2026-11-16, which was a real hazard: browsers autofill
+   * organization fields from a saved profile even with autocomplete="off",
+   * and a honeypot filled by autofill silently discards a genuine signup.
+   * Nothing in a browser's profile fills a bare `website`.
+   *
    * Deliberately NOT constrained to empty here. An earlier version used
    * .max(0), which meant a filled honeypot failed validation and came back
    * as a 400 naming the field — handing a bot the exact signal the trap is
    * meant to withhold. It is accepted silently and judged in the handler,
    * which answers as though the signup succeeded.
    */
-  company: z.string().max(200).optional().or(z.literal("")),
+  website: z.string().max(200).optional().or(z.literal("")),
 });
 
 export type WaitlistInput = z.infer<typeof waitlistSchema>;
