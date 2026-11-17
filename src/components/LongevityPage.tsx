@@ -224,6 +224,33 @@ export function LongevityPage() {
         </section>
       ))}
 
+      {/* ── More soon ──────────────────────────────────────────────
+          Cut to black. The beat between the last scene and the ask, so
+          the page lands on something of its own before it asks the
+          visitor for anything. */}
+      <section
+        className="flex min-h-[52vh] items-center px-6 sm:px-10"
+        style={{ backgroundColor: "var(--ink-deep)" }}
+      >
+        <div className="mx-auto w-full max-w-[1240px]">
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, ease: EASE }}
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(1.75rem, 4vw, 3rem)",
+              fontWeight: 700,
+              letterSpacing: "-0.025em",
+              color: "var(--gold)",
+            }}
+          >
+            More soon.
+          </motion.p>
+        </div>
+      </section>
+
       {/* ── Get involved ───────────────────────────────────────────
           Interest only. It asks how someone wants to be involved and
           nothing else — no donation ask, no volunteer commitment, and no
@@ -305,37 +332,22 @@ export function LongevityPage() {
         </div>
       </section>
 
-      {/* ── Closing card ───────────────────────────────────────────
-          Cut to black. The disclosure runs here because this is the one
-          card everyone who finishes the page reaches. */}
+      {/* ── Disclosure ─────────────────────────────────────────────
+          Runs last because this is the strip everyone who finishes the
+          page reaches, and it qualifies the images above it. No longer
+          shares a card with "More soon.", which now sits before the form
+          rather than after it. */}
       <section
-        className="flex min-h-[52vh] items-center px-6 sm:px-10"
+        className="px-6 py-20 sm:px-10"
         style={{ backgroundColor: "var(--ink-deep)" }}
       >
         <div className="mx-auto w-full max-w-[1240px]">
           <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.9, ease: EASE }}
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(1.75rem, 4vw, 3rem)",
-              fontWeight: 700,
-              letterSpacing: "-0.025em",
-              color: "var(--gold)",
-            }}
-          >
-            More soon.
-          </motion.p>
-
-          <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: EASE, delay: 0.3 }}
+            transition={{ duration: 0.8, ease: EASE }}
             style={{
-              marginTop: "3rem",
               fontSize: "12px",
               lineHeight: 1.7,
               fontWeight: 300,
