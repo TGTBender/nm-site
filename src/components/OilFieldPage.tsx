@@ -337,7 +337,7 @@ export function OilFieldPage() {
               schema={oilFieldSchema.omit({ kind: true })}
               kind="oil-field"
               fields={FIELDS}
-              submitLabel="Send My Request"
+              submitLabel="Send my request"
               privacyNote="We&apos;ll only use what you send to get back to you."
               successMessage="Thanks — we&apos;ll be in touch shortly with what we can supply and what we can document for you."
             />

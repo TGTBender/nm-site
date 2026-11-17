@@ -586,7 +586,7 @@ export function BGEPage() {
                   optional: true,
                 },
               ]}
-              submitLabel="Join the List"
+              submitLabel="Join the early list"
               privacyNote="We&apos;ll only use what you send to let you know when supply opens and to answer your message."
               successMessage="You are on the early list. We&apos;ll be in touch the moment supply opens."
             />

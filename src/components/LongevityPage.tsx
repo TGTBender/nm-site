@@ -297,7 +297,7 @@ export function LongevityPage() {
                   optional: true,
                 },
               ]}
-              submitLabel="Count Me In"
+              submitLabel="Count me in"
               privacyNote="We&apos;ll only use this to contact you about The Longevity Project."
               successMessage="Thank you — we have your details, and we&apos;ll be in touch as soon as there is something to join."
             />
